@@ -23,4 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-.env
+api-scheme.json
+.env.*
+.trunk/*
