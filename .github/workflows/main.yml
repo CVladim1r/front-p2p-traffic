@@ -37,7 +37,7 @@ jobs:
             cd /srv/p2p_client
 
             echo "Pulling latest changes from 'dev' branch..."
-            git pull origin dev
+            git pull origin main
 
             echo "Building Docker containers..."
             cd /srv/p2p_client/client
