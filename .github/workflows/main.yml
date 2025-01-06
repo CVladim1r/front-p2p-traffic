@@ -43,6 +43,8 @@ jobs:
             echo "Pulling latest images..."
             docker-compose pull
 
+            cd ~/client/
+
             echo "Building new containers..."
             docker-compose build --no-cache
 
