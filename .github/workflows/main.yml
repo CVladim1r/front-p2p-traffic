@@ -3,10 +3,7 @@ name: deploy
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - dev
 
 jobs:
   deploy:
@@ -24,16 +21,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Deploy Docker Compose Configuration
-        uses: appleboy/scp-action@v0.1.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: ./client/docker-compose.yml
-          target: ~/client/docker-compose.yml
-
-      - name: Execute Remote SSH Commands
+      - name: Deploy Application
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -42,29 +30,18 @@ jobs:
           port: 22
           script: |
             set -e
-            echo "Switching to project directory..."
-            cd ~/client/
+            echo "Navigating to project directory..."
+            cd /srv/p2p_client
 
-            echo "Checking directory contents:"
-            ls -al
+            echo "Pulling latest changes from 'dev' branch..."
+            git pull origin dev
+
+            echo "Building Docker containers..."
+            cd /srv/p2p_client/client
+            docker compose build
 
             echo "Stopping old containers..."
-            docker-compose down || true
-            echo "Stopping any leftover containers..."
-            docker ps -q | xargs -r docker stop || true
-
-            echo "Pulling latest images..."
-            docker-compose pull
-
-            echo "Building new containers..."
-            docker-compose build --no-cache
+            docker compose down
 
             echo "Starting new containers..."
-            docker-compose up -d
-
-            echo "Cleaning up unused Docker images..."
-            docker image prune -f
-
-      - name: Cleanup SSH Keys
-        if: always()
-        run: rm -rf ~/.ssh
+            docker compose up -d
