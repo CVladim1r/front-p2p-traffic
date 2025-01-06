@@ -1,5 +1,11 @@
 # P2P Frontend Application
 
+Launch with docker:
+
+```bash
+ docker compose up -d
+```
+
 This repository contains the frontend for the P2P application. The application is built with modern web technologies and is designed for easy deployment using Docker and Nginx.
 
 ## Table of Contents
