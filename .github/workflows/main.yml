@@ -26,14 +26,14 @@ jobs:
 
       - name: Transfer files to server
         run: |
-          rsync -avz --exclude=".git" --exclude=".github" ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/front/
+          rsync -avz --exclude=".git" --exclude=".github" ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/client/
 
       - name: Deploy on server
         run: |
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
           set -e
           echo "Switching to project directory..."
-          cd ~/front/
+          cd ~/client/
           
           echo "Stopping old containers..."
           docker-compose down || true

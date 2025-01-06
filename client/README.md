@@ -1,3 +1,14 @@
+# P2P platform client
+
+Launch with docker:
+
+```bash
+ docker compose up -d
+```
+
+The app will be available at `http://localhost:3000`.
+Other dev scripts can be found in `package.json` file.
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
