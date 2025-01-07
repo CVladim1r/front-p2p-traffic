@@ -14,7 +14,7 @@ COPY tsconfig.json .
 
 COPY tsconfig.node.json .
 
-# RUN echo "VITE_BASE=https://gamedev.architecton.site" > .env.production
+# RUN echo "VITE_BASE=https://api.just-ad.ru/" > .env.production
 
 RUN npm i
 
