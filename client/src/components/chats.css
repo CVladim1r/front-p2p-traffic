@@ -1,0 +1,84 @@
+.chats {
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+
+    height: 100%;
+    padding-top: 35px;
+    overflow-y: auto;
+}
+
+.chats-pinned {
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+    position: relative;
+
+    padding: 13px 0px;
+
+    background-color: #2B2B2B;
+    border-radius: 37px;
+}
+
+.chats-pinned::after {
+    position: absolute;
+    content: "";
+
+    right: 13px;
+    top: 24px;
+    width: 11px;
+    height: 13px;
+
+    background-image: url("/src/assets/pin.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.chat {
+    display: flex;
+    column-gap: 10px;
+
+    margin: 0px 13px;
+}
+
+.chat-image {
+    width: 60px;
+    height: 60px;
+}
+
+.chat-info {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+}
+
+.chat-info-username {
+    font-size: 17px;
+    position: relative;
+
+    width: fit-content;
+}
+
+.chat-info-username.something::after {
+    position: absolute;
+    content: "";
+
+    right: -21px;
+    top: 50%;
+    width: 15px;
+    height: 15px;
+
+    transform: translateY(-50%);
+
+    background-image: url("/src/assets/chat_something.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.chat-info-last-message {
+    font-size: 13px;
+    font-weight: 400;
+    font-family: "Roboto";
+
+    color: #A1A1AA;
+}

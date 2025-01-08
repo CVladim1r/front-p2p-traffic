@@ -12,6 +12,10 @@
 	border: none;
 }
 
+a, a:link, a:visited, a:hover {
+    text-decoration: none;
+}
+
 img, svg {
 	max-width: 100%;
 	height: auto;
@@ -51,4 +55,8 @@ body {
 	font-family: "Inter";
 	font-weight: 500;
 	color: #fff;
+}
+
+a {
+	color: inherit;
 }
