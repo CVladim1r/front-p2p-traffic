@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  satoshi-client:
+  p2p-client:
     image: "node:20"
     build:
       dockerfile: Dockerfile
