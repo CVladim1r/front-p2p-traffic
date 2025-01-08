@@ -96,7 +96,7 @@ let testData: AdProps[] = [
 ]
 
 function Ads() {
-    let [ads, setAds] =  useState(testData);
+    let [ads] =  useState(testData);
 
     return (
         <>
