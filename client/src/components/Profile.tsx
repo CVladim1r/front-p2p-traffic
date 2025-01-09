@@ -1,22 +1,26 @@
 import { Link, Outlet, useLocation } from "react-router-dom"
 import settingsLogo from "../assets/settings.svg"
 import arrow_info from "../assets/arrow_info.svg"
+import deals from "../assets/profile_deals.svg"
+import profit from "../assets/profile_profit.svg"
+import rating from "../assets/profile_rating.svg"
+import gacha from "../assets/gacha.svg"
 import "./Profile.css"
 
 export function ProfileSettngs() {
     return (
         <div className="profile-settings">
-            <div className="profile-settings-premium">
+            <div className="profile-settings-block">
                 <p className="profile-settings-header">Premium</p>
                 <div className="profile-settings-group">
-                    <div className="profile-settings-row">
+                    <button onClick={() => console.log("click")} className="profile-settings-row">
                         <p className="profile-settings-key">Подписка Premium</p>
                         <p className="profile-settings-value">Active</p>
-                    </div>
+                    </button>
                 </div>
             </div>
 
-            <div className="profile-settings-settings">
+            <div className="profile-settings-block">
                 <p className="profile-settings-header">Настройки</p>
                 <div className="profile-settings-group">
                     <button className="profile-settings-row">
@@ -24,19 +28,19 @@ export function ProfileSettngs() {
                         <p className="profile-settings-value">UQAj..Wal</p>
                     </button>
                     <button className="profile-settings-row">
-                        <p className="profile-settings-key-lang">Язык</p>
-                        <p className="profile-settings-value-lang">Русский</p>
+                        <p className="profile-settings-key non-active">Язык</p>
+                        <p className="profile-settings-value non-active">Русский</p>
                     </button>
                 </div>
                 <div className="profile-settings-group">
                     <label className="profile-settings-row">
                         <p className="profile-settings-key">Уведомления</p>
-                        <input type="checkbox" name="notifications" />
+                        <input type="checkbox" name="notifications" className="profile-settings-checkbox" />
                     </label>
                 </div>
             </div>
 
-            <div className="profile-settings-info">
+            <div className="profile-settings-block">
                 <p className="profile-settings-header">Информация</p>
                 <div className="profile-settings-group">
                     <button className="profile-settings-row">
@@ -54,9 +58,9 @@ export function ProfileSettngs() {
                 </div>
             </div>
 
-            <div className="profile-settings-group">
-                <a href="#!rules" className="profile-settings-rules">Правила пользования платформой</a>
-            </div>
+            <a href="#!rules" className="profile-settings-group profile-settings-row">
+                <p className="profile-settings-rules">Правила пользования платформой</p>
+            </a>
         </div>
     )
 }
@@ -70,28 +74,28 @@ export function ProfileBody() {
             </div>
 
             <div className="profile-body-money">
-                <p className="profile-body-money-text">$17 246.27</p>
+                <button className="profile-body-money-text">$17 246.27</button>
                 <button className="profile-body-money-add">Пополнить</button>
-                <button className="profile-body-money-remove">Вывести</button>
+                <button onClick={e => e.currentTarget.classList.toggle("active")} className="profile-body-money-remove">Вывести</button>
             </div>
 
             <div className="profile-body-info">
-                <div className="profile-body-info-deals">
-                    <img src="" alt="" />
+                <div className="profile-body-info-elem">
+                    <img src={deals} alt="" />
                     <p>234</p>
                 </div>
-                <div className="profile-body-info-money">
-                    <img src="" alt="" />
+                <div className="profile-body-info-elem">
+                    <img src={profit} alt="" />
                     <p>$11.031</p>
                 </div>
-                <div className="profile-body-info-rating">
-                    <img src="" alt="" />
+                <div className="profile-body-info-elem">
+                    <img src={rating} alt="" />
                     <p>4.99</p>
                 </div>
             </div>
 
             <div className="profile-body-gacha">
-                <img src="" alt="" />
+                <img src={gacha} alt="" className="profile-body-gacha-image"/>
                 <button className="profile-body-gacha-button">Крутить</button>
             </div>
         </div>
