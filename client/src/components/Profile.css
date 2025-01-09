@@ -4,6 +4,7 @@
 
     height: 100%;
     padding-top: 30px;
+    overflow-y: auto;
 }
 
 .profile-top {
@@ -261,4 +262,9 @@
 }
 .profile-settings-checkbox:checked:after {
     right: 2px;
+}
+
+.profile-settings-rules {
+    font-size: 16px;
+    color: #2D83EC;
 }
