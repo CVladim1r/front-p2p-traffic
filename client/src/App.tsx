@@ -5,7 +5,7 @@ import NavBar from './components/NavBar'
 import TelegramTest from './components/TelegramTest'
 import Ads from './components/Ads'
 import Chats from './components/Chats'
-import Profile from './components/Profile'
+import Profile, { ProfileBody, ProfileSettngs } from './components/Profile'
 import AddAd from './components/AddAd'
 import Info from './components/Info'
 
@@ -22,7 +22,10 @@ function App() {
             <Route path='/ads' element={<Ads />} />
             <Route path='/chat' element={<Chats />} />
             <Route path='/make-ad' element={<AddAd />} />
-            <Route path='/profile' element={<Profile />} />
+            <Route path='/profile' element={<Profile />}>
+              <Route index element={<ProfileBody />}/>
+              <Route path='settings' element={<ProfileSettngs />}/>
+            </Route>
             <Route path='/info' element={<Info />} />
           </Routes>
         </main>

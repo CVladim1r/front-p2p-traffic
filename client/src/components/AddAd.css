@@ -1,0 +1,91 @@
+.add-ad {
+    display: flex;
+    flex-direction: column;
+    padding-top: 35px;
+}
+
+.add-ad-header {
+    font-size: 20px;
+    font-weight: 600;
+
+    margin-bottom: 14px;
+}
+
+.add-ad-form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+}
+
+.add-ad-form-content {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+
+    padding: 20px;
+
+    background-color: #2B2B2B;
+    border-radius: 16px;
+}
+
+.add-ad-form-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.add-ad-form-row-key {
+    font-size: 16px;
+    font-weight: 600;
+    color: #A1A1AA;
+}
+
+.add-ad-form-row-radio {
+    display: flex;
+    align-items: center;
+}
+
+.add-ad-form-row-radio-text {
+    font-size: 9px;
+    font-weight: 600;
+
+    padding: 10px;
+
+    border-radius: 8px;
+}
+
+.add-ad-form-row-radio-text:has(input:checked) {
+    background-color: #2D83EC;
+}
+
+.add-ad-form-row-radiobutton {
+    appearance: none;
+}
+
+.add-ad-form-row-text {
+    font-size: 13px;
+    font-weight: 600;
+
+    padding: 5px 7px;
+    width: 140px;
+
+    border-radius: 5px;
+    border: solid 1px #4F4F4F;
+}
+
+.add-ad-form-row-text[type=number] {
+    -moz-appearance: textfield;
+}
+.add-ad-form-row-text::-webkit-outer-spin-button,
+.add-ad-form-row-text::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+
+.add-ad-form-button {
+    padding: 16px 0px;
+    width: 100%;
+
+    background-color: #2D83EC;
+    border-radius: 20px;
+}

@@ -21,9 +21,11 @@ type LinkProps = {
 
 function MyNavLink ({pathname, img_src, img_src_active}: LinkProps) {
     return (
-        <NavLink to={{pathname}}>
+        <NavLink to={{pathname}} className="nav-list-link">
             {({ isActive }) => (
-                <img src={isActive ? img_src_active : img_src} alt="" />
+                <div className="nav-list-link-img-container">
+                    <img src={isActive ? img_src_active : img_src} alt="" className="nav-list-link-img"/>
+                </div>
             )}
         </NavLink>
     )

@@ -1,6 +1,6 @@
 import { useState } from "react"
 import pic from "../assets/testuserchat.png"
-import "./chats.css"
+import "./Chats.css"
 import { Link } from "react-router-dom"
 
 type ChatInfo = {
@@ -38,7 +38,7 @@ function Chat({id, username, profile_picture, last_message, something} : ChatInf
 }
 
 function Chats() {
-    let [chats, setChats] = useState(testData)
+    let [chats] = useState(testData)
     
     return (
         <div className="chats container">
