@@ -73,6 +73,15 @@
     border: solid 1px #4F4F4F;
 }
 
+.add-ad-form-row-text[type=number] {
+    -moz-appearance: textfield;
+}
+.add-ad-form-row-text::-webkit-outer-spin-button,
+.add-ad-form-row-text::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+
 .add-ad-form-button {
     padding: 16px 0px;
     width: 100%;

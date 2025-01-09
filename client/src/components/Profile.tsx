@@ -6,6 +6,7 @@ import profit from "../assets/profile_profit.svg"
 import rating from "../assets/profile_rating.svg"
 import gacha from "../assets/gacha.svg"
 import "./Profile.css"
+import { user } from "../telegram"
 
 export function ProfileSettngs() {
     return (
@@ -116,8 +117,14 @@ function Profile() {
                     </Link>
                 }
                 
-                <img src="/src/assets/profiletest.png" alt="" className="profile-image"/>
-                <p className="profile-name">@someNick</p>
+                <img src={user?.photo_url} alt="" className="profile-image"/>
+                <p className="profile-name">
+                    {user?.username ?
+                        `@${user?.username}` :
+                        user?.last_name ?
+                            `${user?.first_name} ${user?.last_name}` :
+                            user?.first_name}
+                </p>
             </div>
 
             <Outlet />

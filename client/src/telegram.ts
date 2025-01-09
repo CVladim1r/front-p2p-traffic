@@ -1,36 +1,10 @@
-export type WebAppUser = {
-  id: number;
-  is_bot: boolean;
-  first_name: string;
-  last_name: string;
-  username: string;
-  is_premium: boolean;
-  photo_url: string;
-};
+//test
+export const user = window.Telegram.WebApp.initDataUnsafe.user ?? {
+    first_name: "Макар",
+    username: "ki4rakaM",
+    id: 123,
+    photo_url: "https://t.me/i/userpic/320/e97aVBibu5J6jJV_tOnJFISOLYcBjQBv-VNhe-WZ8nI.svg"
+}
+//test
 
-
-export type WebappData = {
-  user: WebAppUser;
-};
-
-
-export type TelegramWebapp = {
-  initData: string;
-  initDataUnsafe: WebappData;
-  version: string;
-  platform: string;
-  headerColor: string;
-  backgroundColor: string;
-  expand: () => void;
-  close: () => void;
-};
-
-type Window = {
-  Telegram?: {
-    WebApp: TelegramWebapp;
-  };
-};
-
-declare var window: Window; 
-
-export const tg: TelegramWebapp | undefined = window.Telegram?.WebApp;
+// export const user = window.Telegram.WebApp.initDataUnsafe.user
