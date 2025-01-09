@@ -111,11 +111,11 @@ function Profile() {
         <div className="profile container">
             <div className="profile-top">
                 {location.pathname.endsWith("settings") ? <></> :
-                    <Link to={{pathname: "settings"}}>
-                        <img src={settingsLogo} alt="" className="profile-top-settings"/>
+                    <Link to={{pathname: "settings"}} className="profile-top-settings">
+                        <img src={settingsLogo} alt=""/>
                     </Link>
                 }
-
+                
                 <img src="/src/assets/profiletest.png" alt="" className="profile-image"/>
                 <p className="profile-name">@someNick</p>
             </div>

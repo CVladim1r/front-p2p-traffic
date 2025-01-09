@@ -17,6 +17,7 @@
 .profile-top-settings {
     position: absolute;
     right: 10px;
+    top: 0px;
 }
 
 .profile-image {
@@ -206,9 +207,6 @@
     padding: 10px 15px;
 }
 
-.profile-settings-key {
-    font-size: 14px;
-}
 .profile-settings-key.non-active {
     color: #8E8E99;
 }

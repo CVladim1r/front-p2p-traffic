@@ -1,6 +1,7 @@
 import "./Ads.css"
 import testuser from "../assets/testuser1.png"
 import share from "../assets/share.svg"
+import arrows from "../assets/filter_arrow.svg"
 import { useState } from "react"
 
 type FilterProps = {
@@ -11,10 +12,13 @@ type FilterProps = {
 function Filter({name}: FilterProps) {
     //
     return (
-        <div className="filter">
-            <p className="filter-name">{name}</p>
-            <p className="filter-chosen">Все</p>
-        </div>
+        <button className="filter">
+            <div className="filter-text">
+                <p className="filter-name">{name}</p>
+                <p className="filter-chosen">Все</p>
+            </div>
+            <img src={arrows} alt="" />
+        </button>
     )
 }
 
