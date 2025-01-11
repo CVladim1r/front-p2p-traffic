@@ -1,0 +1,54 @@
+.form-button {
+    font-size: 20px;
+    font-weight: 600;
+
+    padding: 16px 0px;
+
+    background-color: #2D83EC;
+    border-radius: 20px;
+}
+
+.form-radioGroup {
+    display: flex;
+}
+
+.form-radioButton-label {
+    font-size: 9px;
+    font-weight: 600;
+    
+    padding: 10px;
+
+    border-radius: 8px;
+}
+.form-radioButton-label.active {
+    background-color: #2D83EC;
+}
+
+.form-radioButton {
+    appearance: none;
+}
+
+.form-textField {
+    font-size: 13px;
+    font-weight: 600;
+
+    padding: 5px 7px;
+    width: 140px;
+
+    border-radius: 5px;
+    border: solid 1px #4F4F4F;
+}
+
+.form-textField[type=number] {
+    -moz-appearance: textfield;
+}
+.form-textField::-webkit-outer-spin-button,
+.form-textField::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.form-select {
+    font-size: 13px;
+    font-weight: 600;
+    background-color: #2B2B2B;
+}

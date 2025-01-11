@@ -69,6 +69,8 @@
     background-color: #2b2b2b;
 
     transform: translate(-50%, -50%);
+
+    animation: navlink-img-stay .3s ease-in-out forwards;
 }
 
 .nav-list-link.active .nav-list-link-img-container {
@@ -88,5 +90,14 @@
     }
     to {
         top: calc(40% - 10px)
+    }
+}
+
+@keyframes navlink-img-stay {
+    from {
+        top: calc(40% - 10px)
+    }
+    to {
+        top: calc(50% - 10px)
     }
 }

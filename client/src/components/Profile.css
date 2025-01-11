@@ -17,8 +17,14 @@
 
 .profile-top-settings {
     position: absolute;
-    right: 10px;
-    top: 0px;
+    right: 30px;
+    top: 30px;
+}
+
+.profile-top-gacha {
+    position: absolute;
+    left: 30px;
+    top: 30px;
 }
 
 .profile-image {
@@ -148,6 +154,15 @@
     border-radius: 20px;
 }
 
+@keyframes gacha-moveIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 .profile-body-gacha {
     position: absolute;
 
@@ -155,10 +170,12 @@
     flex-direction: column;
     align-items: center;
 
-    bottom: 20px;
+    bottom: 0px;
     left: 50%;
 
     transform: translateX(-50%);
+    
+    animation: gacha-moveIn .3s ease-out forwards;
 }
 
 .profile-body-gacha-image {

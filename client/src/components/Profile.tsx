@@ -1,4 +1,4 @@
-import { Link, Outlet, useLocation } from "react-router-dom"
+import { Link, Outlet } from "react-router-dom"
 import settingsLogo from "../assets/settings.svg"
 import arrow_info from "../assets/arrow_info.svg"
 import deals from "../assets/profile_deals.svg"
@@ -7,6 +7,7 @@ import rating from "../assets/profile_rating.svg"
 import gacha from "../assets/gacha.svg"
 import "./Profile.css"
 import { user } from "../telegram"
+import { useState } from "react"
 
 export function ProfileSettngs() {
     return (
@@ -67,56 +68,58 @@ export function ProfileSettngs() {
 }
 
 export function ProfileBody() {
+    let [showGacha, setShowGacha] = useState(false)
+    
     return (
-        <div className="profile-body">
-            <div className="profile-body-vip">
-                <p className="profile-body-vip-text">VIP - статус</p>
-                <p className="profile-body-vip-status">Active</p>
-            </div>
-
-            <div className="profile-body-money">
-                <button className="profile-body-money-text">$17 246.27</button>
-                <button className="profile-body-money-add">Пополнить</button>
-                <button onClick={e => e.currentTarget.classList.toggle("active")} className="profile-body-money-remove">Вывести</button>
-            </div>
-
-            <div className="profile-body-info">
-                <div className="profile-body-info-elem">
-                    <img src={deals} alt="" />
-                    <p>234</p>
+        <>
+            <Link to={{pathname: "settings"}} className="profile-top-settings">
+                <img src={settingsLogo} alt=""/>
+            </Link>
+                            
+            <button onClick={() => setShowGacha(!showGacha)} className="profile-top-gacha">Колесо</button>
+            <div className="profile-body">
+                <div className="profile-body-vip">
+                    <p className="profile-body-vip-text">VIP - статус</p>
+                    <p className="profile-body-vip-status">Active</p>
                 </div>
-                <div className="profile-body-info-elem">
-                    <img src={profit} alt="" />
-                    <p>$11.031</p>
-                </div>
-                <div className="profile-body-info-elem">
-                    <img src={rating} alt="" />
-                    <p>4.99</p>
-                </div>
-            </div>
 
-            <div className="profile-body-gacha">
-                <img src={gacha} alt="" className="profile-body-gacha-image"/>
-                <button className="profile-body-gacha-button">Крутить</button>
+                <div className="profile-body-money">
+                    <button className="profile-body-money-text">$17 246.27</button>
+                    <button className="profile-body-money-add">Пополнить</button>
+                    <button onClick={e => e.currentTarget.classList.toggle("active")} className="profile-body-money-remove">Вывести</button>
+                </div>
+
+                <div className="profile-body-info">
+                    <div className="profile-body-info-elem">
+                        <img src={deals} alt="" />
+                        <p>234</p>
+                    </div>
+                    <div className="profile-body-info-elem">
+                        <img src={profit} alt="" />
+                        <p>$11.031</p>
+                    </div>
+                    <div className="profile-body-info-elem">
+                        <img src={rating} alt="" />
+                        <p>4.99</p>
+                    </div>
+                </div>
+
+                {showGacha ?
+                    <div className="profile-body-gacha">
+                        <img src={gacha} alt="" className="profile-body-gacha-image"/>
+                        <button className="profile-body-gacha-button">Крутить</button>
+                    </div> :
+                    <></>}
+                
             </div>
-        </div>
+        </>
     )
 }
 
 function Profile() {
-    let location = useLocation()
-
-    // get data from tg = window.Telegram.WebApp 
-
     return (
         <div className="profile container">
             <div className="profile-top">
-                {location.pathname.endsWith("settings") ? <></> :
-                    <Link to={{pathname: "settings"}} className="profile-top-settings">
-                        <img src={settingsLogo} alt=""/>
-                    </Link>
-                }
-                
                 <img src={user?.photo_url} alt="" className="profile-image"/>
                 <p className="profile-name">
                     {user?.username ?
