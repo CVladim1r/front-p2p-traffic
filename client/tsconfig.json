@@ -8,8 +8,9 @@
     "skipLibCheck": true,
     "rootDir": "./src",
     "outDir": "./dist/",
+    "baseUrl": "./",
     "paths": {
-
+      "@/*": ["src/*"]
     },
 
     /* Bundler mode */

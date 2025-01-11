@@ -16,6 +16,7 @@ export type { InitDataIn } from './models/InitDataIn';
 export type { InitTonIn } from './models/InitTonIn';
 export type { StartUserIn } from './models/StartUserIn';
 export type { StartUserOut } from './models/StartUserOut';
+export type { UserMainPageOut } from './models/UserMainPageOut';
 export type { ValidationError } from './models/ValidationError';
 
 export { AuthService } from './services/AuthService';
