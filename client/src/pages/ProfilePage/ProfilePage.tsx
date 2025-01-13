@@ -6,27 +6,13 @@ import profitImg from "../../shared/assets/svg/profile_profit.svg"
 import ratingImg from "../../shared/assets/svg/profile_rating.svg"
 import gacha from "../../shared/assets/svg/gacha.svg"
 import Profile from "./Profile"
-import { UsersService } from "../../shared/api"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { StateSchema } from "../../app/providers/store"
-import { userActions } from "../../entities/User"
 
 export default function ProfilePage() {
   const [showGacha, setShowGacha] = useState(false)
 
   const userData = useSelector((state: StateSchema) => state.user.data)
-  const test = useSelector((state: StateSchema) => state.user) //TODO: fix after auth still has old value: ""
-  const dispatch = useDispatch()
-
-  async function getUserData() {
-    try {
-      const response = await UsersService.getUserMainDataApiV1P2PUserMainDataGet(test.authorization)
-      dispatch(userActions.setUserData(response))
-      console.log(response)
-    } catch (error) {
-      console.error("Authentication failed:", error);
-    }
-  }
 
   return (
     <Profile username={userData?.username ?? "none"} topChildren={
@@ -36,7 +22,6 @@ export default function ProfilePage() {
         </Link>
 
         <button onClick={() => setShowGacha(!showGacha)} className="profile-top-gacha">Колесо</button>
-        <button onClick={getUserData} className="profile-top-get-data">Получить данные</button>
       </>}
     >
       

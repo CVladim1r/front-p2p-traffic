@@ -43,6 +43,7 @@
 }
 
 .form-textField[type=number] {
+    appearance: undefined;
     -moz-appearance: textfield;
 }
 .form-textField::-webkit-outer-spin-button,

@@ -23,7 +23,6 @@ const userSlice = createSlice({
   reducers: {
     setUserData: (state, action: PayloadAction<UserMainPageOut>) => {
       state.data = action.payload;
-      console.log(action.payload);
     },
     setUserIsLogging: (state, action: PayloadAction<boolean>) => {
       state.isLoggingIn = action.payload;
