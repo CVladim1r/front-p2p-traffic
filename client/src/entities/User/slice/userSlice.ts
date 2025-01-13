@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice, current } from "@reduxjs/toolkit";
 import { UserMainPageOut } from "../../../shared/api";
 import { USER_ACCESS_TOKEN_KEY } from "../consts/consts";
 
@@ -15,9 +15,7 @@ const initToken = localStorage.getItem(USER_ACCESS_TOKEN_KEY);
 
 const initialState: UserSchema = {
   isLoggingIn: true,
-  authorization: initToken
-    ? `Bearer ${localStorage.getItem(USER_ACCESS_TOKEN_KEY)}`
-    : "",
+  authorization: initToken ?? "",
   _initialized: false,
 };
 
@@ -35,15 +33,16 @@ const userSlice = createSlice({
     setUserError: (state, action: PayloadAction<string | undefined>) => {
       state.error = action.payload;
     },
-    initauthorization: (state) => {
+    initAuthorization: (state) => {
       const at = localStorage.getItem(USER_ACCESS_TOKEN_KEY);
       if (at) {
-        state.authorization = `Bearer ${at}`;
+        state.authorization = at;
       }
       state._initialized = true;
     },
-    setauthorization: (state, action: PayloadAction<string>) => {
+    setAuthorization: (state, action: PayloadAction<string>) => {
       state.authorization = action.payload;
+      console.log("setAuthorisation")
     },
   },
 });

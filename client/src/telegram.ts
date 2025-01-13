@@ -7,4 +7,4 @@ export const user = window.Telegram.WebApp.initDataUnsafe.user ?? {
 }
 //test
 
-// export const user = window.Telegram.WebApp.initDataUnsafe.user
+// export const tgUser = window.Telegram.WebApp.initDataUnsafe.user

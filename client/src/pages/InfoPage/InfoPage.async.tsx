@@ -1,3 +1,3 @@
-// import { lazy } from "react";
+import { lazy } from "react";
 
-export const InfoPageAsync = await import("./InfoPage")
+export const InfoPageAsync = lazy(async () => await import("./InfoPage"))

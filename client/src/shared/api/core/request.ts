@@ -293,7 +293,8 @@ export const catchErrorCodes = (options: ApiRequestOptions, result: ApiResult): 
 export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): CancelablePromise<T> => {
     return new CancelablePromise(async (resolve, reject, onCancel) => {
         try {
-            const url = getUrl(config, options);
+            // const url = getUrl(config, options);
+            const url = "https://api.just-ad.ru" + getUrl(config, options); // for local test
             const formData = getFormData(options);
             const body = getRequestBody(options);
             const headers = await getHeaders(config, options);

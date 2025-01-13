@@ -1,3 +1,3 @@
-// import { lazy } from "react";
+import { lazy } from "react";
 
-export const ChatsPageAsync = await import("./ChatsPage")
+export const ChatsPageAsync = lazy(async() => await import("./ChatsPage"))

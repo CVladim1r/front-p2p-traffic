@@ -1,22 +1,30 @@
 import { Suspense, memo, useCallback } from "react";
-import { Route, Routes, type RouteProps } from "react-router-dom";
+import { BrowserRouter, Route, Routes, type RouteProps } from "react-router-dom";
 import {
   AddAdPage,
   AdsPage,
-
- 
+  ProfileSettingsPage,
+  ProfilePage,
+  ChatsPage,
+  InfoPage 
 } from "../../../pages";
 
 enum AppRoutes {
   ads = "ads",
+  chats = "chats",
   addad = "addad",
-
+  profile = "profile",
+  profilesettings = "profilesettings",
+  info = "info"
 }
 
 export const RoutePaths: Record<AppRoutes, string> = {
+  [AppRoutes.ads]: "/ads",
+  [AppRoutes.chats]: "/chats",
   [AppRoutes.addad]: "/add-ad",
-  [AppRoutes.ads]: "/",
-
+  [AppRoutes.profile]: "/",
+  [AppRoutes.profilesettings]: "/settings",
+  [AppRoutes.info]: "/info",
 };
 
 const routeConfig: Record<AppRoutes, RouteProps> = {
@@ -24,9 +32,25 @@ const routeConfig: Record<AppRoutes, RouteProps> = {
     path: RoutePaths.ads,
     element: <AdsPage />,
   },
+  [AppRoutes.chats]: {
+    path: RoutePaths.chats,
+    element: <ChatsPage />,
+  },
   [AppRoutes.addad]: {
     path: RoutePaths.addad,
     element: <AddAdPage />,
+  },
+  [AppRoutes.profile]: {
+    path: RoutePaths.profile,
+    element: <ProfilePage />,
+  },
+  [AppRoutes.profilesettings]: {
+    path: RoutePaths.profilesettings,
+    element: <ProfileSettingsPage />,
+  },
+  [AppRoutes.info]: {
+    path: RoutePaths.info,
+    element: <InfoPage />,
   },
 };
 
@@ -45,7 +69,9 @@ function AppRouter() {
     );
   }, []);
 
-  return <Routes>{Object.values(routeConfig).map(renderRoutes)}</Routes>;
+  return (
+      <Routes>{Object.values(routeConfig).map(renderRoutes)}</Routes>
+  )
 }
 
 export default memo(AppRouter);
