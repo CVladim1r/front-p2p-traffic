@@ -1,0 +1,10 @@
+.body {
+	display: flex;
+    flex-direction: column;
+    height: calc(100vh - 100px);
+}
+
+.container {
+    padding: 0 20px;
+    width: 100%;
+}
