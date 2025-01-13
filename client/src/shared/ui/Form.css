@@ -7,6 +7,9 @@
     background-color: #2D83EC;
     border-radius: 20px;
 }
+.form-button.disabled {
+    background-color: #2B2B2B;
+}
 
 .form-radioGroup {
     display: flex;

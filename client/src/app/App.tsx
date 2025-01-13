@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { StateSchema, StoreProvider } from "./providers/store";
-import { AuthService } from "../shared/api";
+import { ApiError, AuthService, UsersService } from "../shared/api";
 import { USER_ACCESS_TOKEN_KEY, userActions } from "../entities/User";
 import Layout from "./Layout";
 import "./App.css"
@@ -10,12 +10,26 @@ import "./App.css"
 function App() {
   const dispatch = useDispatch();
 
-  const { authorization, _initialized } = useSelector(
+  const {authorization, _initialized} = useSelector(
     (state: StateSchema) => state.user
   );
 
   const authUser = async () => {
-    //TODO: Check if token already used is valid otherwise new auth
+    if (authorization) {
+      try {
+        await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)
+        dispatch(userActions.initAuthorization());
+        console.log("old auth done")
+        return        
+      } catch (error) {
+        console.error("Request failed:", error);
+
+        if ((error as ApiError).status === 422) { // if auth invalid => remove and create new by going further
+          localStorage.removeItem(USER_ACCESS_TOKEN_KEY)
+          dispatch(userActions.setAuthorization(""));
+        }
+      }
+    }
     
     try {
       if (!window.Telegram.WebApp.initDataUnsafe.user || !window.Telegram.WebApp.initDataUnsafe.user.username)
@@ -43,27 +57,16 @@ function App() {
       const token = `Bearer ${response.access_token}`;
       localStorage.setItem(USER_ACCESS_TOKEN_KEY, token);
       dispatch(userActions.initAuthorization());
-      dispatch(userActions.setAuthorization(token));
-      console.log("auth done")
+      console.log("new auth done")
     } catch (error) {
       console.error("Authentication failed:", error);
     }
   };
 
-  useEffect(() => {
-    if (!authorization) {
-      authUser();
-    }
-  },);
-
-  useEffect(() => {
-    // Log out user if token is removed or invalid
-    return () => {
-      console.log("cleared")
-      localStorage.removeItem(USER_ACCESS_TOKEN_KEY);
-      dispatch(userActions.setAuthorization(""));
-    };
-  },);
+  useEffect(() => { // *Runs twice on dev on start with <Strictmode>
+    console.log("start auth");
+    authUser();
+  }, [])
 
   return _initialized ? <StoreProvider><Layout /></StoreProvider> : <div>Loading...</div>;
 }

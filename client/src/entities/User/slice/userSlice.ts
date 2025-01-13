@@ -11,11 +11,9 @@ export interface UserSchema {
   wallet?: string;
 }
 
-const initToken = localStorage.getItem(USER_ACCESS_TOKEN_KEY);
-
 const initialState: UserSchema = {
   isLoggingIn: true,
-  authorization: initToken ?? "",
+  authorization: localStorage.getItem(USER_ACCESS_TOKEN_KEY) ?? "",
   _initialized: false,
 };
 
@@ -42,7 +40,6 @@ const userSlice = createSlice({
     },
     setAuthorization: (state, action: PayloadAction<string>) => {
       state.authorization = action.payload;
-      console.log("setAuthorisation")
     },
   },
 });

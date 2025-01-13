@@ -3,13 +3,13 @@ import classNames from "classnames";
 import { NavBar } from "../shared/ui";
 import AppRouter from "./providers/router/Router";
 import { StateSchema } from "./providers/store";
+// import { loadingAnimation } from "../shared/assets";
+// import Lottie from "react-lottie";
 
 export const Layout = () => {
   const { error, isLoggingIn } = useSelector(
     (state: StateSchema) => state.user
   );
-
-
 
   return (
     <main

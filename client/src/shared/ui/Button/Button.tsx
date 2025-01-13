@@ -1,30 +1,20 @@
-import classNames from "classnames";
-import { ButtonHTMLAttributes, PropsWithChildren } from "react";
+import { ButtonHTMLAttributes, PropsWithChildren } from "react"
+import "../Form.css"
+import classNames from "classnames"
 
-type CombinedProps = ButtonHTMLAttributes<HTMLButtonElement> &
-  PropsWithChildren;
+type ButtonProps = PropsWithChildren & ButtonHTMLAttributes<HTMLButtonElement>
 
-interface ButtonProps extends CombinedProps {
-  className?: string;
+export function Button({children, className, disabled, ...otherProps}: ButtonProps) {
+    return (
+        <button
+            className={classNames(
+                "form-button",
+                {"form-button-disabled": disabled},
+                className
+            )}
+            {...otherProps}
+        >
+            {children}
+        </button>
+    )
 }
-
-export const Button = ({
-  className,
-  children,
-  disabled,
-  ...otherProps
-}: ButtonProps) => {
-  return (
-    <button
-      className={classNames(
-        "bg-transparent border-none hover:scale-110 duration-200 ease-linear active:scale-90",
-        { "grayscale pointer-events-none": disabled },
-        className
-      )}
-      disabled={disabled}
-      {...otherProps}
-    >
-      {children}
-    </button>
-  );
-};

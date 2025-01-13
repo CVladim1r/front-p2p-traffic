@@ -1,9 +1,12 @@
 import { FormEvent } from "react"
 import { NavigateFunction, useNavigate } from "react-router-dom"
-import Button from "../../components/form/Button"
-import RadioGroup from "../../components/form/RadioGroup"
-import TextField from "../../components/form/TextField"
-import Select from "../../components/form/Select"
+import {
+    Button,
+    RadioGroup,
+    Select,
+    TextField
+}
+from "../../shared/ui"
 import "./AddAdPage.css"
 
 type FormData = { 

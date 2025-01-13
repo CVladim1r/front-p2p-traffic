@@ -1,9 +1,13 @@
 import Profile from "./Profile";
 import arrow_info from "../../shared/assets/svg/arrow_info.svg"
+import { useSelector } from "react-redux";
+import { StateSchema } from "../../app/providers/store";
 
 export default function ProfileSettngs() {
+  const userData = useSelector((state: StateSchema) => state.user.data)
+
   return (
-    <Profile>
+    <Profile username={userData?.username ?? "none"}>
       <div className="profile-settings">
         <div className="profile-settings-block">
           <p className="profile-settings-header">Premium</p>
