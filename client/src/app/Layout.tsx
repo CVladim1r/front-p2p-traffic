@@ -1,21 +1,14 @@
-import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import classNames from "classnames";
-import { Button, NavBar } from "../shared/ui";
-import { loadingAnimation } from "../shared/assets";
-import AppRouter, { RoutePaths } from "./providers/router/Router";
+import { NavBar } from "../shared/ui";
+import AppRouter from "./providers/router/Router";
 import { StateSchema } from "./providers/store";
-import Lottie from "react-lottie";
 
 export const Layout = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
   const { error, isLoggingIn } = useSelector(
     (state: StateSchema) => state.user
   );
 
-  const isMainRoute = location.pathname === RoutePaths.profile;
-  const routeName = location.pathname.replace("/", "");
 
 
   return (

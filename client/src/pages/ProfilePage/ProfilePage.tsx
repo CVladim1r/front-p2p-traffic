@@ -7,13 +7,13 @@ import rating from "../../shared/assets/svg/profile_rating.svg"
 import gacha from "../../shared/assets/svg/gacha.svg"
 import Profile from "./Profile"
 import { UsersService } from "../../shared/api"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { StateSchema } from "../../app/providers/store"
 import "./ProfilePage.css"
 
 export default function ProfilePage() {
-  let [showGacha, setShowGacha] = useState(false)
-  let { authorization } = useSelector((state: StateSchema) => state.user) //TODO: fix after auth still has old value: ""
+  const [showGacha, setShowGacha] = useState(false)
+  const { authorization } = useSelector((state: StateSchema) => state.user) //TODO: fix after auth still has old value: ""
   
   async function getUserData() {
     try {

@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice, current } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { UserMainPageOut } from "../../../shared/api";
 import { USER_ACCESS_TOKEN_KEY } from "../consts/consts";
 

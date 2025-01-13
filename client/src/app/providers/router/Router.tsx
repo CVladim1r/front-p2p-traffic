@@ -1,5 +1,5 @@
 import { Suspense, memo, useCallback } from "react";
-import { BrowserRouter, Route, Routes, type RouteProps } from "react-router-dom";
+import { Route, Routes, type RouteProps } from "react-router-dom";
 import {
   AddAdPage,
   AdsPage,

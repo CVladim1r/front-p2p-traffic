@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { StateSchema, StoreProvider } from "./providers/store";
-import { AuthService, UsersService } from "../shared/api";
+import { AuthService } from "../shared/api";
 import { USER_ACCESS_TOKEN_KEY, userActions } from "../entities/User";
 import Layout from "./Layout";
 import "./App.css"
@@ -54,7 +54,7 @@ function App() {
     if (!authorization) {
       authUser();
     }
-  }, [authorization]);
+  },);
 
   useEffect(() => {
     // Log out user if token is removed or invalid
@@ -63,7 +63,7 @@ function App() {
       localStorage.removeItem(USER_ACCESS_TOKEN_KEY);
       dispatch(userActions.setAuthorization(""));
     };
-  }, []);
+  },);
 
   return _initialized ? <StoreProvider><Layout /></StoreProvider> : <div>Loading...</div>;
 }
