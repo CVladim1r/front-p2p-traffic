@@ -16,6 +16,7 @@
     "@tanstack/react-query": "^5.64.0",
     "@types/react-lottie": "^1.2.10",
     "@types/telegram-web-app": "^7.10.1",
+    "axios": "^1.7.9",
     "classnames": "^2.5.1",
     "crypto-js": "^4.2.0",
     "react": "^18.0.0",
