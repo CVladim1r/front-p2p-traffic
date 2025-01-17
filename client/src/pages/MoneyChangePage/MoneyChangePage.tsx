@@ -33,7 +33,7 @@ export default function MoneyChange({type}: MoneyChangeProps) {
                             {text: "USDT", value: "USDT"},
                         ]}
                     />
-                    <div className={+money > maxMoney ? "moneychange-block-money error " : "moneychange-block-money"}>
+                    <div className={type != "add" && +money > maxMoney ? "moneychange-block-money error " : "moneychange-block-money"}>
                         <TextField
                             type="number"
                             placeholder={moneyType}
@@ -60,19 +60,22 @@ export default function MoneyChange({type}: MoneyChangeProps) {
                         <p>≈{Floor2(Number(money) * 0.02)} {moneyType}</p>
                     </div>
                 </div>
-                <div className="moneychange-info">
-                    <Button
-                        type="button"
-                        className={+money==maxMoney ? "moneychange-max" : "moneychange-max active"}
-                        onClick={() => {
-                            setMoney(maxMoney.toString())}
-                        }
-                        disabled={+money==maxMoney}
-                    >
-                        MAX
-                    </Button>
-                    <p className="moneychange-available">Доступно: {balance} {moneyType}</p>
-                </div>
+                {type == "remove" &&
+                    <div className="moneychange-info">
+                        <Button
+                            type="button"
+                            className={+money==maxMoney ? "moneychange-max" : "moneychange-max active"}
+                            onClick={() => {
+                                setMoney(maxMoney.toString())}
+                            }
+                            disabled={+money==maxMoney}
+                        >
+                            MAX
+                        </Button>
+                        <p className="moneychange-available">Доступно: {balance} {moneyType}</p>
+                    </div>
+                }
+                
                 
                 <Button
                     type="submit"
