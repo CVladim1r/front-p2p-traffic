@@ -24,7 +24,7 @@ function Chat({id, username, profile_picture, last_message, something} : ChatInf
 }
 
 export default function ChatsPage() {
-    let testData: ChatInfo[] = [
+    const testData: ChatInfo[] = [
         {id: 1, username: "Username_2", profile_picture: pic, last_message: "Привет! Жду ссылку на транзакцию где ты пе...", something: true, isPinned: false},
         {id: 0, username: "Username_1", profile_picture: pic, last_message: "Точно 100000 пользователей приведу тебе, пр...", something: true, isPinned: true},
         {id: 2, username: "Username_3", profile_picture: pic, last_message: "Зуб даю - много подписчиков придет!", something: false, isPinned: false},

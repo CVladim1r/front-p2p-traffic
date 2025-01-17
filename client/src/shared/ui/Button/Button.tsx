@@ -9,9 +9,10 @@ export function Button({children, className, disabled, ...otherProps}: ButtonPro
         <button
             className={classNames(
                 "form-button",
-                {"form-button-disabled": disabled},
+                {"disabled": disabled},
                 className
             )}
+            disabled={disabled}
             {...otherProps}
         >
             {children}

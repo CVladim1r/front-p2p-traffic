@@ -8,6 +8,7 @@ import gacha from "../../shared/assets/svg/gacha.svg"
 import Profile from "./Profile"
 import { useSelector } from "react-redux"
 import { StateSchema } from "../../app/providers/store"
+import { RoutePaths } from "../../app/providers/router"
 
 export default function ProfilePage() {
   const [showGacha, setShowGacha] = useState(false)
@@ -17,7 +18,7 @@ export default function ProfilePage() {
   return (
     <Profile username={userData?.username ?? "none"} topChildren={
       <>
-        <Link to={{pathname: "settings"}} className="profile-top-settings">
+        <Link to={{pathname: RoutePaths.profileSettings}} className="profile-top-settings">
           <img src={settingsLogo} alt=""/>
         </Link>
 
@@ -28,13 +29,27 @@ export default function ProfilePage() {
       <div className="profile-body">
         <div className="profile-body-vip">
           <p className="profile-body-vip-text">VIP - статус</p>
-          <p className="profile-body-vip-status">{userData?.is_vip ? "Active" : "Not active"}</p>
+          <p className="profile-body-vip-status">{userData?.is_vip ? "Активно" : "Не активно"}</p>
         </div>
         
         <div className="profile-body-money">
           <button className="profile-body-money-text">{userData?.balance ?? "none"}</button>
-          <button className="profile-body-money-add">Пополнить</button>
-          <button onClick={e => e.currentTarget.classList.toggle("active")} className="profile-body-money-remove">Вывести</button>
+          <Link
+            to={{pathname: RoutePaths.moneyAdd}}
+            className="profile-body-money-add"
+          >
+            Пополнить
+          </Link>
+          <Link
+            to={{pathname: RoutePaths.moneyRemove}}
+            className={
+              userData?.balance != 0 ?
+                "profile-body-money-remove active" :
+                "profile-body-money-remove"
+            }
+          >
+            Вывести
+          </Link>
         </div>
         
         <div className="profile-body-info">

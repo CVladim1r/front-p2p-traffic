@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { StateSchema, StoreProvider } from "./providers/store";
 import { ApiError, AuthService, UsersService } from "../shared/api";
 import { USER_ACCESS_TOKEN_KEY, userActions } from "../entities/User";
+import { appActions } from "../entities/App/slice/appSlice";
 import Layout from "./Layout";
 import "./App.css"
 
@@ -10,16 +11,19 @@ import "./App.css"
 function App() {
   const dispatch = useDispatch();
 
-  const {authorization, _initialized} = useSelector(
+  const {authorization} = useSelector(
     (state: StateSchema) => state.user
   );
 
   const authUser = async () => {
+    // const slep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+    // await slep(5000) // long loading
     if (authorization) {
       try {
         const response = await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)
         dispatch(userActions.initAuthorization());
         dispatch(userActions.setUserData(response));
+        dispatch(appActions.setIsLoading(false));
         console.log("old auth + data done")
         return        
       } catch (error) {
@@ -29,7 +33,7 @@ function App() {
         }
         else {
           console.error("Request failed:", error);
-          dispatch(userActions.setUserError((error as ApiError).message))
+          dispatch(appActions.setError((error as ApiError).message))
         }
       }
     }
@@ -61,28 +65,33 @@ function App() {
       localStorage.setItem(USER_ACCESS_TOKEN_KEY, token);
       dispatch(userActions.initAuthorization());
       console.log("new auth done")
-      
       try {
         const response = await UsersService.getUserMainDataApiV1P2PUserMainDataGet(token)
         dispatch(userActions.setUserData(response));
+        dispatch(appActions.setIsLoading(false));
         console.log("data done");
       } catch (error) {
         console.error("Main data retrieving failed:", error);
-        dispatch(userActions.setUserError((error as ApiError).message))
+        dispatch(appActions.setError((error as ApiError).message))
       }
 
-    } catch (error) {
+    } catch (error) { 
       console.error("Authentication failed:", error);
-      dispatch(userActions.setUserError((error as ApiError).message))
+      dispatch(appActions.setError((error as ApiError).message))
     }
   };
 
+  
+  const initStarted = useRef(false)
   useEffect(() => { // *Runs twice on dev on start with <StrictMode>
-    console.log("start auth");
-    authUser();
+    if (!initStarted.current) {
+      initStarted.current = true
+      console.log("start auth");
+      authUser();
+    }
   }, [])
 
-  return _initialized ? <Layout /> : <div>Loading...</div>;
+  return <Layout /> ;
 }
 
 export default App;

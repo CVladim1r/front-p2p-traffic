@@ -1,33 +1,51 @@
 import { Suspense, memo, useCallback } from "react";
-import { Route, Routes, type RouteProps } from "react-router-dom";
+import { Route, Routes, type RouteProps, Navigate } from "react-router-dom";
 import {
   AddAdPage,
   AdsPage,
   ProfileSettingsPage,
   ProfilePage,
   ChatsPage,
-  InfoPage 
+  InfoPage, 
+  MoneyChangePage
 } from "../../../pages";
+import { Loading } from "../../../shared/ui";
+import PreviewAddAdPage from "../../../pages/PreviewAdPage/PreviewAdPage";
+import AddAdDonePage from "../../../pages/DonePages/AddAdDonePage";
 
 enum AppRoutes {
+  root = "root",
   ads = "ads",
   chats = "chats",
-  addad = "addad",
+  addAd = "addAd",
   profile = "profile",
-  profilesettings = "profilesettings",
-  info = "info"
+  profileSettings = "profileSettings",
+  info = "info",
+  moneyAdd = "moneyAdd",
+  moneyRemove = "moneyRemove",
+  previewAd = "previewAd",
+  addAdDone = "addAdDone"
 }
 
 export const RoutePaths: Record<AppRoutes, string> = {
+  [AppRoutes.root]: "/",
   [AppRoutes.ads]: "/ads",
   [AppRoutes.chats]: "/chats",
-  [AppRoutes.addad]: "/add-ad",
-  [AppRoutes.profile]: "/",
-  [AppRoutes.profilesettings]: "/settings",
+  [AppRoutes.addAd]: "/add-ad",
+  [AppRoutes.profile]: "/profile",
+  [AppRoutes.profileSettings]: "/profile/settings",
   [AppRoutes.info]: "/info",
+  [AppRoutes.moneyAdd]: "/profile/add",
+  [AppRoutes.moneyRemove]: "/profile/remove",
+  [AppRoutes.previewAd]: "/add-ad/preview",
+  [AppRoutes.addAdDone]: "/add-ad/done",
 };
 
 const routeConfig: Record<AppRoutes, RouteProps> = {
+  [AppRoutes.root]: {
+    path: RoutePaths.root,
+    element: <Navigate to={RoutePaths.profile} replace={true} />,
+  },
   [AppRoutes.ads]: {
     path: RoutePaths.ads,
     element: <AdsPage />,
@@ -36,21 +54,37 @@ const routeConfig: Record<AppRoutes, RouteProps> = {
     path: RoutePaths.chats,
     element: <ChatsPage />,
   },
-  [AppRoutes.addad]: {
-    path: RoutePaths.addad,
+  [AppRoutes.addAd]: {
+    path: RoutePaths.addAd,
     element: <AddAdPage />,
   },
   [AppRoutes.profile]: {
     path: RoutePaths.profile,
     element: <ProfilePage />,
   },
-  [AppRoutes.profilesettings]: {
-    path: RoutePaths.profilesettings,
+  [AppRoutes.profileSettings]: {
+    path: RoutePaths.profileSettings,
     element: <ProfileSettingsPage />,
   },
   [AppRoutes.info]: {
     path: RoutePaths.info,
     element: <InfoPage />,
+  },
+  [AppRoutes.moneyAdd]: {
+    path: RoutePaths.moneyAdd,
+    element: <MoneyChangePage type="add" />,
+  },
+  [AppRoutes.moneyRemove]: {
+    path: RoutePaths.moneyRemove,
+    element: <MoneyChangePage type="remove" />,
+  },
+  [AppRoutes.previewAd]: {
+    path: RoutePaths.previewAd,
+    element: <PreviewAddAdPage />
+  },
+  [AppRoutes.addAdDone]: {
+    path: RoutePaths.addAdDone,
+    element: <AddAdDonePage />
   },
 };
 
@@ -61,7 +95,7 @@ function AppRouter() {
         key={route.path}
         path={route.path}
         element={
-          <Suspense fallback={<p className='text-white'>Loading...</p>}>
+          <Suspense fallback={<Loading />}>
             {route.element}
           </Suspense>
         }

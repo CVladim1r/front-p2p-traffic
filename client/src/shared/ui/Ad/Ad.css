@@ -1,0 +1,99 @@
+.ad {
+    border-radius: 20px;
+    background-color: #2B2B2B;
+}
+
+.ad-top-row {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 6px 16px;
+
+    border-bottom: solid 2px #1C1C1C;
+}
+
+.ad-top-row-price {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.ad-top-row-type {
+    font-size: 12px;
+    
+    color: #A1A1AA;
+}
+
+.ad-top-row-buttons {
+    display: flex;
+    align-items: center;
+    column-gap: 16px;
+}
+
+.ad-top-row-buttons-share {
+    display: flex;
+
+    padding: 3px 5px 3px 3px;
+
+    background-color: #4F4F4F;
+    border-radius: 20px;
+}
+
+.ad-top-row-buttons-buy {
+    font-size: 10px;
+    font-weight: 600;
+
+    width: 70px;
+    height: 20px;
+
+    background-color: #4F4F4F;
+    border-radius: 20px;
+}
+
+.ad-content {
+    display: flex;
+    flex-direction: column;
+    row-gap: 9px;
+
+    padding: 20px 20px 34px 20px;
+}
+
+.ad-content-user {
+    display: flex;
+    align-items: center;
+}
+
+.ad-content-user-img {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
+
+.ad-content-user-name {
+    font-size: 11px;
+    font-weight: 600;
+
+    width: 70px;
+    margin-right: 40px;
+}
+
+.ad-content-user-info {
+    font-size: 9px;
+}
+
+.ad-content-info-elem {
+    display: flex;
+    column-gap: 20px;
+}
+
+.ad-content-info-elem-key {
+    font-size: 10px;
+    font-weight: 600;
+    color: #A1A1AA;
+    
+    width: 50px;
+}
+
+.ad-content-info-elem-value {
+    font-size: 11px;
+    font-weight: 600;
+}

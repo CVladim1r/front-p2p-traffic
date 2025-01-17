@@ -231,6 +231,9 @@
 
     padding: 10px 15px;
 }
+.profile-settings-row + .profile-settings-row {
+    padding-top: 0px;
+}
 
 .profile-settings-key.non-active {
     color: #8E8E99;

@@ -7,7 +7,6 @@ export interface UserSchema {
   authorization: string;
   _initialized: boolean;
   data?: UserMainPageOut;
-  error?: string;
   wallet?: string;
 }
 
@@ -26,9 +25,6 @@ const userSlice = createSlice({
     },
     setUserIsLogging: (state, action: PayloadAction<boolean>) => {
       state.isLoggingIn = action.payload;
-    },
-    setUserError: (state, action: PayloadAction<string | undefined>) => {
-      state.error = action.payload;
     },
     initAuthorization: (state) => {
       const at = localStorage.getItem(USER_ACCESS_TOKEN_KEY);
