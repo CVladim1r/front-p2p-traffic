@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { StateSchema, StoreProvider } from "./providers/store";
+import { StateSchema } from "./providers/store";
 import { ApiError, AuthService, UsersService } from "../shared/api";
 import { USER_ACCESS_TOKEN_KEY, userActions } from "../entities/User";
 import { appActions } from "../entities/App/slice/appSlice";
