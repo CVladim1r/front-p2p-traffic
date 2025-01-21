@@ -14,14 +14,15 @@ export default function ProfilePage() {
   const userData = useSelector((state: StateSchema) => state.user.data)
 
   return (
-    <Profile username={userData?.username ?? "none"} topChildren={
-      <>
-        {/* <Link to={{pathname: RoutePaths.profileSettings}} className="profile-top-settings">
-          <img src={settingsLogo} alt=""/>
-        </Link>
+    <Profile username={userData?.username ?? "none"}
+    // topChildren={
+    //   <>
+    //     {/* <Link to={{pathname: RoutePaths.profileSettings}} className="profile-top-settings">
+    //       <img src={settingsLogo} alt=""/>
+    //     </Link>
 
-        <button onClick={() => setShowGacha(!showGacha)} className="profile-top-gacha">Колесо</button> */}
-      </>}
+    //     <button onClick={() => setShowGacha(!showGacha)} className="profile-top-gacha">Колесо</button> */}
+    //   </>}
     >
       
       <div className="profile-body">
