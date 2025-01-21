@@ -1,6 +1,4 @@
 import { Link } from "react-router-dom"
-import { useState } from "react"
-import settingsLogo from "../../shared/assets/svg/settings.svg"
 import dealsImg from "../../shared/assets/svg/profile_deals.svg"
 import profitImg from "../../shared/assets/svg/profile_profit.svg"
 import ratingImg from "../../shared/assets/svg/profile_rating.svg"

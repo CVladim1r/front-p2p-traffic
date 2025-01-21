@@ -1,7 +1,6 @@
 import { AdData } from "../../../entities/AddAd/slice/addAdSlice"
 import { UserMainPageOut } from "../../api"
 import share from "../../assets/svg/ad_send.svg"
-import vip from "../../assets/svg/vip_icon.svg"
 import testuser from "../../assets/images/testuser1.png"
 import "./Ad.css"
 

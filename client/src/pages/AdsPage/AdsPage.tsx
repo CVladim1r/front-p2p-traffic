@@ -1,4 +1,3 @@
-import { RefObject, useRef } from "react"
 import arrows from "../../shared/assets/svg/filter_arrow.svg"
 import { Ad, AdProps } from "../../shared/ui"
 import "./AdsPage.css"
