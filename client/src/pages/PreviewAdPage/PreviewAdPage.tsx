@@ -13,13 +13,13 @@ export default function PreviewAddAdPage() {
     const dispatch = useDispatch()
     
     const data = useSelector(
-        (state: StateSchema) => state.addad.data,
+        (state: StateSchema) => state.addAd.data,
         () => true // prevent re-render
     )
     const userData = useSelector(
         (state: StateSchema) => state.user.data
     )
-    const isSending = useRef(useSelector((state: StateSchema) => state.addad.isSending, () => true))
+    const isSending = useRef(useSelector((state: StateSchema) => state.addAd.isSending, () => true))
     
     if (!data) {
         navigate(RoutePaths.addAd, {replace: true})

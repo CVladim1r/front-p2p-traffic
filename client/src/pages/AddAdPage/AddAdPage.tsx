@@ -17,7 +17,7 @@ export default function AddAdPage() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const data = useSelector(
-        (state: StateSchema) => state.addad.data,
+        (state: StateSchema) => state.addAd.data,
         () => true
     ) ?? {
         guaranteed: true,
@@ -85,17 +85,29 @@ export default function AddAdPage() {
                         ]}/>
                     </div>
                     <div className="add-ad-form-row">
-                        <p className="add-ad-form-row-key">Кол-во пользователей</p>
+                        <div className="add-ad-form-amount">
+                            <p className="add-ad-form-row-key">Кол-во пользователей</p>
+                            <RadioGroup className="add-ad-form-amount-radioGroup" buttonsProps={[
+                                {label: "Минимум", value: "min"},
+                                {label: "Максимум", value: "max"},
+                            ]} />
+                        </div>
 
-                        <TextField type="number" name="min" defaultValue={data.min} placeholder="Введите кол-во"/>
+                        {/* <TextField type="number" name="min" defaultValue={data.min} placeholder="Введите кол-во"/> */}
                     </div>
                     <div className="add-ad-form-row">
                         <p className="add-ad-form-row-key">Сумма</p>
-
-                        <TextField type="number" name="price" defaultValue={data.price} placeholder="Введите сумму"/>
+                        
+                        <div className="add-ad-form-sum">
+                            <TextField className="add-ad-form-sum-text" type="number" name="price" defaultValue={data.price} placeholder="5 - 10 000"/>
+                            <Select name="money-type" defaultValue="USDT" optionsProps={[
+                                {text: "USDT", value: "USDT"},
+                                {text: "TON", value: "TON"},
+                            ]}/>
+                        </div>
                     </div>
                     <div className="add-ad-form-row">
-                        <p className="add-ad-form-row-key">Размещение</p>
+                        <p className="add-ad-form-row-key">Приход</p>
 
                         <div className="add-ad-form-row-radio">
                             <RadioGroup name="placing" defaultValue={data.placing} buttonsProps={[
@@ -104,7 +116,7 @@ export default function AddAdPage() {
                             ]}/>
                         </div>
                     </div>
-                    <div className="add-ad-form-row">
+                    {/* <div className="add-ad-form-row">
                         <p className="add-ad-form-row-key">Название</p>
 
                         <TextField type="text" name="name" defaultValue={data.name} placeholder="Введите название"/>
@@ -113,7 +125,7 @@ export default function AddAdPage() {
                         <p className="add-ad-form-row-key">Описание</p>
 
                         <TextField type="text" name="description" defaultValue={data.description} placeholder="Введите описание"/>
-                    </div>
+                    </div> */}
                 </div>
 
                 <Button type="submit">Далее</Button>

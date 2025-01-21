@@ -8,11 +8,13 @@ import { UserSchema, userReducer } from "../../../entities/User";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { appReducer, AppSchema } from "../../../entities/App/slice/appSlice";
 import { addAdReducer, AddAdSchema } from "../../../entities/AddAd/slice/addAdSlice";
+import { logReducer, LogSchema } from "../../../entities/Log/slice/logSlice";
 
 export interface StateSchema {
   user: UserSchema;
   app: AppSchema;
-  addad: AddAdSchema;
+  addAd: AddAdSchema;
+  log: LogSchema;
 }
 
 export const createMainStore = () => {
@@ -20,7 +22,8 @@ export const createMainStore = () => {
     reducer: {
       user: userReducer,
       app: appReducer,
-      addad: addAdReducer,
+      addAd: addAdReducer,
+      log: logReducer
     },
   });
   setupListeners(store.dispatch);

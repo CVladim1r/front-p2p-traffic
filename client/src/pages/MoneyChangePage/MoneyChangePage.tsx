@@ -28,7 +28,7 @@ export default function MoneyChange({type}: MoneyChangeProps) {
             <p className="moneychange-header">{type == "add" ? "Пополнение" : "Снятие"} Средств</p>
             <form action="" className="moneychange-form">
                 <div className="moneychange-block">
-                    <Select onChange={e => setMoneyType(e.target.value)} className="moneychange-select" optionsProps={[
+                    <Select onChange={e => setMoneyType(e.target.value)} className="moneychange-select" optionsProps={[  //Remove Ton when add
                             {text: "TON", value: "TON"},
                             {text: "USDT", value: "USDT"},
                         ]}

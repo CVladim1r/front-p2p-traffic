@@ -11,18 +11,18 @@ import { StateSchema } from "../../app/providers/store"
 import { RoutePaths } from "../../app/providers/router"
 
 export default function ProfilePage() {
-  const [showGacha, setShowGacha] = useState(false)
+  // const [showGacha, setShowGacha] = useState(false)
 
   const userData = useSelector((state: StateSchema) => state.user.data)
 
   return (
     <Profile username={userData?.username ?? "none"} topChildren={
       <>
-        <Link to={{pathname: RoutePaths.profileSettings}} className="profile-top-settings">
+        {/* <Link to={{pathname: RoutePaths.profileSettings}} className="profile-top-settings">
           <img src={settingsLogo} alt=""/>
         </Link>
 
-        <button onClick={() => setShowGacha(!showGacha)} className="profile-top-gacha">Колесо</button>
+        <button onClick={() => setShowGacha(!showGacha)} className="profile-top-gacha">Колесо</button> */}
       </>}
     >
       
@@ -43,7 +43,8 @@ export default function ProfilePage() {
           <Link
             to={{pathname: RoutePaths.moneyRemove}}
             className={
-              userData?.balance != 0 ?
+              // userData?.balance != 0 ?
+              userData?.balance != -1 ?
                 "profile-body-money-remove active" :
                 "profile-body-money-remove"
             }
@@ -67,11 +68,12 @@ export default function ProfilePage() {
           </div>
         </div>
         
-        {showGacha &&
+        {/* {showGacha && */}
           <div className="profile-body-gacha">
             <img src={gacha} alt="" className="profile-body-gacha-image"/>
             <button className="profile-body-gacha-button">Крутить</button>
-          </div>}
+          </div>
+          {/* } */}
           
       </div>
     </Profile>

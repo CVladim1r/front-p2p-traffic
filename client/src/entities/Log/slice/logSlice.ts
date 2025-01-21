@@ -1,49 +1,25 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type AdData = {
-  price: number,
-  type: string,
-  source: string,
-  guaranteed: boolean,
-  min: number,
-  pay: string,
-  theme?: string 
-  placing?: "free" | "pay"
-  name?: string
-  description?: string
+export interface LogSchema {
+  logs: string[]
 }
 
-export interface AddAdSchema {
-  data: AdData
-}
-
-const initialState: AddAdSchema = {
-  data: {
-    guaranteed: true,
-    min: 0,
-    pay: "",
-    price: 0,
-    source: "",
-    type: "",
-    description: "",
-    name: "",
-    placing: "free",
-    theme: ""
-  }
+const initialState: LogSchema = {
+  logs: []
 };
   
-const addAdSlice = createSlice({
-  name: "addAdd",
+const logSlice = createSlice({
+  name: "log",
   initialState,
   reducers: {
-    setData: (state, action: PayloadAction<AdData>) => {
-      state.data = action.payload;
+    setLogs: (state, action: PayloadAction<string[]>) => {
+      state.logs = action.payload
     },
-    clearData: (state) => {
-      state.data = initialState.data
+    addLog: (state, action: PayloadAction<string>) => {
+      state.logs.push(action.payload)
     },
   },
 });
   
-export const { actions: addAdActions, reducer: addAdReducer } = addAdSlice;
+export const { actions: logActions, reducer: logReducer } = logSlice;
   

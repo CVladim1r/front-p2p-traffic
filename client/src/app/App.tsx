@@ -6,6 +6,7 @@ import { USER_ACCESS_TOKEN_KEY, userActions } from "../entities/User";
 import { appActions } from "../entities/App/slice/appSlice";
 import Layout from "./Layout";
 import "./App.css"
+import { logActions } from "../entities/Log/slice/logSlice";
 
 
 function App() {
@@ -88,6 +89,13 @@ function App() {
       initStarted.current = true
       console.log("start auth");
       authUser();
+
+      //override console.log
+      const oldLog = console.log
+      console.log = (message) => {
+        dispatch(logActions.addLog(message ?? ""))
+        oldLog(message)
+      }
     }
   }, [])
 

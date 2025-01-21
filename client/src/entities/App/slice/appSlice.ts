@@ -2,11 +2,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface AppSchema {
     isLoading: boolean;
+    authDone: boolean,
     error: string;
 }
 
 const initialState: AppSchema = {
     isLoading: true,
+    authDone: false,
     error: "",
   };
   
@@ -19,6 +21,9 @@ const initialState: AppSchema = {
       },
       setIsLoading: (state, action: PayloadAction<boolean>) => {
         state.isLoading = action.payload;
+      },
+      setAuthDone: (state, action: PayloadAction<boolean>) => {
+        state.authDone = action.payload;
       },
     },
   });

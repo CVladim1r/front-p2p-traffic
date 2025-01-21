@@ -21,9 +21,9 @@
 .add-ad-form-content {
     display: flex;
     flex-direction: column;
-    row-gap: 20px;
+    /* row-gap: 20px; */
 
-    padding: 20px;
+    padding: 20px 0px 20px 40px;
 
     background-color: #2B2B2B;
     border-radius: 16px;
@@ -33,10 +33,40 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    padding: 15px;
+    padding-right: 20px;
+}
+.add-ad-form-row + .add-ad-form-row {
+    border-top: solid 1px #A1A1AA;
 }
 
 .add-ad-form-row-key {
     font-size: 16px;
     font-weight: 600;
-    color: #A1A1AA;
+    /* color: #A1A1AA; */
+}
+
+.add-ad-form-amount {
+    display: flex;
+    flex-direction: column;
+    row-gap: 6px;
+}
+
+.add-ad-form-amount-radioGroup {
+    column-gap: 10px;
+    background-color: transparent;
+}
+.add-ad-form-amount-radioGroup > * {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.add-ad-form-sum {
+    display: flex;
+    column-gap: 10px;
+}
+
+.add-ad-form-sum-text {
+    text-align: center;
 }

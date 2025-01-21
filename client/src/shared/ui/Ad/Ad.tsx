@@ -1,6 +1,7 @@
 import { AdData } from "../../../entities/AddAd/slice/addAdSlice"
 import { UserMainPageOut } from "../../api"
-import share from "../../assets/svg/share.svg"
+import share from "../../assets/svg/ad_send.svg"
+import vip from "../../assets/svg/vip_icon.svg"
 import testuser from "../../assets/images/testuser1.png"
 import "./Ad.css"
 
@@ -27,7 +28,7 @@ export function Ad({data, user, showButtons}: AdProps) {
                     <p className="ad-top-row-type">{data.type}</p>
                 </div>
                 
-                { showButtons &&
+                { (showButtons ?? true) &&
                     <div className="ad-top-row-buttons">
                         <button className="ad-top-row-buttons-share"
                             onClick={() => 
@@ -41,7 +42,7 @@ export function Ad({data, user, showButtons}: AdProps) {
                                 console.log("buy button")
                             }
                         >
-                            BUY
+                            Купить
                         </button>
                     </div>
                 }
@@ -49,7 +50,7 @@ export function Ad({data, user, showButtons}: AdProps) {
             <div className="ad-content">
                 <div className="ad-content-user">
                     <img src={/*FIXME: user.profile_picture*/ testuser} alt="" className="ad-content-user-img"/> 
-                    <p className="ad-content-user-name">{user.username}</p>
+                    <p className={user.is_vip ? "ad-content-user-name vip" : "ad-content-user-name"}>{user.username}</p>
                     <p className="ad-content-user-info">сделок: {/*FIXME: user.deals*/ 100} • {user.rating}</p>
                 </div>
                 <div className="ad-content-info-elem">

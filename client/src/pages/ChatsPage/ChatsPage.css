@@ -29,7 +29,7 @@
     width: 11px;
     height: 13px;
 
-    background-image: url("/src/assets/pin.svg");
+    background-image: url("/src/shared/assets/svg/pin.svg");
     background-repeat: no-repeat;
     background-size: contain;
 }
@@ -70,7 +70,23 @@
 
     transform: translateY(-50%);
 
-    background-image: url("/src/assets/chat_something.svg");
+    background-image: url("/src/shared/assets/svg/chat_something.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.chat-info-username.vip::after {
+    position: absolute;
+    content: "";
+
+    right: -25px;
+    top: 50%;
+    width: 18px;
+    height: 18px;
+
+    transform: translateY(-50%);
+
+    background-image: url("/src/shared/assets/svg/vip_icon.svg");
     background-repeat: no-repeat;
     background-size: contain;
 }
