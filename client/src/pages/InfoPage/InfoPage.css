@@ -46,6 +46,7 @@
     background-color: transparent;
     border: none;
 
+    caret-color: #fff;
     background: linear-gradient(-90deg, #2D83EC, #1AC9FF);
     color: transparent;
     background-clip: text;

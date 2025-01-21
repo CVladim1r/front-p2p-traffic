@@ -61,11 +61,13 @@
     text-align: center;
 }
 
+.add-ad-TextField {
+    text-align: center;
+
+    width: 140px;
+}
+
 .add-ad-form-sum {
     display: flex;
     column-gap: 10px;
-}
-
-.add-ad-form-sum-text {
-    text-align: center;
 }

@@ -73,7 +73,7 @@ export default function AddAdPage() {
                     <div className="add-ad-form-row">
                         <p className="add-ad-form-row-key">Источник</p>
 
-                        <TextField type="text" name="source" placeholder="Введите ссылку..." defaultValue={data.source}/>
+                        <TextField className="add-ad-TextField" type="text" name="source" placeholder="Введите ссылку..." defaultValue={data.source}/>
                     </div>
                     <div className="add-ad-form-row">
                         <p className="add-ad-form-row-key">Тематика</p>
@@ -99,7 +99,7 @@ export default function AddAdPage() {
                         <p className="add-ad-form-row-key">Сумма</p>
                         
                         <div className="add-ad-form-sum">
-                            <TextField className="add-ad-form-sum-text" type="number" name="price" defaultValue={data.price} placeholder="5 - 10 000"/>
+                            <TextField className="add-ad-TextField" type="number" name="price" defaultValue={data.price} placeholder="5 - 10 000"/>
                             <Select name="money-type" defaultValue="USDT" optionsProps={[
                                 {text: "USDT", value: "USDT"},
                                 {text: "TON", value: "TON"},
