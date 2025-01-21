@@ -52,6 +52,7 @@
 .moneychange-textfield {
     font-size: inherit;
     font-weight: inherit;
+    text-align: center;
 
     padding: 0px;
     width: none;

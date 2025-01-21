@@ -128,7 +128,7 @@ export default function AddAdPage() {
                     </div> */}
                 </div>
 
-                <Button type="submit">Далее</Button>
+                <Button disabled={true} type="submit">Далее</Button>
             </form>
         </div>
     )
