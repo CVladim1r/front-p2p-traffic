@@ -17,7 +17,7 @@ export default function MoneyChange({type}: MoneyChangeProps) {
     const navigate = useNavigate()
 
     const currencyTypes = useSelector(
-        (state: StateSchema) => state.currencyType.currencyTypes
+        (state: StateSchema) => state.additional.currencyTypes
     )
 
     // const balance = useSelector(

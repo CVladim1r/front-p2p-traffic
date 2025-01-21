@@ -9,14 +9,14 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { appReducer, AppSchema } from "../../../entities/App/slice/appSlice";
 import { addAdReducer, AddAdSchema } from "../../../entities/AddAd/slice/addAdSlice";
 import { logReducer, LogSchema } from "../../../entities/Log/slice/logSlice";
-import { currencyTypeReducer, currencyTypeSchema } from "../../../entities/CurrencyType/currencyTypeSlice";
+import { additionalReducer, additionalSchema } from "../../../entities/Additional/additionalSlice";
 
 export interface StateSchema {
   user: UserSchema;
   app: AppSchema;
   addAd: AddAdSchema;
   log: LogSchema;
-  currencyType: currencyTypeSchema;
+  additional: additionalSchema;
 }
 
 export const createMainStore = () => {
@@ -26,7 +26,7 @@ export const createMainStore = () => {
       app: appReducer,
       addAd: addAdReducer,
       log: logReducer,
-      currencyType: currencyTypeReducer,
+      additional: additionalReducer,
     },
   });
   setupListeners(store.dispatch);

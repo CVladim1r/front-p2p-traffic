@@ -8,7 +8,7 @@ import Layout from "./Layout";
 import "./App.css"
 import { logActions } from "../entities/Log/slice/logSlice";
 import { user } from "../telegram";
-import { currencyTypeActions } from "../entities/CurrencyType/currencyTypeSlice";
+import { additionalActions } from "../entities/Additional/additionalSlice";
 
 
 function App() {
@@ -36,10 +36,17 @@ function App() {
   const authUser = async () => {
     try {
       const response = await AdditionalService.getTransactionCurrencyTypesApiV1P2POtherTransactionCurrencyTypesGet()
-      dispatch(currencyTypeActions.setcurrencyTypes(response))
+      dispatch(additionalActions.setCurrencyTypes(response))
       console.log("Got currency types");
     } catch (error) {
       console.error("Get currency types failed:", error);
+    }
+    try {
+      const response = await AdditionalService.getCategoriesApiV1P2POtherCategoriesGet()
+      dispatch(additionalActions.setCategories(response))
+      console.log("Got categories");
+    } catch (error) {
+      console.error("Get categories failed:", error);
     }
     
     

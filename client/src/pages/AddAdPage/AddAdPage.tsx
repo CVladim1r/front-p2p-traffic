@@ -16,6 +16,11 @@ import { RoutePaths } from "../../app/providers/router"
 export default function AddAdPage() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    
+    const additional = useSelector(
+        (state: StateSchema) => state.additional
+    )
+    
     const data = useSelector(
         (state: StateSchema) => state.addAd.data,
         () => true
@@ -78,11 +83,9 @@ export default function AddAdPage() {
                     <div className="add-ad-form-row">
                         <p className="add-ad-form-row-key">Тематика</p>
 
-                        <Select name="theme" defaultValue={data.theme} optionsProps={[
-                            {text: "Выбрать", value: ""},
-                            {text: "Test", value: "test"},
-                            {text: "Test2", value: "test2"},
-                        ]}/>
+                        <Select name="theme" defaultValue={data.theme} optionsProps={
+                            additional.categories.map(val => ({value: val.substring(0, val.length - 1)})) //FIXME: темы без скобочек будут -> убрать substring
+                        }/>
                     </div>
                     <div className="add-ad-form-row">
                         <div className="add-ad-form-amount">
@@ -100,10 +103,9 @@ export default function AddAdPage() {
                         
                         <div className="add-ad-form-sum">
                             <TextField className="add-ad-TextField" type="number" name="price" defaultValue={data.price} placeholder="5 - 10 000"/>
-                            <Select name="money-type" defaultValue="USDT" optionsProps={[
-                                {text: "USDT", value: "USDT"},
-                                {text: "TON", value: "TON"},
-                            ]}/>
+                            <Select name="money-type" defaultValue="USDT" optionsProps={
+                                additional.currencyTypes.map(val => ({value: val}))
+                            }/>
                         </div>
                     </div>
                     <div className="add-ad-form-row">
