@@ -1,12 +1,14 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { StateSchema } from "./providers/store";
-import { ApiError, AuthService, UsersService } from "../shared/api";
+import { AdditionalService, ApiError, AuthService, UsersService } from "../shared/api";
 import { USER_ACCESS_TOKEN_KEY, userActions } from "../entities/User";
 import { appActions } from "../entities/App/slice/appSlice";
 import Layout from "./Layout";
 import "./App.css"
 import { logActions } from "../entities/Log/slice/logSlice";
+import { user } from "../telegram";
+import { currencyTypeActions } from "../entities/CurrencyType/currencyTypeSlice";
 
 
 function App() {
@@ -16,15 +18,38 @@ function App() {
     (state: StateSchema) => state.user
   );
 
+  const updateUserPhoto = async () => {
+    if (!user.photo_url)
+      return
+
+    try {
+      await UsersService.updateUserPhotoApiV1P2PUserUpdateUserPhotoPost(
+        authorization,
+        { photo_url: user.photo_url }
+      )
+      console.log("user photo updated");
+    } catch (error) {
+      console.error("Update user photo failed:", error);
+    }
+  }
+
   const authUser = async () => {
-    // const slep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-    // await slep(5000) // long loading
+    try {
+      const response = await AdditionalService.getTransactionCurrencyTypesApiV1P2POtherTransactionCurrencyTypesGet()
+      dispatch(currencyTypeActions.setcurrencyTypes(response))
+      console.log("Got currency types");
+    } catch (error) {
+      console.error("Get currency types failed:", error);
+    }
+    
+    
     if (authorization) {
       try {
         const response = await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)
         dispatch(userActions.initAuthorization());
         dispatch(userActions.setUserData(response));
         dispatch(appActions.setIsLoading(false));
+        await updateUserPhoto()
         console.log("old auth + data done")
         return        
       } catch (error) {
@@ -33,7 +58,7 @@ function App() {
           dispatch(userActions.setAuthorization(""));
         }
         else {
-          console.error("Request failed:", error);
+          console.error("Main data retrieving failed:", error);
           dispatch(appActions.setError((error as ApiError).message))
         }
       }
@@ -70,6 +95,7 @@ function App() {
         const response = await UsersService.getUserMainDataApiV1P2PUserMainDataGet(token)
         dispatch(userActions.setUserData(response));
         dispatch(appActions.setIsLoading(false));
+        await updateUserPhoto()
         console.log("data done");
       } catch (error) {
         console.error("Main data retrieving failed:", error);

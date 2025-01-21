@@ -6,8 +6,9 @@ export type UserMainPageOut = {
     uuid: string;
     tg_id: number;
     username: (string | null);
+    deals: number;
     rating: number;
-    balance: number;
+    balance: Record<string, string>;
     total_sales: number;
     referral_id: (string | null);
     is_vip: boolean;

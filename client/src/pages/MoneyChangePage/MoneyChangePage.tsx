@@ -4,6 +4,8 @@ import { Button, Select, TextField } from "../../shared/ui";
 // import { StateSchema } from "../../app/providers/store";
 import "./MoneyChangePage.css"
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { StateSchema } from "../../app/providers/store";
 
 type MoneyChangeProps = {
     type: "add" | "remove"
@@ -13,6 +15,10 @@ export default function MoneyChange({type}: MoneyChangeProps) {
     const [moneyType, setMoneyType] = useState("TON")
     const [money, setMoney] = useState("")
     const navigate = useNavigate()
+
+    const currencyTypes = useSelector(
+        (state: StateSchema) => state.currencyType.currencyTypes
+    )
 
     // const balance = useSelector(
     //     (state: StateSchema) => state.user.data?.balance
@@ -28,10 +34,9 @@ export default function MoneyChange({type}: MoneyChangeProps) {
             <p className="moneychange-header">{type == "add" ? "Пополнение" : "Снятие"} Средств</p>
             <form action="" className="moneychange-form">
                 <div className="moneychange-block">
-                    <Select onChange={e => setMoneyType(e.target.value)} className="moneychange-select" optionsProps={[  //Remove Ton when add
-                            {text: "TON", value: "TON"},
-                            {text: "USDT", value: "USDT"},
-                        ]}
+                    <Select onChange={e => setMoneyType(e.target.value)} className="moneychange-select" optionsProps={ //Remove Ton when add
+                        currencyTypes.map(val => ({value: val}))
+                    }
                     />
                     <div className={type != "add" && +money > maxMoney ? "moneychange-block-money error " : "moneychange-block-money"}>
                         <TextField
@@ -52,7 +57,9 @@ export default function MoneyChange({type}: MoneyChangeProps) {
                             max={Floor2(balance / (1.02))}
                             step={0.01}
                         />
-                        <p>{money ? moneyType : ""}</p>
+                        {money != "" &&
+                            <p>{moneyType}</p>
+                        }
                     </div>
                     
                     <div className="moneychange-comission">

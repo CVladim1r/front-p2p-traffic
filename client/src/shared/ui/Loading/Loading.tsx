@@ -15,7 +15,7 @@ export function Loading() {
                     autoplay: true,
                     animationData: loadingAnimation,
                     rendererSettings: {
-                        preserveAspectRatio: "xMidYMid slice"
+                        preserveAspectRatio: "xMidYMid slice",
                     }
                 }}
                 height={300}

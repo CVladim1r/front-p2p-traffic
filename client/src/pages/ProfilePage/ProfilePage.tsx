@@ -31,7 +31,7 @@ export default function ProfilePage() {
         </div>
         
         <div className="profile-body-money">
-          <button className="profile-body-money-text">{userData?.balance ?? "none"}</button>
+          <button className="profile-body-money-text">{/*userData?.balance ?? "none"*/}$0.00</button>
           <Link
             to={{pathname: RoutePaths.moneyAdd}}
             className="profile-body-money-add"
@@ -42,9 +42,10 @@ export default function ProfilePage() {
             to={{pathname: RoutePaths.moneyRemove}}
             className={
               // userData?.balance != 0 ?
-              userData?.balance != -1 ?
-                "profile-body-money-remove active" :
-                "profile-body-money-remove"
+              // userData?.balance != -1 ?
+                "profile-body-money-remove active" 
+                // :
+                // "profile-body-money-remove"
             }
           >
             Вывести
@@ -54,11 +55,11 @@ export default function ProfilePage() {
         <div className="profile-body-info">
           <div className="profile-body-info-elem">
             <img src={dealsImg} alt="" />
-            <p>{/*userData?.deals ??*/ "none"}</p>
+            <p>{userData?.deals}</p>
           </div>
           <div className="profile-body-info-elem">
             <img src={profitImg} alt="" />
-            <p>{userData?.total_sales ?? "none"}</p>
+            <p>${userData?.total_sales ?? "none"}</p>
           </div>
           <div className="profile-body-info-elem">
             <img src={ratingImg} alt="" />

@@ -23,11 +23,11 @@ function Filter({name}: FilterProps) {
 export default function AdsPage() {
     //const testData: RefObject<(AdProps & {id: number}) []> = useRef([
     const testData: (AdProps & {id: number}) [] = [
-        {id: 0, user: {username: "victor_per", rating: 4.99, is_vip: true}, data: {source: "Тапалка",  price: 1, type: "за пользователя", guaranteed: true, min: 10000, pay: "USDT (TON)", placing: "free"}},
-        {id: 1, user: {username: "victor_per", rating: 5.00, is_vip: false}, data: {source: "Тапалка", price: 1, type: "за пользователя", guaranteed: true, min: 10000, pay: "USDT (TON)", placing: "free"}},
-        {id: 2, user: {username: "victor_per", rating: 4.87, is_vip: true}, data: {source: "Тапалка",  price: 1, type: "за пользователя", guaranteed: true, min: 10000, pay: "USDT (TON)", placing: "pay"}},
-        {id: 3, user: {username: "victor_per", rating: 4.99, is_vip: false}, data: {source: "Тапалка", price: 1, type: "за пользователя", guaranteed: true, min: 10000, pay: "USDT (TON)"}},
-        {id: 4, user: {username: "victor_per", rating: 4.99, is_vip: false}, data: {source: "Тапалка", price: 1, type: "за пользователя", guaranteed: true, min: 10000, pay: "USDT (TON)", placing: "pay"}},
+        {id: 0, user: {username: "victor_per", deals: 3, rating: 4.99, is_vip: true}, data: {source: "Тапалка",  price: 1, type: "за пользователя", guaranteed: true, min: 10000, pay: "USDT (TON)", placing: "free"}},
+        {id: 1, user: {username: "victor_per", deals: 6, rating: 5.00, is_vip: false}, data: {source: "Тапалка", price: 1, type: "за пользователя", guaranteed: true, min: 10000, pay: "USDT (TON)", placing: "free"}},
+        {id: 2, user: {username: "victor_per", deals: 134, rating: 4.87, is_vip: true}, data: {source: "Тапалка",  price: 1, type: "за пользователя", guaranteed: true, min: 10000, pay: "USDT (TON)", placing: "pay"}},
+        {id: 3, user: {username: "victor_per", deals: 61, rating: 4.99, is_vip: false}, data: {source: "Тапалка", price: 1, type: "за пользователя", guaranteed: true, min: 10000, pay: "USDT (TON)"}},
+        {id: 4, user: {username: "victor_per", deals: 4, rating: 4.99, is_vip: false}, data: {source: "Тапалка", price: 1, type: "за пользователя", guaranteed: true, min: 10000, pay: "USDT (TON)", placing: "pay"}},
     ]
 
     return (
