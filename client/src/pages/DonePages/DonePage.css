@@ -1,0 +1,33 @@
+.done {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 80px;
+    
+    height: 100%;
+    overflow-y: auto;
+}
+
+.done-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.done-image {
+    padding-bottom: 40px;
+}
+
+.done-message {
+    text-align: center;
+}
+
+.done-message-main {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.done-message-secondary {
+    font-size: 14px;
+    color: #A1A1AA;
+}

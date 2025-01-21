@@ -6,15 +6,24 @@ import {
 import { useDispatch } from "react-redux";
 import { UserSchema, userReducer } from "../../../entities/User";
 import { setupListeners } from "@reduxjs/toolkit/query";
+import { appReducer, AppSchema } from "../../../entities/App/slice/appSlice";
+import { addAdReducer, AddAdSchema } from "../../../entities/AddAd/slice/addAdSlice";
+import { logReducer, LogSchema } from "../../../entities/Log/slice/logSlice";
 
 export interface StateSchema {
   user: UserSchema;
+  app: AppSchema;
+  addAd: AddAdSchema;
+  log: LogSchema;
 }
 
 export const createMainStore = () => {
   const store = configureStore({
     reducer: {
       user: userReducer,
+      app: appReducer,
+      addAd: addAdReducer,
+      log: logReducer
     },
   });
   setupListeners(store.dispatch);

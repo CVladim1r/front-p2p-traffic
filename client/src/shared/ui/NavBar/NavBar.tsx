@@ -36,7 +36,7 @@ export function NavBar() {
       <div className="nav-list">
         <MyNavLink pathname={RoutePaths.ads} img_src={adsLogo} img_src_active={adsLogoActive} />
         <MyNavLink pathname={RoutePaths.chats} img_src={chatLogo} img_src_active={chatLogoActive} />
-        <MyNavLink pathname={RoutePaths.addad} img_src={addAdLogo} img_src_active={addAdLogoActive} />
+        <MyNavLink pathname={RoutePaths.addAd} img_src={addAdLogo} img_src_active={addAdLogoActive} />
         <MyNavLink pathname={RoutePaths.profile} img_src={profileLogo} img_src_active={profileLogoActive} />
         <MyNavLink pathname={RoutePaths.info} img_src={infoLogo} img_src_active={infoLogoActive} />
       </div>

@@ -14,7 +14,7 @@ export default function ProfileSettngs() {
           <div className="profile-settings-group">
             <button onClick={() => console.log("click")} className="profile-settings-row">
               <p className="profile-settings-key">Подписка Premium</p>
-              <p className="profile-settings-value">Active</p>
+              <p className="profile-settings-value">{userData?.is_vip ? "Активно" : "Не активно"}</p>
             </button>
           </div>
         </div>
@@ -32,10 +32,10 @@ export default function ProfileSettngs() {
             </button>
           </div>
           <div className="profile-settings-group">
-            <label className="profile-settings-row">
+            <div className="profile-settings-row">
               <p className="profile-settings-key">Уведомления</p>
               <input type="checkbox" name="notifications" className="profile-settings-checkbox" />
-            </label>
+            </div>
           </div>
         </div>
         

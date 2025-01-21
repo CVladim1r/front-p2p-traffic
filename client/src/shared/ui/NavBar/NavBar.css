@@ -59,14 +59,10 @@
     justify-content: center;
     align-items: center;
 
-    top: calc(50% - 10px);
+    top: 50%;
     left: 50%;
     width: calc(100% + 10px);
     height: 100%;
-
-    padding-top: 10px;
-    border-radius: 27px 27px 0px 0px;
-    background-color: #2b2b2b;
 
     transform: translate(-50%, -50%);
 
@@ -83,21 +79,21 @@
 
 @keyframes navlink-img-jump {
     from {
-        top: calc(50% - 10px)
+        top: 50%
     }
     75% {
-        top: calc(30% - 10px)
+        top: 30%
     }
     to {
-        top: calc(40% - 10px)
+        top: 40%
     }
 }
 
 @keyframes navlink-img-stay {
     from {
-        top: calc(40% - 10px)
+        top: 40%
     }
     to {
-        top: calc(50% - 10px)
+        top: 50%
     }
 }

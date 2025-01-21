@@ -1,5 +1,5 @@
 import { FormEvent } from "react"
-import { NavigateFunction, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import {
     Button,
     RadioGroup,
@@ -8,45 +8,64 @@ import {
 }
 from "../../shared/ui"
 import "./AddAdPage.css"
-
-type FormData = { 
-    readonly elements: {
-        guaranteed: HTMLInputElement
-        source: HTMLInputElement 
-        theme: HTMLSelectElement 
-        amount: HTMLInputElement
-        cost: HTMLInputElement
-        placing: HTMLInputElement
-        name: HTMLInputElement
-        description: HTMLInputElement
-    }
-}
-
-function formSubmit(e: FormEvent<FormData>, navigate: NavigateFunction) {
-    e.preventDefault()
-    const {amount, cost, description, guaranteed, name, placing, source, theme} = e.currentTarget.elements
-    console.log(guaranteed.value)
-    console.log(source.value)
-    console.log(theme.value)
-    console.log(amount.value)
-    console.log(cost.value)
-    console.log(placing.value)
-    console.log(name.value)
-    console.log(description.value)
-    navigate("#preview-ad")
-}
+import { useDispatch, useSelector } from "react-redux"
+import { addAdActions } from "../../entities/AddAd/slice/addAdSlice"
+import { StateSchema } from "../../app/providers/store"
+import { RoutePaths } from "../../app/providers/router"
 
 export default function AddAdPage() {
-    let navigate = useNavigate()
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const data = useSelector(
+        (state: StateSchema) => state.addAd.data,
+        () => true
+    ) ?? {
+        guaranteed: true,
+        pay: "",
+        source: "",
+        type: "",
+        description: "",
+        name: "",
+        placing: "free",
+        theme: "",
+    }
+
+    const formSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const formData = new FormData(e.currentTarget);
+        const {min, price, description, guaranteed, name, placing, source, theme} = Object.fromEntries(formData)
+        console.log(guaranteed)
+        console.log(source)
+        console.log(theme)
+        console.log(min)
+        console.log(price)
+        console.log(placing)
+        console.log(name)
+        console.log(description)
+        dispatch(addAdActions.setData({
+            guaranteed: guaranteed=="true",
+            min: +min,
+            pay: "TON",
+            price: +price,
+            source: source.toString(),
+            type: "За пользователя",
+            description: description.toString(),
+            name: name.toString(),
+            placing: placing == "free" ? "free" : "pay",
+            theme: theme.toString()
+        }))
+        navigate(RoutePaths.previewAd)
+    }
+
     return (
         <div className="add-ad container">
             <p className="add-ad-header">Создайте объявление</p>
-            <form onSubmit={e => formSubmit((e as any), navigate)} className="add-ad-form">
+            <form onSubmit={formSubmit} className="add-ad-form">
                 <div className="add-ad-form-content">
                     <div className="add-ad-form-row">
                         <p className="add-ad-form-row-key">Приход</p>
 
-                        <RadioGroup name="guaranteed" defaultValue="true" buttonsProps={[
+                        <RadioGroup name="guaranteed" defaultValue={data.guaranteed ? "true" : "false"} buttonsProps={[
                             {label: "Гарантирован", value: "true"},
                             {label: "Не гарантирован", value: "false"},
                         ]} />
@@ -54,47 +73,59 @@ export default function AddAdPage() {
                     <div className="add-ad-form-row">
                         <p className="add-ad-form-row-key">Источник</p>
 
-                        <TextField type="text" name="source" placeholder="Введите ссылку..."/>
+                        <TextField type="text" name="source" placeholder="Введите ссылку..." defaultValue={data.source}/>
                     </div>
                     <div className="add-ad-form-row">
                         <p className="add-ad-form-row-key">Тематика</p>
 
-                        <Select name="theme" optionsProps={[
+                        <Select name="theme" defaultValue={data.theme} optionsProps={[
                             {text: "Выбрать", value: ""},
                             {text: "Test", value: "test"},
                             {text: "Test2", value: "test2"},
                         ]}/>
                     </div>
                     <div className="add-ad-form-row">
-                        <p className="add-ad-form-row-key">Кол-во пользователей</p>
+                        <div className="add-ad-form-amount">
+                            <p className="add-ad-form-row-key">Кол-во пользователей</p>
+                            <RadioGroup className="add-ad-form-amount-radioGroup" buttonsProps={[
+                                {label: "Минимум", value: "min"},
+                                {label: "Максимум", value: "max"},
+                            ]} />
+                        </div>
 
-                        <TextField type="number" name="amount" placeholder="Введите кол-во"/>
+                        {/* <TextField type="number" name="min" defaultValue={data.min} placeholder="Введите кол-во"/> */}
                     </div>
                     <div className="add-ad-form-row">
                         <p className="add-ad-form-row-key">Сумма</p>
-
-                        <TextField type="number" name="cost" placeholder="Введите сумму"/>
+                        
+                        <div className="add-ad-form-sum">
+                            <TextField className="add-ad-form-sum-text" type="number" name="price" defaultValue={data.price} placeholder="5 - 10 000"/>
+                            <Select name="money-type" defaultValue="USDT" optionsProps={[
+                                {text: "USDT", value: "USDT"},
+                                {text: "TON", value: "TON"},
+                            ]}/>
+                        </div>
                     </div>
                     <div className="add-ad-form-row">
-                        <p className="add-ad-form-row-key">Размещение</p>
+                        <p className="add-ad-form-row-key">Приход</p>
 
                         <div className="add-ad-form-row-radio">
-                            <RadioGroup name="placing" defaultValue="free" buttonsProps={[
+                            <RadioGroup name="placing" defaultValue={data.placing} buttonsProps={[
                                 {label: "Бесплатное", value: "free"},
                                 {label: "Платное", value: "pay"},
                             ]}/>
                         </div>
                     </div>
-                    <div className="add-ad-form-row">
+                    {/* <div className="add-ad-form-row">
                         <p className="add-ad-form-row-key">Название</p>
 
-                        <TextField type="text" name="name" placeholder="Введите название"/>
+                        <TextField type="text" name="name" defaultValue={data.name} placeholder="Введите название"/>
                     </div>
                     <div className="add-ad-form-row">
                         <p className="add-ad-form-row-key">Описание</p>
 
-                        <TextField type="text" name="description" placeholder="Введите описание"/>
-                    </div>
+                        <TextField type="text" name="description" defaultValue={data.description} placeholder="Введите описание"/>
+                    </div> */}
                 </div>
 
                 <Button type="submit">Далее</Button>

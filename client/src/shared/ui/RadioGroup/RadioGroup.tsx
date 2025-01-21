@@ -1,8 +1,10 @@
 import { useState } from "react"
 import { RadioButton } from "../RadioButton/RadioButton"
 import "../Form.css"
+import classNames from "classnames"
 
 type RadioGroupProps = {
+    className?: string
     name?: string
     defaultValue?: string
     buttonsProps: {
@@ -11,11 +13,14 @@ type RadioGroupProps = {
     } []
 }
 
-export function RadioGroup({name, defaultValue, buttonsProps}: RadioGroupProps) {
-    let [value, setValue] = useState(defaultValue)
+export function RadioGroup({className, name, defaultValue, buttonsProps}: RadioGroupProps) {
+    const [value, setValue] = useState(defaultValue)
 
     return (
-        <div className="form-radioGroup">
+        <div className={classNames(
+            "form-radioGroup",
+            className
+        )}>
             {buttonsProps.map(val => (
                 <RadioButton
                     key={val.value}
