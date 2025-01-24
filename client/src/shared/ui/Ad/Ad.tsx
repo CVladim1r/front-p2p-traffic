@@ -13,7 +13,7 @@ export type AdProps = {
     // income_min: number,
     // pay: string,
     data: AdData
-    user: Omit<UserMainPageOut, "uuid" | "tg_id" | "balance" | "total_sales" | "created_at" | "updated_at" | "referral_id">
+    user: Omit<UserMainPageOut, "uuid" | "tg_id" | "balance" | "total_sales" | "created_at" | "updated_at" | "referral_id"> & {profile_picture?: string}
 
     showButtons?: boolean
 }
@@ -21,10 +21,10 @@ export type AdProps = {
 export function Ad({data, user, showButtons}: AdProps) {
     return (
         <div className="ad">
-            <div className="ad-top-row">
+            <div className={showButtons ?? true ? "ad-top-row" : "ad-top-row no-buttons"}>
                 <div>
-                    <p className="ad-top-row-price">{data.price} {data.pay}</p>
-                    <p className="ad-top-row-type">{data.type}</p>
+                    <p className="ad-top-row-price">{data.price} {data.currencyType}</p>
+                    <p className="ad-top-row-type">за человека</p>
                 </div>
                 
                 { (showButtons ?? true) &&
@@ -48,21 +48,21 @@ export function Ad({data, user, showButtons}: AdProps) {
             </div>
             <div className="ad-content">
                 <div className="ad-content-user">
-                    <img src={/*FIXME: user.profile_picture*/ testuser} alt="" className="ad-content-user-img"/> 
+                    <img src={user.profile_picture ?? testuser} alt="" className="ad-content-user-img"/> 
                     <p className={user.is_vip ? "ad-content-user-name vip" : "ad-content-user-name"}>{user.username}</p>
-                    <p className="ad-content-user-info">сделок: {/*FIXME: user.deals*/ 100} • {user.rating}</p>
+                    <p className="ad-content-user-info">сделок: {user.deals} • {user.rating}</p>
                 </div>
                 <div className="ad-content-info-elem">
                     <p className="ad-content-info-elem-key">Источник</p>
                     <p className="ad-content-info-elem-value">{data.source}</p>
                 </div>
                 <div className="ad-content-info-elem">
-                    <p className="ad-content-info-elem-key">Приход</p>
-                    <p className="ad-content-info-elem-value">{data.guaranteed ? "Гарантирован" : "Не гарантирован"} (минимум {data.min}) </p>
+                    <p className="ad-content-info-elem-key">Аудитория</p>
+                    <p className="ad-content-info-elem-value">{data.guaranteed ? "Гарантирован" : "Не гарантирован"} ({data.amountType == "min" ? "минимум" : "максимум"} {data.amount}) </p>
                 </div>
                 <div className="ad-content-info-elem">
                     <p className="ad-content-info-elem-key">Оплата</p>
-                    <p className="ad-content-info-elem-value">{data.pay}</p>
+                    <p className="ad-content-info-elem-value">{data.currencyType}</p>
                 </div>
             </div>
         </div>

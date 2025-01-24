@@ -13,6 +13,7 @@
 
 .form-radioGroup {
     display: flex;
+
     background-color: #4A4A4A;
     border-radius: 8px;
 }
@@ -20,6 +21,10 @@
 .form-radioButton-label {
     font-size: 9px;
     font-weight: 600;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
     
     padding: 10px;
 

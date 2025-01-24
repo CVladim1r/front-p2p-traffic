@@ -5,5 +5,5 @@ export { Select } from "./Select/Select"
 export { TextField } from "./TextField/TextField"
 export { NavBar } from "./NavBar/NavBar";
 export { Loading } from "./Loading/Loading";
-export { Ad } from "./Ad/Ad";
-export type { AdProps } from "./Ad/Ad";
+export { Ad, type AdProps } from "./Ad/Ad";
+export { InputRange as Range } from "./InputRange/InputRange";

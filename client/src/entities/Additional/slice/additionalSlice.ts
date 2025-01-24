@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface additionalSchema {
+export interface AdditionalSchema {
   currencyTypes: string[],
   categories: string[],
 }
 
-const initialState: additionalSchema = {
+const initialState: AdditionalSchema = {
   currencyTypes: [],
   categories: [],
 };

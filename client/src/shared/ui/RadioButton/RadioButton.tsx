@@ -1,7 +1,7 @@
-import { InputHTMLAttributes, PropsWithChildren } from "react"
+import { InputHTMLAttributes } from "react"
 import "../Form.css"
 
-type RadioButtonProps = Omit<PropsWithChildren & InputHTMLAttributes<HTMLInputElement>, "type"> & {
+type RadioButtonProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & {
     label?: string
 }
 

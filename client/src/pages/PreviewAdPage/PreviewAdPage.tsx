@@ -1,15 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Ad, Button } from "../../shared/ui";
 import { StateSchema } from "../../app/providers/store";
-import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRef, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { RoutePaths } from "../../app/providers/router";
 import { addAdActions } from "../../entities/AddAd/slice/addAdSlice";
 import "./PreviewAdPage.css"
+import { user } from "../../telegram";
 
 
 export default function PreviewAddAdPage() {
-    const navigate = useNavigate()
     const dispatch = useDispatch()
     
     const data = useSelector(
@@ -19,12 +19,15 @@ export default function PreviewAddAdPage() {
     const userData = useSelector(
         (state: StateSchema) => state.user.data
     )
-    const isSending = useRef(useSelector((state: StateSchema) => state.addAd.isSending, () => true))
+    const [isSending, setIsSending] = useState(useSelector((state: StateSchema) => state.addAd.isSending, () => true))
+    const [sendDone, setSendDone] = useState(false)
     
-    if (!data) {
-        navigate(RoutePaths.addAd, {replace: true})
-        return
-    }
+    if (sendDone)
+        return <Navigate to={{pathname: RoutePaths.addAdDone}} replace={true}/>
+    
+    if (!data.amount)
+        return <Navigate to={{pathname: RoutePaths.addAd}} replace={true} />
+
     if (!userData)
         throw new Error("No user data");
     const SendData = async () => {
@@ -33,23 +36,29 @@ export default function PreviewAddAdPage() {
 
         console.log("test");
         dispatch(addAdActions.clearData())
-        navigate(RoutePaths.addAdDone)
+        setSendDone(true)
     } 
 
     return (
         <div className="preview-ad container">
             <p className="preview-ad-header">Подтверждение создания</p>
             <div className="preview-ad-groups">
-                <Ad data={data} user={{...userData}} showButtons={false}/>
+                <Ad data={data} user={{...userData, profile_picture: user.photo_url}} showButtons={false}/>
                 <div className="preview-ad-info">
-                    <div className="preview-ad-info-elem">
+                    {/* <div className="preview-ad-info-elem">
                         <p className="preview-ad-info-key">Название</p>
                         <p className="preview-ad-info-value">{data.name}</p>
                     </div>
                     <div className="preview-ad-info-elem">
                         <p className="preview-ad-info-key">Описание</p>
                         <p className="preview-ad-info-value">{data.description}</p>
+                    </div> */}
+
+                    <div className="preview-ad-info-elem">
+                        <p className="preview-ad-info-key">Тематика</p>
+                        <p className="preview-ad-info-value">{data.theme}</p>
                     </div>
+
                 </div>
                 <div className="preview-ad-warning">
                     <p className="preview-ad-warning-header">Создавая сделку вы подтверждаете, что:</p>
@@ -61,12 +70,10 @@ export default function PreviewAddAdPage() {
                     </ol>
                 </div>
             </div>
-            <Button onClick={() => {
-                if (!isSending.current) {
-                    isSending.current = true
-                    dispatch(addAdActions.setIsSending(true))
-                    SendData()
-                }
+            <Button disabled={isSending} onClick={() => {
+                setIsSending(true)
+                dispatch(addAdActions.setIsSending(true))
+                SendData()
             }}>Подтвердить</Button>
         </div>
     )

@@ -10,10 +10,11 @@ type RadioGroupProps = {
     buttonsProps: {
         value?: string
         label?: string
-    } []
+    } [],
+    onChange: (value?: string) => void
 }
 
-export function RadioGroup({className, name, defaultValue, buttonsProps}: RadioGroupProps) {
+export function RadioGroup({className, name, defaultValue, buttonsProps, onChange}: RadioGroupProps) {
     const [value, setValue] = useState(defaultValue)
 
     return (
@@ -26,7 +27,10 @@ export function RadioGroup({className, name, defaultValue, buttonsProps}: RadioG
                     key={val.value}
                     name={name}
                     checked={value===val.value}
-                    onChange={() => setValue(val.value)}
+                    onChange={() => {
+                        setValue(val.value)
+                        onChange(val.value)
+                    }}
                     {...val}
                 />
             ))}

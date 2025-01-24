@@ -6,9 +6,9 @@ import { USER_ACCESS_TOKEN_KEY, userActions } from "../entities/User";
 import { appActions } from "../entities/App/slice/appSlice";
 import Layout from "./Layout";
 import "./App.css"
-import { logActions } from "../entities/Log/slice/logSlice";
+// import { logActions } from "../entities/Log/slice/logSlice";
 import { user } from "../telegram";
-import { additionalActions } from "../entities/Additional/additionalSlice";
+import { additionalActions } from "../entities/Additional/slice/additionalSlice";
 
 
 function App() {
@@ -124,11 +124,11 @@ function App() {
       authUser();
 
       //override console.log
-      const oldLog = console.log
-      console.log = (message) => {
-        dispatch(logActions.addLog(message ?? ""))
-        oldLog(message)
-      }
+      // const oldLog = console.log
+      // console.log = (message) => {
+      //   dispatch(logActions.addLog(message ?? ""))
+      //   oldLog(message)
+      // }
     }
   }, [])
 

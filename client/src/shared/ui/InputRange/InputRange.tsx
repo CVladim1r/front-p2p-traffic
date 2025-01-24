@@ -2,15 +2,14 @@ import { InputHTMLAttributes } from "react"
 import "../Form.css"
 import classNames from "classnames"
 
-type TextFieldProps = InputHTMLAttributes<HTMLInputElement> & {
-    type: "text" | "number"
-}
+type InputRangeProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type">
 
-export function TextField({className, ...otherProps} : TextFieldProps) {
+export function InputRange({className, ...otherProps} : InputRangeProps) {
     return (
         <input
+            type="range"
             className={classNames(
-                "form-textField",
+                "form-range",
                 className
             )}
             {...otherProps}
