@@ -2,14 +2,11 @@ version: "3.8"
 
 services:
   p2p-client:
-    image: "node:20"
     build:
+      context: .
       dockerfile: Dockerfile
     command: npm run build
     container_name: "p2p-client_c"
-    #    network_mode: host
-    # environment:
-    #   - VITE_SECRET_KEY=${SECRET_KEY}
-    #   - VITE_BASE=${API_BASE}
     volumes:
       - ./dist:/client/dist
+
