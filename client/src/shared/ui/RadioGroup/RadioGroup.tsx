@@ -11,7 +11,7 @@ type RadioGroupProps = {
         value?: string
         label?: string
     } [],
-    onChange: (value?: string) => void
+    onChange?: (value?: string) => void
 }
 
 export function RadioGroup({className, name, defaultValue, buttonsProps, onChange}: RadioGroupProps) {
@@ -29,7 +29,8 @@ export function RadioGroup({className, name, defaultValue, buttonsProps, onChang
                     checked={value===val.value}
                     onChange={() => {
                         setValue(val.value)
-                        onChange(val.value)
+                        if (onChange != undefined)
+                            onChange(val.value)
                     }}
                     {...val}
                 />

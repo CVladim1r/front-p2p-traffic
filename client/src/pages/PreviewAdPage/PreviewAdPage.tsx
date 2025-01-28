@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Ad, Button } from "../../shared/ui";
 import { StateSchema } from "../../app/providers/store";
-import { useRef, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Navigate } from "react-router-dom";
 import { RoutePaths } from "../../app/providers/router";
 import { addAdActions } from "../../entities/AddAd/slice/addAdSlice";
 import "./PreviewAdPage.css"
