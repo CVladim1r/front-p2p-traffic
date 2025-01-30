@@ -11,8 +11,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { addAdActions } from "../../entities/AddAd/slice/addAdSlice"
 import { StateSchema } from "../../app/providers/store"
 import { RoutePaths } from "../../app/providers/router"
-import { InputRange } from "../../shared/ui/InputRange/InputRange"
 import { FormEvent, useState } from "react"
+import { Categories, TransactionCurrencyType } from "../../shared/api"
 
 export default function AddAdPage() {
     const navigate = useNavigate()
@@ -27,70 +27,57 @@ export default function AddAdPage() {
         () => true
     )
 
-    const formSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const formSubmit = (e: FormEvent) => {
         e.preventDefault()
-        const formData = new FormData(e.currentTarget)
-        const {
-            // min,
-            price,
-            // description,
-            guaranteed,
-            // name, 
-            placing,
-            source,
-            theme,
-            currencyType,
-            amountType,
-            amount,
-        } = Object.fromEntries(formData)
-        // console.log(guaranteed)
-        // console.log(source)
-        // console.log(theme)
-        // // console.log(min)
-        // console.log(amountType)
-        // console.log(amount)
-        // console.log(price)
-        // console.log(currencyType)
-        // console.log(placing)
-        // console.log(name)
-        // console.log(description)
 
         dispatch(addAdActions.setData({
-            guaranteed: guaranteed == "true",
-            source: source.toString(),
-            theme: theme.toString(),
-            // min: +min,
-            amountType: amountType == "min" ? "min" : "max",
-            amount: +amount,
-            price: +price,
-            currencyType: currencyType.toString(),
-            // description: description.toString(),
-            // name: name.toString(),
-            placing: placing == "free" ? "free" : "pay",
+            guaranteed_traffic,
+            link_to_channel: source,
+            category,
+            minimum_traffic,
+            maximum_traffic,
+            price,
+            currency_type: currencyType as TransactionCurrencyType,
+            is_paid_promotion,
+            title, 
+            description,
+            conditions: "pizdec", //NOTE - ??
         }))
         
         navigate(RoutePaths.previewAd)
     }
 
-    const dataSource = useSelector(
-        (state: StateSchema) => state.addAd.data.source
+    const isValid = () => source && minimum_traffic && maximum_traffic && price && title && description && minimum_traffic <= maximum_traffic
+
+    const [guaranteed_traffic, setGuaranteed_traffic] = useState(data?.guaranteed_traffic ?? true)
+    const savedSource = useSelector(
+        (state: StateSchema) => state.addAd.savedSource
     )
-    const [source, setSource] = useState(dataSource ?? "")
-    const [amount, setAmount] = useState(data.amount ?? 0)
-    const [valid, setValid] = useState(data.amount ? true : false)
+    const [source, setSource] = useState(savedSource ?? "")
+    const [category, setCategory] = useState(data?.category ?? additional.currencyTypes[0] as Categories)
+    const [minimum_traffic, setMinimum_traffic] = useState(data?.minimum_traffic ?? 0)
+    const [maximum_traffic, setMaximum_traffic] = useState(data?.maximum_traffic ?? 0)
+    const [price, setPrice] = useState(data?.price ?? 0)
+    const [is_paid_promotion, setIs_paid_promotion] = useState(data?.is_paid_promotion ?? false)
+    const [currencyType, setCurrencyType] = useState(data?.currency_type ?? additional.currencyTypes[0])
+    const [title, setTitle] = useState(data?.title ?? "")
+    const [description, setDescription] = useState(data?.description ?? "")
+    
+    console.log("render");
+    
 
     return (
         <div className="add-ad container">
             <p className="add-ad-header">Создайте объявление</p>
-            <form onSubmit={formSubmit} onChange={e => setValid(e.currentTarget.checkValidity())} className="add-ad-form">
+            <form onSubmit={formSubmit} className="add-ad-form">
                 <div className="add-ad-form-content">
 
                     <div className="add-ad-form-row">
-                        <p className="add-ad-form-row-key">Аудитория</p>
+                        <p className="add-ad-form-row-key">Аудитория гарантирована</p>
 
-                        <RadioGroup name="guaranteed" defaultValue={data.guaranteed ?? true ? "true" : "false"} buttonsProps={[
-                            {label: "Гарантирована", value: "true"},
-                            {label: "Не гарантирована", value: "false"},
+                        <RadioGroup onChange={val => setGuaranteed_traffic(val == "true")} defaultValue={guaranteed_traffic ? "true" : "false"} buttonsProps={[
+                            {label: "Да", value: "true"},
+                            {label: "Нет", value: "false"},
                         ]} />
                     </div>
                     
@@ -98,70 +85,69 @@ export default function AddAdPage() {
                         <p className="add-ad-form-row-key">Источник</p>
 
                         <div className="add-ad-form-source">
-                            <TextField className="add-ad-TextField" type="text" name="source" placeholder="Введите ссылку..." value={source} onChange={e => setSource(e.target.value)} required/>
-                            <Button type="button" onClick={() => dispatch(addAdActions.setSource(source))} className={source == "" || source == dataSource ? "add-ad-form-source-button hidden" : "add-ad-form-source-button"}>Сохранить</Button>
+                            <TextField className="add-ad-TextField" type="text" name="source" placeholder="Введите ссылку" value={source} onChange={e => setSource(e.target.value)} required/>
+                            <Button type="button" onClick={() => dispatch(addAdActions.setSavedSource(source))} className={source == "" || source == savedSource ? "add-ad-form-source-button hidden" : "add-ad-form-source-button"}>Сохранить</Button>
                         </div>
                     </div>
 
                     <div className="add-ad-form-row">
                         <p className="add-ad-form-row-key">Тематика</p>
 
-                        <Select name="theme" defaultValue={data.theme} optionsProps={
-                            additional.categories.map(val => ({value: val.substring(0, val.length - 1)})) //FIXME: темы без скобочек будут -> убрать substring
+                        <Select onChange={e => setCategory(e.target.value as Categories)} defaultValue={category} optionsProps={
+                            additional.categories.map(val => ({value: val}))
                         }/>
                     </div>
                     
                     <div className="add-ad-form-row">
-                        <div className="add-ad-form-amountType">
-                            <p className="add-ad-form-row-key">Кол-во пользователей</p>
-                            <RadioGroup className="add-ad-form-amountType-radioGroup" name="amountType" defaultValue={data.amountType ?? "min"} buttonsProps={[
-                                {label: "Минимум", value: "min"},
-                                {label: "Максимум", value: "max"},
-                            ]} />
-                        </div>
+                        <p className="add-ad-form-row-key">Кол-во пользователей</p>
                         
                         <div className="add-ad-form-amount">
-                            <TextField className="add-ad-TextField" type="number" name="amount" value={amount ? amount : ""} onChange={e => setAmount(e.target.value ? +e.target.value : 0)} required/>
-                            <InputRange min={1} max={10000} step={1} value={amount} onChange={e => setAmount(+e.target.value)} className="add-ad-form-amount" />
+                            <div className="add-ad-form-amount-container">
+                                <p className="add-ad-form-amount-key">От</p>
+                                <TextField className="add-ad-TextField add-ad-form-amount-TextField" type="number" value={minimum_traffic ? minimum_traffic : ""} onChange={e => setMinimum_traffic(e.target.value ? +e.target.value : 0)} required/>
+                            </div>
+                            <div className="add-ad-form-amount-container">
+                                <p className="add-ad-form-amount-key">До</p>
+                                <TextField className="add-ad-TextField add-ad-form-amount-TextField" type="number" value={maximum_traffic ? maximum_traffic : ""} onChange={e => setMaximum_traffic(e.target.value ? +e.target.value : 0)} required/>
+                            </div>
                         </div>
-                        {/* <TextField type="number" name="min" defaultValue={data.min} placeholder="Введите кол-во"/> */}
                     </div>
 
                     <div className="add-ad-form-row">
-                        <p className="add-ad-form-row-key">Цена за человека</p>
+                        <p className="add-ad-form-row-key">Сумма</p>
                         
                         <div className="add-ad-form-sum">
-                            <TextField className="add-ad-TextField add-ad-form-sum-TextField" type="number" name="price" defaultValue={data.price} placeholder="5 - 10 000" required/>
-                            <Select name="currencyType" defaultValue={data.currencyType} optionsProps={
+                            <TextField className="add-ad-TextField add-ad-form-sum-TextField" type="number" value={price ? price : ""}  onChange={e => setPrice(e.target.value ? +e.target.value : 0)} placeholder="Введите число" required/>
+                            <Select name="currencyType" value={currencyType} onChange={e => setCurrencyType(e.target.value)} optionsProps={
                                 additional.currencyTypes.map(val => ({value: val}))
                             }/>
                         </div>
                     </div>
 
                     <div className="add-ad-form-row">
-                        <p className="add-ad-form-row-key">Тип размещения</p>
+                        <p className="add-ad-form-row-key">Платное размещение</p>
 
                         <div className="add-ad-form-row-radio">
-                            <RadioGroup name="placing" defaultValue={data.placing ?? "free"} buttonsProps={[
-                                {label: "Бесплатное", value: "free"},
-                                {label: "Платное", value: "pay"},
+                            <RadioGroup onChange={val => setIs_paid_promotion(val != "free")} defaultValue={is_paid_promotion ? "pay" : "free"} buttonsProps={[
+                                {label: "Да", value: "pay"},
+                                {label: "Нет", value: "free"},
                             ]}/>
                         </div>
                     </div>
 
-                    {/* <div className="add-ad-form-row">
+                    <div className="add-ad-form-row">
                         <p className="add-ad-form-row-key">Название</p>
 
-                        <TextField type="text" name="name" defaultValue={data.name} placeholder="Введите название"/>
+                        <TextField type="text" value={title} onChange={e => setTitle(e.target.value)} placeholder="Введите название" required/>
                     </div>
                     <div className="add-ad-form-row">
                         <p className="add-ad-form-row-key">Описание</p>
 
-                        <TextField type="text" name="description" defaultValue={data.description} placeholder="Введите описание"/>
-                    </div> */}
+                        <TextField type="text" value={description} onChange={e => setDescription(e.target.value)} placeholder="Введите описание" required/>
+                    </div>
                 </div>
 
-                <Button disabled={!valid} type="submit">Далее</Button>
+                <Button disabled={!isValid()} type="submit">Далее</Button>
             </form>
         </div>
     )

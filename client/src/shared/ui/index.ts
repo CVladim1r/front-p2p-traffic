@@ -6,4 +6,3 @@ export { TextField } from "./TextField/TextField"
 export { NavBar } from "./NavBar/NavBar";
 export { Loading } from "./Loading/Loading";
 export { Ad, type AdProps } from "./Ad/Ad";
-export { InputRange as Range } from "./InputRange/InputRange";

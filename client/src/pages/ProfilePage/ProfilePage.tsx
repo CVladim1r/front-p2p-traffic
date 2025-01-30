@@ -2,16 +2,19 @@ import { Link } from "react-router-dom"
 import dealsImg from "../../shared/assets/svg/profile_deals.svg"
 import profitImg from "../../shared/assets/svg/profile_profit.svg"
 import ratingImg from "../../shared/assets/svg/profile_rating.svg"
-import gacha from "../../shared/assets/svg/gacha.svg"
+import gacha from "../../shared/assets/svg/gacha_noshadow.svg"
 import Profile from "./Profile"
 import { useSelector } from "react-redux"
 import { StateSchema } from "../../app/providers/store"
 import { RoutePaths } from "../../app/providers/router"
+import { Button } from "../../shared/ui"
+import { useState } from "react"
 
 export default function ProfilePage() {
   // const [showGacha, setShowGacha] = useState(false)
 
   const userData = useSelector((state: StateSchema) => state.user.data)
+  const [spin, setSpin] = useState(false)
 
   return (
     <Profile username={userData?.username ?? "none"}
@@ -68,12 +71,10 @@ export default function ProfilePage() {
           </div>
         </div>
         
-        {/* {showGacha && */}
-          <div className="profile-body-gacha">
-            <img src={gacha} alt="" className="profile-body-gacha-image"/>
-            <button className="profile-body-gacha-button">Крутить</button>
-          </div>
-          {/* } */}
+         
+        <div onClick={() => setSpin(false)} className={spin ? "profile-body-gacha-dark-overlay active" : "profile-body-gacha-dark-overlay"}></div>
+        <img src={gacha} alt="" className= {spin ? "profile-body-gacha-image spin" : "profile-body-gacha-image"}/>
+        <Button onClick={() => setSpin(true)} className="profile-body-gacha-button">Крутить</Button>
           
       </div>
     </Profile>

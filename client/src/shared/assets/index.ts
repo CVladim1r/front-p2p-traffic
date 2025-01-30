@@ -29,6 +29,6 @@
 
 
 // Animations
-import loadingAnimation from "./lottie-animations/load_v2.json"
-
+import loadingAnimation from "./lottie-animations/loading.json"
+export const loadingAnimationTest = "./lottie-animations/loading.lottie"
 export { loadingAnimation };

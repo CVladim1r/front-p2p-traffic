@@ -47,6 +47,13 @@
     /* color: #A1A1AA; */
 }
 
+.add-ad-TextField {
+    width: 140px;
+}
+.add-ad-TextField::placeholder {
+    text-align: center;
+}
+
 .add-ad-form-source {
     display: flex;
     column-gap: 5px;
@@ -67,7 +74,7 @@
     padding: 0px;
 }
 
-.add-ad-form-amountType {
+/* .add-ad-form-amountType {
     display: flex;
     flex-direction: column;
     row-gap: 6px;
@@ -80,7 +87,7 @@
 .add-ad-form-amountType-radioGroup > * {
     flex-grow: 1;
     text-align: center;
-}
+} */
 
 .add-ad-form-amount {
     display: flex;
@@ -90,11 +97,15 @@
     width: 140px;
 }
 
-.add-ad-TextField {
-    width: 140px;
+.add-ad-form-amount-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 10px;
 }
-.add-ad-TextField::placeholder {
-    text-align: center;
+
+.add-ad-form-amount-TextField {
+    width: 100px;
 }
 
 .add-ad-form-sum {

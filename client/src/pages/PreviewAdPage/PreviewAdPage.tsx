@@ -1,17 +1,31 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Ad, Button } from "../../shared/ui";
 import { StateSchema } from "../../app/providers/store";
-import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { RoutePaths } from "../../app/providers/router";
 import { addAdActions } from "../../entities/AddAd/slice/addAdSlice";
 import "./PreviewAdPage.css"
-import { user } from "../../telegram";
+import { useMutation } from "@tanstack/react-query";
+import { OrdersService } from "../../shared/api";
 
 
 export default function PreviewAddAdPage() {
     const dispatch = useDispatch()
+    const {mutate, isSuccess, isPending} = useMutation({
+        mutationFn: async () => {
+            const slep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+            await slep(1000) // loading
+            if (!data)
+                throw new Error("No data");
+                
+            await OrdersService.createAdApiV1P2POrdersNewAdPost(authorization, data)
+            dispatch(addAdActions.clearData())
+        }
+    })
     
+    const authorization = useSelector(
+        (state: StateSchema) => state.user.authorization
+    )
     const data = useSelector(
         (state: StateSchema) => state.addAd.data,
         () => true // prevent re-render
@@ -19,44 +33,34 @@ export default function PreviewAddAdPage() {
     const userData = useSelector(
         (state: StateSchema) => state.user.data
     )
-    const [isSending, setIsSending] = useState(useSelector((state: StateSchema) => state.addAd.isSending, () => true))
-    const [sendDone, setSendDone] = useState(false)
     
-    if (sendDone)
+    if (isSuccess)
         return <Navigate to={{pathname: RoutePaths.addAdDone}} replace={true}/>
     
-    if (!data.amount)
+    if (!data)
         return <Navigate to={{pathname: RoutePaths.addAd}} replace={true} />
 
     if (!userData)
         throw new Error("No user data");
-    const SendData = async () => {
-        const slep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-        await slep(3000) // loading
-
-        console.log("test");
-        dispatch(addAdActions.clearData())
-        setSendDone(true)
-    } 
 
     return (
         <div className="preview-ad container">
             <p className="preview-ad-header">Подтверждение создания</p>
             <div className="preview-ad-groups">
-                <Ad data={data} user={{...userData, profile_picture: user.photo_url}} showButtons={false}/>
+                <Ad {...data} user_deals={userData.deals} user_name={userData.username ?? "Anonym"} user_photo_url={userData.profile_photo ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTSDZkJpfJZuBUtCO2O5POp69VoIKklbXpFg&s"} user_rating={userData.rating} user_vip={userData.is_vip} showButtons={false}/>
                 <div className="preview-ad-info">
-                    {/* <div className="preview-ad-info-elem">
+                    <div className="preview-ad-info-elem">
                         <p className="preview-ad-info-key">Название</p>
-                        <p className="preview-ad-info-value">{data.name}</p>
+                        <p className="preview-ad-info-value">{data.title}</p>
                     </div>
                     <div className="preview-ad-info-elem">
                         <p className="preview-ad-info-key">Описание</p>
                         <p className="preview-ad-info-value">{data.description}</p>
-                    </div> */}
+                    </div>
 
                     <div className="preview-ad-info-elem">
-                        <p className="preview-ad-info-key">Тематика</p>
-                        <p className="preview-ad-info-value">{data.theme}</p>
+                        <p className="preview-ad-info-key">Источник</p>
+                        <p className="preview-ad-info-value">{data.link_to_channel}</p>
                     </div>
 
                 </div>
@@ -70,11 +74,7 @@ export default function PreviewAddAdPage() {
                     </ol>
                 </div>
             </div>
-            <Button disabled={isSending} onClick={() => {
-                setIsSending(true)
-                dispatch(addAdActions.setIsSending(true))
-                SendData()
-            }}>Подтвердить</Button>
+            <Button disabled={isPending} onClick={() => mutate()}>Подтвердить</Button>
         </div>
     )
 }

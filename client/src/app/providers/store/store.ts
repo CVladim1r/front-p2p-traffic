@@ -11,6 +11,7 @@ import { addAdReducer, AddAdSchema } from "../../../entities/AddAd";
 import { logReducer, LogSchema } from "../../../entities/Log";
 import { additionalReducer, AdditionalSchema } from "../../../entities/Additional";
 import { filtersReducer, FiltersSchema } from "../../../entities/Filters";
+import { moneyChangeReducer, MoneyChangeSchema } from "../../../entities/MoneyChange";
 
 export interface StateSchema {
   user: UserSchema;
@@ -19,6 +20,7 @@ export interface StateSchema {
   log: LogSchema;
   additional: AdditionalSchema;
   filters: FiltersSchema;
+  moneyChange: MoneyChangeSchema;
 }
 
 export const createMainStore = () => {
@@ -30,6 +32,7 @@ export const createMainStore = () => {
       log: logReducer,
       additional: additionalReducer,
       filters: filtersReducer,
+      moneyChange: moneyChangeReducer,
     },
   });
   setupListeners(store.dispatch);
