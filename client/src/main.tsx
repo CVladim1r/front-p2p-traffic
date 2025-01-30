@@ -4,13 +4,18 @@ import App from './app/App.tsx'
 import { StoreProvider } from './app/providers/store/index.ts'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <StoreProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </StoreProvider>
+    <QueryClientProvider client={queryClient}>
+      <StoreProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </StoreProvider>
+    </QueryClientProvider>
   </StrictMode>,
 )

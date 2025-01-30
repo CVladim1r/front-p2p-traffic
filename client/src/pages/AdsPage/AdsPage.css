@@ -1,4 +1,8 @@
 .filters {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+
     padding-top: 16px;
     margin-bottom: 14px;
 }
@@ -41,6 +45,16 @@
     overflow-x: hidden;
     white-space: nowrap;
     width: 100%;
+}
+
+.filter-content-container {
+    overflow-x: auto;
+    white-space: nowrap;
+
+    background-color: #2B2B2B;
+}
+.filter-content-container > * {
+    background-color: #2B2B2B;
 }
 
 .ads {

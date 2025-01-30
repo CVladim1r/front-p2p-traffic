@@ -60,13 +60,13 @@ export class UsersService {
      * Update User Photo
      * @param authorization
      * @param requestBody
-     * @returns StartUserOut Successful Response
+     * @returns any Successful Response
      * @throws ApiError
      */
     public static updateUserPhotoApiV1P2PUserUpdateUserPhotoPost(
         authorization: string,
         requestBody: Body_update_user_photo_api_v1_p2p_user_update_user_photo_post,
-    ): CancelablePromise<StartUserOut> {
+    ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/p2p/user/update_user_photo',

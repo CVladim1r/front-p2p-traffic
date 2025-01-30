@@ -43,7 +43,7 @@ export default function ChatsPage() {
         {id: 7, username: "Username_6", profile_picture: pic, last_message: "Сколько пришло?", extra: "vip", isPinned: true},
         {id: 8, username: "Username_6", profile_picture: pic, last_message: "Сообщение", isPinned: false},
         {id: 9, username: "Username_6", profile_picture: pic, last_message: "Сообщение", extra: "something", isPinned: false},
-    ]
+    ] //TODO - delete
 
     return (
         <div className="chats container">

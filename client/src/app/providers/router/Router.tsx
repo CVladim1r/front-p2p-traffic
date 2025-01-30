@@ -12,6 +12,8 @@ import {
 import { Loading } from "../../../shared/ui";
 import PreviewAddAdPage from "../../../pages/PreviewAdPage/PreviewAdPage";
 import AddAdDonePage from "../../../pages/DonePages/AddAdDonePage";
+import MoneyAddDonePage from "../../../pages/DonePages/MoneyAddDonePage";
+import MoneyRemoveDonePage from "../../../pages/DonePages/MoneyRemoveDonePage";
 
 enum AppRoutes {
   root = "root",
@@ -24,7 +26,9 @@ enum AppRoutes {
   moneyAdd = "moneyAdd",
   moneyRemove = "moneyRemove",
   previewAd = "previewAd",
-  addAdDone = "addAdDone"
+  addAdDone = "addAdDone",
+  moneyAddDone = "moneyAddDone",
+  moneyRemoveDone = "moneyRemoveDone",
 }
 
 export const RoutePaths: Record<AppRoutes, string> = {
@@ -39,6 +43,8 @@ export const RoutePaths: Record<AppRoutes, string> = {
   [AppRoutes.moneyRemove]: "/profile/remove",
   [AppRoutes.previewAd]: "/add-ad/preview",
   [AppRoutes.addAdDone]: "/add-ad/done",
+  [AppRoutes.moneyAddDone]: "/profile/add/done",
+  [AppRoutes.moneyRemoveDone]: "/profile/remove/done",
 };
 
 const routeConfig: Record<AppRoutes, RouteProps> = {
@@ -85,6 +91,14 @@ const routeConfig: Record<AppRoutes, RouteProps> = {
   [AppRoutes.addAdDone]: {
     path: RoutePaths.addAdDone,
     element: <AddAdDonePage />
+  },
+  [AppRoutes.moneyAddDone]: {
+    path: RoutePaths.moneyAddDone,
+    element: <MoneyAddDonePage />
+  },
+  [AppRoutes.moneyRemoveDone]: {
+    path: RoutePaths.moneyRemoveDone,
+    element: <MoneyRemoveDonePage />
   },
 };
 

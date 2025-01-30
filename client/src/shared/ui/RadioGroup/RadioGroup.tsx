@@ -24,7 +24,7 @@ export function RadioGroup({className, name, defaultValue, buttonsProps, onChang
         )}>
             {buttonsProps.map(val => (
                 <RadioButton
-                    key={val.value}
+                    key={val.value ?? "undefined"}
                     name={name}
                     checked={value===val.value}
                     onChange={() => {

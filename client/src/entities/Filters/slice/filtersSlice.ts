@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type FilterData = {
-  currencyTypes: string[],
+  currencyType?: string,
   isVip?: boolean,
-  sources: string[],
   guaranteed?: boolean,
+  theme?: string
 }
 
 export interface FiltersSchema {
@@ -14,10 +14,7 @@ export interface FiltersSchema {
 
 const initialState: FiltersSchema = {
   activeFilter: "",
-  data: {
-    currencyTypes: [],
-    sources: [],
-  }
+  data: {}
 };
   
 const filtersSlice = createSlice({
@@ -36,19 +33,11 @@ const filtersSlice = createSlice({
     setGuaranteed: (state, action: PayloadAction<boolean | undefined>) => {
       state.data.guaranteed = action.payload
     },
-    toggleCurrencyType: (state, action: PayloadAction<string>) => {
-      const i = state.data.currencyTypes.indexOf(action.payload)
-      if (i != -1)
-        state.data.currencyTypes.splice(i, 1)
-      else
-        state.data.currencyTypes.push(action.payload)
+    setCurrencyType: (state, action: PayloadAction<string | undefined>) => {
+      state.data.currencyType = action.payload
     },
-    toggleSource: (state, action: PayloadAction<string>) => {
-      const i = state.data.sources.indexOf(action.payload)
-      if (i != -1)
-        state.data.sources.splice(i, 1)
-      else
-        state.data.sources.push(action.payload)
+    setTheme: (state, action: PayloadAction<string | undefined>) => {
+      state.data.theme = action.payload
     },
   },
 });

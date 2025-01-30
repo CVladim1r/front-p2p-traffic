@@ -45,13 +45,13 @@
 }
 
 .profile-body {
-    position: relative;
     display: flex;
     flex-direction: column;
     row-gap: 16px;
     
     height: 100%;
     padding-top: 19px;
+    padding-bottom: 180px;
 }
 
 .profile-body-vip {
@@ -162,39 +162,63 @@
     border-radius: 20px;
 }
 
-@keyframes gacha-moveIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-.profile-body-gacha {
+.profile-body-gacha-dark-overlay {
     position: absolute;
+    z-index: 1;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    visibility: hidden;
 
-    bottom: 0px;
-    left: 50%;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
 
-    transform: translateX(-50%);
-    
-    animation: gacha-moveIn .3s ease-out forwards;
+    background-color: #000;
+    opacity: 0;
+
+    transition: opacity 1s;
+}
+.profile-body-gacha-dark-overlay.active {
+    visibility: visible;
+    opacity: .7;
 }
 
 .profile-body-gacha-image {
-    margin-bottom: -64px;
+    position: fixed;
+
+    width: 160px;
+    
+    bottom: 180px;
+    left: 50%;
+
+    transform: translate(-50%, 50%);
+
+    transition: all 1s, transform 1s;
+}
+.profile-body-gacha-image.spin {
+    z-index: 2;
+    width: 80%;
+    bottom: calc(50% + 50px);
+    animation: spin 4s linear infinite;
+}
+@keyframes spin {
+    100% {
+        transform: translate(-50%, 50%) rotate(360deg);
+    }
 }
 
 .profile-body-gacha-button {
+    position: fixed;
+
     font-size: 28px;
     font-family: "Roboto";
 
     padding: 17px 51px;
+
+    bottom: 100px;
+    left: 50%;
+
+    transform: translateX(-50%);
 
     background-color: #2D83EC;
     border-radius: 16px;

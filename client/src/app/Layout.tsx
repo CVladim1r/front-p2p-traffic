@@ -6,11 +6,13 @@ import { StateSchema } from "./providers/store";
 // import Lottie from "react-lottie";
 
 export const Layout = () => {
-  const { isLoading } = useSelector(
+  const { isLoading, error } = useSelector(
     (state: StateSchema) => state.app
   );
 
-  if (isLoading)
+  if (error)
+    return <p>error: {error}</p>
+  else if (isLoading)
     return <Loading />
   else
     return (

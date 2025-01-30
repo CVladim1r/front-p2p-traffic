@@ -73,7 +73,7 @@ function App() {
     
     try {
       if (!window.Telegram.WebApp.initDataUnsafe.user || !window.Telegram.WebApp.initDataUnsafe.user.username)
-        throw new Error("No user data");
+        throw new Error("No tg user data");
         
       const response = await AuthService.postAuthApiV1P2PAuthPost({
         init_data_raw: {
