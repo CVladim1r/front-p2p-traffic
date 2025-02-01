@@ -60,7 +60,7 @@
     align-items: center;
 
     height: 35px;
-    padding: 0px 10px;
+    padding: 7.5px 10px;
 
     background-color: #2B2B2B;
     border-radius: 10px;
@@ -110,7 +110,7 @@
 
     transform: translateY(-50%);
 
-    background-image: url("/src/assets/profile_arrows_money.svg");
+    background-image: url("/src/shared/assets/svg/profile_arrows_money.svg");
     background-repeat: no-repeat;
     background-size: contain;
 }

@@ -29,3 +29,9 @@ export function getTextWidth(text: string, font: string) {
 
   return context.measureText(text).width;
 }
+
+export function formatNumberTo3(x: number, length?: number) {
+  if (x > 1)
+      return length ? x.toFixed(3).substring(0, length) : x.toFixed(3)
+  return length ? x.toPrecision(3).substring(0, length) : x.toPrecision(3)
+}
