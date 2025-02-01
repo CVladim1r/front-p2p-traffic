@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom"
-import pic from "../../shared/assets/images/testuserchat.png"
 import "./ChatsPage.css"
 
 type ChatInfo = {
