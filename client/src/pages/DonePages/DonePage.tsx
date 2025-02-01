@@ -1,6 +1,6 @@
 import { ReactElement } from "react"
-import checkmark from "../../shared/assets/svg/done_empty.svg"
 import "./DonePage.css"
+import { DoneAnimation } from "../../shared/ui/LottieAnimations"
 
 type DonePageProps = {
     mainMessage: string,
@@ -12,7 +12,10 @@ export default function DonePage({mainMessage, secondaryMessage, button} : DoneP
     return (
         <div className="done container">
             <div className="done-top">
-                <img src={checkmark} alt="" className="done-image" />
+                {/* <img src={checkmark} alt="" className="done-image" /> */}
+                <div className="done-image">
+                    <DoneAnimation />
+                </div>
                 <div className="done-message">
                     <p className="done-message-main">{mainMessage}</p>
                     <p className="done-message-secondary">{secondaryMessage}</p>

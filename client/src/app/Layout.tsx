@@ -1,7 +1,8 @@
 import { useSelector } from "react-redux";
-import { Loading, NavBar } from "../shared/ui";
+import { NavBar } from "../shared/ui";
 import AppRouter from "./providers/router/Router";
 import { StateSchema } from "./providers/store";
+import { LoadingAnimation } from "../shared/ui/LottieAnimations";
 // import { loadingAnimation } from "../shared/assets";
 // import Lottie from "react-lottie";
 
@@ -13,7 +14,7 @@ export const Layout = () => {
   if (error)
     return <p>error: {error}</p>
   else if (isLoading)
-    return <Loading />
+    return <LoadingAnimation />
   else
     return (
       <main>
