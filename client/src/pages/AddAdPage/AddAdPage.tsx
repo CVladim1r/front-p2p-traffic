@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import {
     Button,
-    RadioGroup,
     Select,
     TextField
 }
@@ -14,6 +13,7 @@ import { RoutePaths } from "../../app/providers/router"
 import { FormEvent, useState } from "react"
 import { Categories, TransactionCurrencyType } from "../../shared/api"
 import { formatNumberTo3 } from "../../shared/lib/lib"
+import { Switch } from "../../shared/ui/Switch/Switch"
 
 export default function AddAdPage() {
     const navigate = useNavigate()
@@ -73,10 +73,7 @@ export default function AddAdPage() {
                     <div className="add-ad-form-row add-ad-form-row-content">
                         <p className="add-ad-form-row-key">Аудитория гарантирована</p>
 
-                        <RadioGroup onChange={val => setGuaranteed_traffic(val == "true")} defaultValue={guaranteed_traffic ? "true" : "false"} buttonsProps={[
-                            {label: "Да", value: "true"},
-                            {label: "Нет", value: "false"},
-                        ]} />
+                        <Switch onChange={e => setGuaranteed_traffic(e.target.checked)} checked={guaranteed_traffic} />
                     </div>
                     
                     <div className="add-ad-form-row add-ad-form-row-content">
@@ -127,14 +124,16 @@ export default function AddAdPage() {
                         </div>
                     </div>
 
-                    <div className="add-ad-form-row add-ad-form-row-content">
-                        <p className="add-ad-form-row-key">Платное размещение</p>
+                    <div className="add-ad-form-row">
+                        <div className="add-ad-form-row-content">
+                            <p className="add-ad-form-row-key">Платное размещение</p>
 
-                        <div className="add-ad-form-row-radio">
-                            <RadioGroup onChange={val => setIs_paid_promotion(val != "free")} defaultValue={is_paid_promotion ? "pay" : "free"} buttonsProps={[
-                                {label: "Да", value: "pay"},
-                                {label: "Нет", value: "free"},
-                            ]}/>
+                            <div className="add-ad-form-row-radio">
+                                <Switch onChange={e => setIs_paid_promotion(e.target.checked)} checked={is_paid_promotion}/>
+                            </div>
+                        </div>
+                        <div className="add-ad-form-row-content add-ad-form-row-info">
+                            <p>Стоимость платного размещения ̶3̶0̶$̶  5̶$̶  да </p>
                         </div>
                     </div>
 

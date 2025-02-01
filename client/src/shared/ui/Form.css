@@ -12,6 +12,7 @@
 }
 
 .form-radioGroup {
+    position: relative;
     display: flex;
 
     background-color: #4A4A4A;
@@ -127,4 +128,40 @@
 
 .form-select-option-text {
     width: 100%;
+}
+
+.form-switch {
+    appearance: none;
+    position: relative;
+
+    width: 40px;
+    height: 20px;
+
+    background-color: #4A4A4A;
+    border-radius: 100px;
+
+    transition: background-color .2s;
+}
+.form-switch::after {
+    content: "";
+    position: absolute;
+
+    width: 14px;
+    height: 14px;
+    left: 4px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    background-color: #2B2B2B;
+    border-radius: 100px;
+
+    transition: left .2s;
+}
+
+.form-switch.active {
+    background-color: #2D83EC;
+}
+.form-switch.active::after {
+    left: calc(100% - 18px);
 }

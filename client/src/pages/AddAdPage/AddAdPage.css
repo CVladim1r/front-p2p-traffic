@@ -49,14 +49,13 @@
 }
 
 .add-ad-form-row-info {
-    font-size: 14px;
+    font-size: 12px;
     color: #A1A1AA;
 }
 
 .add-ad-form-row-key {
     font-size: 16px;
     font-weight: 600;
-    /* color: #A1A1AA; */
 }
 
 .add-ad-TextField {
