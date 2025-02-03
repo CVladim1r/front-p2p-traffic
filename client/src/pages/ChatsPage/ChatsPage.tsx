@@ -1,5 +1,11 @@
 import { Link } from "react-router-dom"
 import "./ChatsPage.css"
+import { useQuery } from "@tanstack/react-query"
+import { DealOut, OrdersService } from "../../shared/api"
+import { useAppSelector } from "../../app/providers/store"
+import { selectAuthorization } from "../../entities/User"
+import { useState } from "react"
+import { LoadingAnimation } from "../../shared/ui"
 
 type ChatInfo = {
     id: number
@@ -31,25 +37,39 @@ function Chat({id, username, profile_picture, last_message, extra} : ChatInfo) {
 }
 
 export default function ChatsPage() {
-    const chats: {isPinned: boolean, id: number, smth: ChatInfo}[] = []
+    const authorization = useAppSelector(selectAuthorization)
+    
+    const [chats, setChats] = useState<DealOut[]>([])
+
+    const {isFetching} = useQuery({
+        queryKey: ["chats"],
+        queryFn: async () => {
+            setChats(await OrdersService.getUserDealsApiV1P2POrdersDealsGet(authorization))
+        }
+    })
     
     return (
         <div className="chats container">
-            {chats.length ?
-                <>
-                    {chats.some(val => val.isPinned) &&
-                        <div className="chats-pinned">
-                            {chats.filter(value => value.isPinned).map(value => (
-                                <Chat key={value.id} {...value.smth} />
+            {isFetching ? (
+                <LoadingAnimation />
+                ) : 
+                    chats ? (
+                        <>
+                            {chats.some(val => val.) &&
+                                <div className="chats-pinned">
+                                    {chats.filter(value => value.isPinned).map(value => (
+                                        <Chat key={value.uuid} {...value.smth} />
+                                    ))}
+                                </div>
+                            }
+                            {chats.filter(value => !value.isPinned).map(value => (
+                                <Chat key={value.uuid} {...value.smth} />
                             ))}
-                        </div>
-                    }
-                    {chats.filter(value => !value.isPinned).map(value => (
-                        <Chat key={value.id} {...value.smth} />
-                    ))}
-                </> :
-                <p className="chats-message-lonely" >У вас пока отсутствуют активные чаты по сделкам</p>
-            }    
+                        </> 
+                    ) : (
+                        <p className="chats-message-lonely" >У вас пока отсутствуют активные чаты по сделкам</p>
+                    )
+            }
         </div>
     )
 }

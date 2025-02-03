@@ -1,9 +1,4 @@
-import {
-  Action,
-  ThunkDispatch,
-  configureStore,
-} from "@reduxjs/toolkit";
-import { useDispatch } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
 import { UserSchema, userReducer } from "../../../entities/User";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { appReducer, AppSchema } from "../../../entities/App";
@@ -38,7 +33,3 @@ export const createMainStore = () => {
   setupListeners(store.dispatch);
   return store;
 };
-
-export type AppDispatch = ReturnType<typeof createMainStore>["dispatch"];
-export const useAppDispatch =
-  useDispatch.withTypes<ThunkDispatch<StateSchema, any, Action<any>>>();

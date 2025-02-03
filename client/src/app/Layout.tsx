@@ -1,14 +1,13 @@
-import { useSelector } from "react-redux";
 import { NavBar } from "../shared/ui";
 import AppRouter from "./providers/router/Router";
-import { StateSchema } from "./providers/store";
 import { LoadingAnimation } from "../shared/ui/LottieAnimations";
+import { useAppSelector } from "./providers/store";
 // import { loadingAnimation } from "../shared/assets";
 // import Lottie from "react-lottie";
 
 export const Layout = () => {
-  const { isLoading, error } = useSelector(
-    (state: StateSchema) => state.app
+  const { isLoading, error } = useAppSelector(
+    state => state.app
   );
 
   if (error)

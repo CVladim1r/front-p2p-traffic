@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import "../Form.css"
-import { getTextWidth } from "../../lib"
+import { getTextWidth } from "../../../lib"
 
 type SelectProps = {
     fontSize?: number,

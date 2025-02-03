@@ -1,10 +1,9 @@
 import Profile from "./Profile";
 import arrow_info from "../../shared/assets/svg/arrow_info.svg"
-import { useSelector } from "react-redux";
-import { StateSchema } from "../../app/providers/store";
+import { useAppSelector } from "../../app/providers/store";
 
 export default function ProfileSettngs() {
-  const userData = useSelector((state: StateSchema) => state.user.data)
+  const userData = useAppSelector(state => state.user.data)
 
   return (
     <Profile username={userData?.username ?? "none"}>

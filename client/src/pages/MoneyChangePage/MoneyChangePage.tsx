@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Button, Select, TextField } from "../../shared/ui";
 import "./MoneyChangePage.css"
-import { useDispatch, useSelector } from "react-redux";
-import { StateSchema } from "../../app/providers/store";
+import { useDispatch } from "react-redux";
 import { getTextWidth } from "../../shared/lib";
 import { useMutation } from "@tanstack/react-query";
 import { BalanceService } from "../../shared/api";
@@ -13,6 +12,8 @@ import TON from "../../shared/assets/svg/TON.svg"
 import USDT from "../../shared/assets/svg/USDT.svg"
 import BTC from "../../shared/assets/svg/BTC.svg"
 import { formatNumberTo3 } from "../../shared/lib/lib";
+import { selectAuthorization } from "../../entities/User";
+import { useAppSelector } from "../../app/providers/store";
 
 type MoneyChangeProps = {
     type: "add" | "remove"
@@ -31,15 +32,13 @@ export default function MoneyChange({type}: MoneyChangeProps) {
     const [moneyType, setMoneyType] = useState("TON")
     const [money, setMoney] = useState("")
 
-    const currencyTypes = useSelector(
-        (state: StateSchema) => state.additional.currencyTypes
+    const currencyTypes = useAppSelector(
+        state => state.additional.currencyTypes
     )
-    const authorization = useSelector(
-        (state: StateSchema) => state.user.authorization
-    )
+    const authorization = useAppSelector(selectAuthorization)
 
-    const balance = useSelector(
-        (state: StateSchema) => state.user.data?.balance ? state.user.data?.balance["TON"] : 42
+    const balance = useAppSelector(
+        state => state.user.data?.balance ? state.user.data?.balance["TON"] : -NaN
     )
     
     const maxMoney = +formatNumberTo3(balance / (1.02), 10)

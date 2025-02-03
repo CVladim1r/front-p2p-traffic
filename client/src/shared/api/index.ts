@@ -31,6 +31,7 @@ export type { StartUserIn } from './models/StartUserIn';
 export type { StartUserOut } from './models/StartUserOut';
 export { TransactionCurrencyType } from './models/TransactionCurrencyType';
 export type { UserBalanceOut } from './models/UserBalanceOut';
+export type { UserData } from './models/UserData';
 export type { UserMainPageOut } from './models/UserMainPageOut';
 export type { ValidationError } from './models/ValidationError';
 

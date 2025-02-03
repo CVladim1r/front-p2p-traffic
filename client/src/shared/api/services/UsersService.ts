@@ -5,6 +5,7 @@
 import type { Body_update_user_photo_api_v1_p2p_user_update_user_photo_post } from '../models/Body_update_user_photo_api_v1_p2p_user_update_user_photo_post';
 import type { StartUserIn } from '../models/StartUserIn';
 import type { StartUserOut } from '../models/StartUserOut';
+import type { UserData } from '../models/UserData';
 import type { UserMainPageOut } from '../models/UserMainPageOut';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -49,6 +50,27 @@ export class UsersService {
             url: '/api/v1/p2p/user/main_data',
             headers: {
                 'Authorization': authorization,
+            },
+            errors: {
+                400: `Bad Request`,
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Get User Data
+     * @param userTgId
+     * @returns UserData Successful Response
+     * @throws ApiError
+     */
+    public static getUserDataApiV1P2PUserGetUserDataGet(
+        userTgId: number,
+    ): CancelablePromise<UserData> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/p2p/user/get_user_data',
+            query: {
+                'user_tg_id': userTgId,
             },
             errors: {
                 400: `Bad Request`,

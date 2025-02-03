@@ -4,17 +4,16 @@ import profitImg from "../../shared/assets/svg/profile_profit.svg"
 import ratingImg from "../../shared/assets/svg/profile_rating.svg"
 import gacha from "../../shared/assets/svg/gacha_noshadow.svg"
 import Profile from "./Profile"
-import { useSelector } from "react-redux"
-import { StateSchema } from "../../app/providers/store"
 import { RoutePaths } from "../../app/providers/router"
 import { Button } from "../../shared/ui"
 import { useState } from "react"
 import { formatNumberTo3 } from "../../shared/lib/lib"
+import { useAppSelector } from "../../app/providers/store"
 
 export default function ProfilePage() {
   // const [showGacha, setShowGacha] = useState(false)
 
-  const userData = useSelector((state: StateSchema) => state.user.data)
+  const userData = useAppSelector(state => state.user.data)
   const [spin, setSpin] = useState(false)
 
   return (

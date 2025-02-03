@@ -1,22 +1,20 @@
 import { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { StateSchema } from "./providers/store";
+import { useDispatch } from "react-redux";
 import { AdditionalService, ApiError, AuthService, UsersService } from "../shared/api";
-import { USER_ACCESS_TOKEN_KEY, userActions } from "../entities/User";
+import { selectAuthorization, USER_ACCESS_TOKEN_KEY, userActions } from "../entities/User";
 import { appActions } from "../entities/App/slice/appSlice";
 import Layout from "./Layout";
 import "./App.css"
 // import { logActions } from "../entities/Log/slice/logSlice";
 import { user } from "../telegram";
 import { additionalActions } from "../entities/Additional/slice/additionalSlice";
+import { useAppSelector } from "./providers/store";
 
 
 function App() {
   const dispatch = useDispatch();
 
-  const {authorization} = useSelector(
-    (state: StateSchema) => state.user
-  );
+  const authorization = useAppSelector(selectAuthorization);
 
   const updateUserPhoto = async () => {
     if (!user.photo_url)

@@ -1,12 +1,13 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Ad, Button } from "../../shared/ui";
-import { StateSchema } from "../../app/providers/store";
 import { Navigate } from "react-router-dom";
 import { RoutePaths } from "../../app/providers/router";
 import { addAdActions } from "../../entities/AddAd/slice/addAdSlice";
 import "./PreviewAdPage.css"
 import { useMutation } from "@tanstack/react-query";
 import { OrdersService } from "../../shared/api";
+import { selectAuthorization } from "../../entities/User";
+import { useAppSelector } from "../../app/providers/store";
 
 
 export default function PreviewAddAdPage() {
@@ -23,15 +24,13 @@ export default function PreviewAddAdPage() {
         }
     })
     
-    const authorization = useSelector(
-        (state: StateSchema) => state.user.authorization
-    )
-    const data = useSelector(
-        (state: StateSchema) => state.addAd.data,
+    const authorization = useAppSelector(selectAuthorization)
+    const data = useAppSelector(
+        state => state.addAd.data,
         () => true // prevent re-render
     )
-    const userData = useSelector(
-        (state: StateSchema) => state.user.data
+    const userData = useAppSelector(
+        state => state.user.data
     )
     
     if (isSuccess)
