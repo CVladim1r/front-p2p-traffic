@@ -38,10 +38,9 @@ export default function MoneyChange({type}: MoneyChangeProps) {
         (state: StateSchema) => state.user.authorization
     )
 
-    // const balance = useSelector(
-    //     (state: StateSchema) => state.user.data?.balance
-    // )
-    const balance = 100;
+    const balance = useSelector(
+        (state: StateSchema) => state.user.data?.balance ? state.user.data?.balance["TON"] : 42
+    )
     
     const maxMoney = +formatNumberTo3(balance / (1.02), 10)
 
@@ -49,10 +48,10 @@ export default function MoneyChange({type}: MoneyChangeProps) {
         mutationFn: async () => {
             if (type == "add") {
                 const response = await BalanceService.createDepositApiV1P2PBalanceDepositPost(+money, authorization)
-                dispatch(moneyChangeActions.setReceiptLink(response.url))
+                dispatch(moneyChangeActions.setReceiptLink(response.balance))
             } else {
                 const response = await BalanceService.withdrawFundsApiV1P2PBalanceWithdrawPost(+money, authorization)
-                dispatch(moneyChangeActions.setReceiptLink(response.url)) 
+                dispatch(moneyChangeActions.setReceiptLink(response.balance)) 
             }
             setRedirect(true)
         }

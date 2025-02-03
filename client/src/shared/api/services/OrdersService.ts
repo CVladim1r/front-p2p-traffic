@@ -5,7 +5,11 @@
 import type { AdCreate } from '../models/AdCreate';
 import type { AdCreateOut } from '../models/AdCreateOut';
 import type { AdOut } from '../models/AdOut';
+import type { AdOutOne } from '../models/AdOutOne';
 import type { Categories } from '../models/Categories';
+import type { ChatMessage } from '../models/ChatMessage';
+import type { ChatMessageCreate } from '../models/ChatMessageCreate';
+import type { ChatOut } from '../models/ChatOut';
 import type { DealCreate } from '../models/DealCreate';
 import type { DealOut } from '../models/DealOut';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -60,12 +64,12 @@ export class OrdersService {
     /**
      * Get Ad
      * @param adUuid
-     * @returns AdOut Successful Response
+     * @returns AdOutOne Successful Response
      * @throws ApiError
      */
     public static getAdApiV1P2POrdersAdsAdUuidGet(
         adUuid: string,
-    ): CancelablePromise<AdOut> {
+    ): CancelablePromise<AdOutOne> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/p2p/orders/ads/{ad_uuid}',
@@ -79,20 +83,20 @@ export class OrdersService {
     }
     /**
      * Create Deal
-     * @param tgId
+     * @param authorization
      * @param requestBody
      * @returns DealOut Successful Response
      * @throws ApiError
      */
     public static createDealApiV1P2POrdersDealsPost(
-        tgId: number,
+        authorization: string,
         requestBody: DealCreate,
     ): CancelablePromise<DealOut> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/p2p/orders/deals',
-            query: {
-                'tg_id': tgId,
+            headers: {
+                'Authorization': authorization,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -104,18 +108,18 @@ export class OrdersService {
     }
     /**
      * Get User Deals
-     * @param tgId
+     * @param authorization
      * @returns DealOut Successful Response
      * @throws ApiError
      */
     public static getUserDealsApiV1P2POrdersDealsGet(
-        tgId: number,
+        authorization: string,
     ): CancelablePromise<Array<DealOut>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/p2p/orders/deals',
-            query: {
-                'tg_id': tgId,
+            headers: {
+                'Authorization': authorization,
             },
             errors: {
                 422: `Validation Error`,
@@ -143,6 +147,88 @@ export class OrdersService {
                 'tg_id': tgId,
             },
             errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Confirm Deal
+     * @param dealUuid
+     * @param authorization
+     * @returns DealOut Successful Response
+     * @throws ApiError
+     */
+    public static confirmDealApiV1P2POrdersDealsDealUuidConfirmPost(
+        dealUuid: string,
+        authorization: string,
+    ): CancelablePromise<DealOut> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/p2p/orders/deals/{deal_uuid}/confirm',
+            path: {
+                'deal_uuid': dealUuid,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            errors: {
+                400: `Bad Request`,
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Get Chat
+     * @param dealUuid
+     * @param authorization
+     * @returns ChatOut Successful Response
+     * @throws ApiError
+     */
+    public static getChatApiV1P2POrdersDealsDealUuidChatGet(
+        dealUuid: string,
+        authorization: string,
+    ): CancelablePromise<ChatOut> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/p2p/orders/deals/{deal_uuid}/chat',
+            path: {
+                'deal_uuid': dealUuid,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            errors: {
+                403: `Forbidden`,
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Send Chat Message
+     * @param dealUuid
+     * @param authorization
+     * @param requestBody
+     * @returns ChatMessage Successful Response
+     * @throws ApiError
+     */
+    public static sendChatMessageApiV1P2POrdersDealsDealUuidChatMessagesPost(
+        dealUuid: string,
+        authorization: string,
+        requestBody: ChatMessageCreate,
+    ): CancelablePromise<ChatMessage> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/p2p/orders/deals/{deal_uuid}/chat/messages',
+            path: {
+                'deal_uuid': dealUuid,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                403: `Forbidden`,
                 422: `Validation Error`,
             },
         });

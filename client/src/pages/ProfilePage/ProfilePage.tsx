@@ -9,12 +9,14 @@ import { StateSchema } from "../../app/providers/store"
 import { RoutePaths } from "../../app/providers/router"
 import { Button } from "../../shared/ui"
 import { useState } from "react"
+import { formatNumberTo3 } from "../../shared/lib/lib"
 
 export default function ProfilePage() {
   // const [showGacha, setShowGacha] = useState(false)
 
   const userData = useSelector((state: StateSchema) => state.user.data)
   const [spin, setSpin] = useState(false)
+
 
   return (
     <Profile username={userData?.username ?? "none"}
@@ -35,7 +37,7 @@ export default function ProfilePage() {
         </div>
         
         <div className="profile-body-money">
-          <button className="profile-body-money-text">{/*userData?.balance ?? "none"*/}$0.00</button>
+          <button className="profile-body-money-text">{userData?.balance ? formatNumberTo3(userData.balance["TON"]) : "уй"}</button>
           <Link
             to={{pathname: RoutePaths.moneyAdd}}
             className="profile-body-money-add"

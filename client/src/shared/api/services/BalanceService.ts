@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { UserBalanceOut } from '../models/UserBalanceOut';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -10,13 +11,13 @@ export class BalanceService {
      * Create Deposit
      * @param amount
      * @param authorization
-     * @returns any Successful Response
+     * @returns UserBalanceOut Successful Response
      * @throws ApiError
      */
     public static createDepositApiV1P2PBalanceDepositPost(
         amount: number,
         authorization: string,
-    ): CancelablePromise<{url: string}> {
+    ): CancelablePromise<UserBalanceOut> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/p2p/balance/deposit',
@@ -27,6 +28,7 @@ export class BalanceService {
                 'amount': amount,
             },
             errors: {
+                400: `Bad Request`,
                 422: `Validation Error`,
             },
         });
@@ -35,13 +37,13 @@ export class BalanceService {
      * Withdraw Funds
      * @param amount
      * @param authorization
-     * @returns any Successful Response
+     * @returns UserBalanceOut Successful Response
      * @throws ApiError
      */
     public static withdrawFundsApiV1P2PBalanceWithdrawPost(
         amount: number,
         authorization: string,
-    ): CancelablePromise<any> {
+    ): CancelablePromise<UserBalanceOut> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/p2p/balance/withdraw',
@@ -52,6 +54,7 @@ export class BalanceService {
                 'amount': amount,
             },
             errors: {
+                400: `Bad Request`,
                 422: `Validation Error`,
             },
         });

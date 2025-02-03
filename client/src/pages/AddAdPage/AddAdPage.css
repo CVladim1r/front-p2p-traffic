@@ -23,7 +23,7 @@
     flex-direction: column;
     /* row-gap: 20px; */
 
-    padding: 20px 0px 20px 30px;
+    padding: 20px;
 
     background-color: #2B2B2B;
     border-radius: 16px;
@@ -34,7 +34,7 @@
     flex-direction: column;
     row-gap: 10px;
 
-    padding: 15px 20px 15px 0px;
+    padding: 15px 0px;
 }
 .add-ad-form-row + .add-ad-form-row {
     border-top: solid 1px #A1A1AA;
