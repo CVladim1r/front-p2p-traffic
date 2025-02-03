@@ -8,7 +8,7 @@ export type UserMainPageOut = {
     username: (string | null);
     deals: number;
     rating: number;
-    balance: (Record<string, string> | null);
+    balance: ( { [id: string]: number } | null);
     total_sales: number;
     referral_id: (string | null);
     is_vip: boolean;

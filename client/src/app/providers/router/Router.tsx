@@ -9,11 +9,11 @@ import {
   InfoPage, 
   MoneyChangePage
 } from "../../../pages";
-import { Loading } from "../../../shared/ui";
 import PreviewAddAdPage from "../../../pages/PreviewAdPage/PreviewAdPage";
 import AddAdDonePage from "../../../pages/DonePages/AddAdDonePage";
 import MoneyAddDonePage from "../../../pages/DonePages/MoneyAddDonePage";
 import MoneyRemoveDonePage from "../../../pages/DonePages/MoneyRemoveDonePage";
+import { LoadingAnimation } from "../../../shared/ui/LottieAnimations";
 
 enum AppRoutes {
   root = "root",
@@ -109,7 +109,7 @@ function AppRouter() {
         key={route.path}
         path={route.path}
         element={
-          <Suspense fallback={<Loading />}>
+          <Suspense fallback={<LoadingAnimation />}>
             {route.element}
           </Suspense>
         }

@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
 import arrows from "../../shared/assets/svg/filter_arrow.svg"
-import { Ad, Loading, RadioGroup } from "../../shared/ui"
+import { Ad, RadioGroup } from "../../shared/ui"
 import "./AdsPage.css"
 import { useDispatch, useSelector } from "react-redux"
 import { StateSchema } from "../../app/providers/store"
 import { filtersActions } from "../../entities/Filters"
 import { useQuery } from "@tanstack/react-query"
 import { AdOut, AdStatus, Categories, OrdersService } from "../../shared/api"
+import { LoadingAnimation } from "../../shared/ui/LottieAnimations"
 
 type FilterProps = {
     name: string,
@@ -188,7 +189,7 @@ export default function AdsPage() {
             </div>
             <div className="ads container">
                 { isFetching ?
-                    <Loading />
+                    <LoadingAnimation />
                 :
                     ads.map(value => (
                         <Ad key={value.uuid} {...value}/>

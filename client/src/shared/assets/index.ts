@@ -30,5 +30,6 @@
 
 // Animations
 import loadingAnimation from "./lottie-animations/loading.json"
-export const loadingAnimationTest = "./lottie-animations/loading.lottie"
-export { loadingAnimation };
+import doneAnimation from "./lottie-animations/done.json"
+
+export { loadingAnimation, doneAnimation };

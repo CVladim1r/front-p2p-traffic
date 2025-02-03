@@ -5,6 +5,10 @@ import { StoreProvider } from './app/providers/store/index.ts'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { OpenAPI } from './shared/api/index.ts'
+
+if (import.meta.env.DEV)
+  OpenAPI.BASE = "https://api.just-ad.ru"
 
 const queryClient = new QueryClient()
 

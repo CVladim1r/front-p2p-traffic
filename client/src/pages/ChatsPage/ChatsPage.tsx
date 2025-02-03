@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom"
-import pic from "../../shared/assets/images/testuserchat.png"
 import "./ChatsPage.css"
 
 type ChatInfo = {
@@ -32,29 +31,25 @@ function Chat({id, username, profile_picture, last_message, extra} : ChatInfo) {
 }
 
 export default function ChatsPage() {
-    const testData: ChatInfo[] = [
-        {id: 1, username: "Username_2", profile_picture: pic, last_message: "Привет! Жду ссылку на транзакцию где ты пе...", extra: "something", isPinned: false},
-        {id: 0, username: "Username_1", profile_picture: pic, last_message: "Точно 100000 пользователей приведу тебе, пр...", extra: "vip", isPinned: true},
-        {id: 2, username: "Username_3", profile_picture: pic, last_message: "Зуб даю - много подписчиков придет!", isPinned: false},
-        {id: 3, username: "Username_5", profile_picture: pic, last_message: "Привет! Жду ссылку на транзакцию где ты пе...", extra: "something", isPinned: true},
-        {id: 4, username: "Username_4", profile_picture: pic, last_message: "Сколько пришло?", extra: "vip", isPinned: false},
-        {id: 5, username: "Username_6", profile_picture: pic, last_message: "Точно 100000 пользователей приведу тебе, пр...", isPinned: false},
-        {id: 6, username: "Username_6", profile_picture: pic, last_message: "Зуб даю - много подписчиков придет!", extra: "something", isPinned: false},
-        {id: 7, username: "Username_6", profile_picture: pic, last_message: "Сколько пришло?", extra: "vip", isPinned: true},
-        {id: 8, username: "Username_6", profile_picture: pic, last_message: "Сообщение", isPinned: false},
-        {id: 9, username: "Username_6", profile_picture: pic, last_message: "Сообщение", extra: "something", isPinned: false},
-    ] //TODO - delete
-
+    const chats: {isPinned: boolean, id: number, smth: ChatInfo}[] = []
+    
     return (
         <div className="chats container">
-            <div className="chats-pinned">
-                {testData.filter(value => value.isPinned).map(value => (
-                    <Chat key={value.id} {...value} />
-                ))}
-            </div>
-            {testData.filter(value => !value.isPinned).map(value => (
-                <Chat key={value.id} {...value} />
-            ))}
+            {chats.length ?
+                <>
+                    {chats.some(val => val.isPinned) &&
+                        <div className="chats-pinned">
+                            {chats.filter(value => value.isPinned).map(value => (
+                                <Chat key={value.id} {...value.smth} />
+                            ))}
+                        </div>
+                    }
+                    {chats.filter(value => !value.isPinned).map(value => (
+                        <Chat key={value.id} {...value.smth} />
+                    ))}
+                </> :
+                <p className="chats-message-lonely" >У вас пока отсутствуют активные чаты по сделкам</p>
+            }    
         </div>
     )
 }

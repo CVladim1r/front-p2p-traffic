@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { Button, Select, TextField } from "../../shared/ui";
-// import { useSelector } from "react-redux";
-// import { StateSchema } from "../../app/providers/store";
 import "./MoneyChangePage.css"
 import { useDispatch, useSelector } from "react-redux";
 import { StateSchema } from "../../app/providers/store";
@@ -11,10 +9,21 @@ import { BalanceService } from "../../shared/api";
 import { moneyChangeActions } from "../../entities/MoneyChange";
 import { Navigate } from "react-router-dom";
 import { RoutePaths } from "../../app/providers/router";
+import TON from "../../shared/assets/svg/TON.svg"
+import USDT from "../../shared/assets/svg/USDT.svg"
+import BTC from "../../shared/assets/svg/BTC.svg"
+import { formatNumberTo3 } from "../../shared/lib/lib";
 
 type MoneyChangeProps = {
     type: "add" | "remove"
 }
+
+const currencyIcons: {[key: string]: string} = {
+    TON,
+    USDT,
+    BTC,
+}
+
 
 export default function MoneyChange({type}: MoneyChangeProps) {
     const dispatch = useDispatch()
@@ -29,23 +38,21 @@ export default function MoneyChange({type}: MoneyChangeProps) {
         (state: StateSchema) => state.user.authorization
     )
 
-    // const balance = useSelector(
-    //     (state: StateSchema) => state.user.data?.balance
-    // )
-    const balance = 100;
-    function Floor2(x: number) {
-        return Math.floor((x + Number.EPSILON) * 100) / 100
-    }
-    const maxMoney = Floor2(balance / (1.02))
-
+    const balance = useSelector(
+        (state: StateSchema) => state.user.data?.balance ? state.user.data?.balance["TON"] : 42
+    )
+    
+    const maxMoney = +formatNumberTo3(balance / (1.02), 10)
+    const minMoney = 3
+    
     const {mutate} = useMutation({
         mutationFn: async () => {
             if (type == "add") {
                 const response = await BalanceService.createDepositApiV1P2PBalanceDepositPost(+money, authorization)
-                dispatch(moneyChangeActions.setReceiptLink(response.url))
+                dispatch(moneyChangeActions.setReceiptLink(response.balance))
             } else {
                 const response = await BalanceService.withdrawFundsApiV1P2PBalanceWithdrawPost(+money, authorization)
-                dispatch(moneyChangeActions.setReceiptLink(response.url)) 
+                dispatch(moneyChangeActions.setReceiptLink(response.balance)) 
             }
             setRedirect(true)
         }
@@ -67,15 +74,15 @@ export default function MoneyChange({type}: MoneyChangeProps) {
                 className="moneychange-form"
             >
                 <div className="moneychange-block">
-                    <Select onChange={e => setMoneyType(e.target.value)} className="moneychange-select" optionsProps={ //TODO Remove Ton when add
-                        currencyTypes.map(val => ({value: val}))
+                    <Select fontSize={24} backgroundColor="#3D3D3D" onChange={val => setMoneyType(val)} optionsData={ //TODO Remove Ton when add
+                        currencyTypes.map(val => ({value: val, icon: currencyIcons[val]}))
                     }
                     />
-                    <div className={type != "add" && +money > maxMoney ? "moneychange-block-money error " : "moneychange-block-money"}>
+                    <div className={type != "add" && (+money > maxMoney || +money < minMoney) ? "moneychange-block-money error " : "moneychange-block-money"}>
                         <TextField
-                        style={{
-                            width: Math.min(getTextWidth(money ? money : moneyType, "600 40px Inter"), 280)
-                        }}
+                            style={{
+                                width: Math.min(getTextWidth(money ? money : moneyType, "600 40px Inter"), 280)
+                            }}
                             type="text"
                             placeholder={moneyType}
                             className="moneychange-textfield"
@@ -88,15 +95,15 @@ export default function MoneyChange({type}: MoneyChangeProps) {
                                     setMoney(e.target.value)
                             }}
                             value={money}
-                            min={0}
-                            max={Floor2(balance / (1.02))}
+                            min={minMoney}
+                            max={maxMoney}
                             step={0.01}
                         />
                     </div>
                     
                     <div className="moneychange-comission">
                         <p>Комиссия:</p>
-                        <p>≈{Floor2(Number(money) * 0.02)} {moneyType}</p>
+                        <p>≈{formatNumberTo3(Number(money) * 0.02)} {moneyType}</p>
                     </div>
                 </div>
                 {type == "remove" &&
@@ -118,7 +125,7 @@ export default function MoneyChange({type}: MoneyChangeProps) {
                 
                 <Button
                     type="submit"
-                    disabled={Number.isNaN(Number(money)) || +money == 0 || +money > maxMoney}
+                    disabled={Number.isNaN(Number(money)) || (type == "remove" && +money > maxMoney && +money < minMoney)}
                 >
                     Получить чек
                 </Button>

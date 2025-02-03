@@ -1,7 +1,13 @@
-import Lottie from "react-lottie";
-import { loadingAnimation } from "../../assets";
+import Lottie from "react-lottie"
 
-export function Loading() {
+type LottiePlayerProps = {
+    animation: any,
+    height: number,
+    width: number,
+    loop: boolean,
+}
+
+export default function LottiePlayer({animation, loop, ...otherProps}: LottiePlayerProps) {
     return (
         <div style={{
             display: "flex",
@@ -11,16 +17,15 @@ export function Loading() {
         }}>
             <Lottie
                 options={{
-                    loop: true,
+                    loop,
                     autoplay: true,
-                    animationData: loadingAnimation,
+                    animationData: animation,
                     rendererSettings: {
                         preserveAspectRatio: "xMidYMid slice",
                     }
                 }}
-                height={300}
-                width={300}
                 isClickToPauseDisabled={true}
+                {...otherProps}
             />
         </div>
     )

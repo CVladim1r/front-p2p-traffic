@@ -98,3 +98,9 @@
 
     color: #A1A1AA;
 }
+
+.chats-message-lonely {
+    padding: 0px 30px;
+    margin: auto auto;
+    text-align: center;
+}
