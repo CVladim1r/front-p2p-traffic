@@ -7,8 +7,8 @@ import type { TransactionCurrencyType } from './TransactionCurrencyType';
 export type DealOut = {
     uuid: string;
     ad_uuid: string;
-    buyer_id: number;
-    seller_id: number;
+    buyer_id: string;
+    seller_id: string;
     status: DealStatus;
     price: string;
     currency: TransactionCurrencyType;
