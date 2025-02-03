@@ -17,7 +17,6 @@ export default function ProfilePage() {
   const userData = useSelector((state: StateSchema) => state.user.data)
   const [spin, setSpin] = useState(false)
 
-
   return (
     <Profile username={userData?.username ?? "none"}
     // topChildren={
@@ -37,7 +36,7 @@ export default function ProfilePage() {
         </div>
         
         <div className="profile-body-money">
-          <button className="profile-body-money-text">{userData?.balance ? formatNumberTo3(userData.balance["TON"]) : "уй"}</button>
+          <button className="profile-body-money-text">{userData?.balance && userData.balance["TON"] ? formatNumberTo3(userData.balance["TON"]) : "уй"}</button>
           <Link
             to={{pathname: RoutePaths.moneyAdd}}
             className="profile-body-money-add"

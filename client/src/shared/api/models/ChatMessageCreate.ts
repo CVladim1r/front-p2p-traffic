@@ -4,6 +4,6 @@
 /* eslint-disable */
 export type ChatMessageCreate = {
     text: string;
-    sender_id: number;
+    sender_id: string;
 };
 
