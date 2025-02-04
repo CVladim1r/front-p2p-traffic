@@ -59,4 +59,56 @@ export class BalanceService {
             },
         });
     }
+    /**
+     * Get All Checks
+     * @param key
+     * @param authorization
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static getAllChecksApiV1P2PBalanceChecksGetAllChecksGet(
+        key: string,
+        authorization: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/p2p/balance/checks/get_all_checks',
+            headers: {
+                'Authorization': authorization,
+            },
+            query: {
+                'key': key,
+            },
+            errors: {
+                400: `Bad Request`,
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Delete All Checks
+     * @param key
+     * @param authorization
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static deleteAllChecksApiV1P2PBalanceChecksDeleteAllChecksDelete(
+        key: string,
+        authorization: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/api/v1/p2p/balance/checks/delete_all_checks',
+            headers: {
+                'Authorization': authorization,
+            },
+            query: {
+                'key': key,
+            },
+            errors: {
+                400: `Bad Request`,
+                422: `Validation Error`,
+            },
+        });
+    }
 }

@@ -1,36 +1,22 @@
 import { Link } from "react-router-dom"
 import "./ChatsPage.css"
 import { useQuery } from "@tanstack/react-query"
-import { DealOut, OrdersService } from "../../shared/api"
+import { ChatAllOut, OrdersService } from "../../shared/api"
 import { useAppSelector } from "../../app/providers/store"
 import { selectAuthorization } from "../../entities/User"
 import { useState } from "react"
 import { LoadingAnimation } from "../../shared/ui"
+import { RoutePaths } from "../../app/providers/router"
 
-type ChatInfo = {
-    id: number
-    username: string,
-    profile_picture: string,
-    last_message: string,
-    isPinned: boolean
-    extra?: "something" | "vip",
-}
-
-function Chat({id, username, profile_picture, last_message, extra} : ChatInfo) {
+function Chat({deal_uuid, counterpart_isvip, counterpart_photo, counterpart_username} : ChatAllOut) {
     return (
-        <Link to={{pathname: `/chat/${id}`}} className="chat">
-            <img src={profile_picture} alt="" className="chat-image"/>
-            <div className="chat-info">
-                <p className= {
-                    extra == "something" ?
-                        "chat-info-username something" :
-                        extra == "vip" ?
-                            "chat-info-username vip" :
-                            "chat-info-username"
-                }>
-                    {username}
+        <Link to={{pathname: `${RoutePaths.chats}/${deal_uuid}`}} className="chats-chat">
+            <img src={counterpart_photo} alt="" className="chats-chat-image"/>
+            <div className="chats-chat-info">
+                <p className= {counterpart_isvip ? "chats-chat-info-username vip" : "chats-chat-info-username"}>
+                    {counterpart_username}
                 </p>
-                <p className="chat-info-last-message">{last_message}</p>
+                {/* <p className="chats-chat-info-last-message">{last_message}</p> */}
             </div>
         </Link>
     )
@@ -39,12 +25,12 @@ function Chat({id, username, profile_picture, last_message, extra} : ChatInfo) {
 export default function ChatsPage() {
     const authorization = useAppSelector(selectAuthorization)
     
-    const [chats, setChats] = useState<DealOut[]>([])
+    const [chats, setChats] = useState<ChatAllOut[]>([])
 
     const {isFetching} = useQuery({
         queryKey: ["chats"],
         queryFn: async () => {
-            setChats(await OrdersService.getUserDealsApiV1P2POrdersDealsGet(authorization))
+            setChats(await OrdersService.getAllChatsApiV1P2POrdersChatsGet(authorization))
         }
     })
     
@@ -55,15 +41,15 @@ export default function ChatsPage() {
                 ) : 
                     chats ? (
                         <>
-                            {chats.some(val => val.) &&
+                            {chats.some(val => val.is_pinned) &&
                                 <div className="chats-pinned">
-                                    {chats.filter(value => value.isPinned).map(value => (
-                                        <Chat key={value.uuid} {...value.smth} />
+                                    {chats.filter(value => value.is_pinned).map(value => (
+                                        <Chat key={value.uuid} {...value} />
                                     ))}
                                 </div>
                             }
-                            {chats.filter(value => !value.isPinned).map(value => (
-                                <Chat key={value.uuid} {...value.smth} />
+                            {chats.filter(value => !value.is_pinned).map(value => (
+                                <Chat key={value.uuid} {...value} />
                             ))}
                         </> 
                     ) : (
