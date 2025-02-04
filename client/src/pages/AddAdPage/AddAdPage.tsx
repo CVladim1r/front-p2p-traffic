@@ -6,25 +6,25 @@ import {
 }
 from "../../shared/ui"
 import "./AddAdPage.css"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { addAdActions } from "../../entities/AddAd/slice/addAdSlice"
-import { StateSchema } from "../../app/providers/store"
 import { RoutePaths } from "../../app/providers/router"
 import { FormEvent, useState } from "react"
 import { Categories, TransactionCurrencyType } from "../../shared/api"
 import { formatNumberTo3 } from "../../shared/lib/lib"
-import { Switch } from "../../shared/ui/Switch/Switch"
+import { Switch } from "../../shared/ui/Form/Switch/Switch"
+import { useAppSelector } from "../../app/providers/store"
 
 export default function AddAdPage() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     
-    const additional = useSelector(
-        (state: StateSchema) => state.additional
+    const additional = useAppSelector(
+        state => state.additional
     )
     
-    const data = useSelector(
-        (state: StateSchema) => state.addAd.data,
+    const data = useAppSelector(
+    state => state.addAd.data,
         () => true
     )
 
@@ -51,8 +51,8 @@ export default function AddAdPage() {
     const isValid = () => source && minimum_traffic && maximum_traffic && price && title && description && minimum_traffic <= maximum_traffic
 
     const [guaranteed_traffic, setGuaranteed_traffic] = useState(data?.guaranteed_traffic ?? true)
-    const savedSource = useSelector(
-        (state: StateSchema) => state.addAd.savedSource
+    const savedSource = useAppSelector(
+        state => state.addAd.savedSource
     )
     const [source, setSource] = useState(savedSource ?? "")
     const [category, setCategory] = useState(data?.category ?? additional.categories[0] as Categories)
@@ -98,7 +98,7 @@ export default function AddAdPage() {
                         
                         <div className="add-ad-form-amount">
                             <div className="add-ad-form-amount-container">
-                                <p className="add-ad-form-amount-key">От</p>
+                                <p className="add-ad-form-amount-key">От</p> {/* TODO - negative numbers restrict*/}
                                 <TextField className="add-ad-TextField add-ad-form-amount-TextField" type="number" value={minimum_traffic ? minimum_traffic : ""} onChange={e => setMinimum_traffic(e.target.value ? +e.target.value : 0)} required/>
                             </div>
                             <div className="add-ad-form-amount-container">

@@ -4,10 +4,12 @@ import testuser from "../../assets/images/testuser1.png"
 import "./Ad.css"
 
 export type AdProps = Omit<AdOut, "uuid" | "user" | "created_at" | "updated_at" | "status"> & {
-    showButtons?: boolean
+    showButtons?: boolean,
+    onClickBuy?: () => void,
+    onClickShare?: () => void,
 }
 
-export function Ad({showButtons, ...data}: AdProps) {
+export function Ad({showButtons, onClickBuy, onClickShare, ...data}: AdProps) {
     return (
         <div className="ad">
             <div className={showButtons ?? true ? "ad-top-row" : "ad-top-row no-buttons"}>
@@ -19,16 +21,12 @@ export function Ad({showButtons, ...data}: AdProps) {
                 { (showButtons ?? true) &&
                     <div className="ad-top-row-buttons">
                         <button className="ad-top-row-buttons-share"
-                            onClick={() => 
-                                console.log("share button")
-                            }
+                            onClick={onClickShare}
                         >
                             <img src={share} alt="" />
                         </button>
                         <button className="ad-top-row-buttons-buy"
-                            onClick={() => 
-                                console.log("buy button")
-                            }
+                            onClick={onClickBuy}
                         >
                             Купить
                         </button>

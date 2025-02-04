@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { UserMainPageOut } from "../../../shared/api";
 import { USER_ACCESS_TOKEN_KEY } from "../consts/consts";
+import { StateSchema } from "../../../app/providers/store";
 
 export interface UserSchema {
   isLoggingIn: boolean;
@@ -38,5 +39,7 @@ const userSlice = createSlice({
     },
   },
 });
+
+export const selectAuthorization = (state: StateSchema) => state.user.authorization
 
 export const { actions: userActions, reducer: userReducer } = userSlice;

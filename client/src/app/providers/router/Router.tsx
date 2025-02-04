@@ -7,18 +7,20 @@ import {
   ProfilePage,
   ChatsPage,
   InfoPage, 
-  MoneyChangePage
+  MoneyChangePage,
+  ChatPage,
+  AddAdDonePage,
+  MoneyAddDonePage,
+  MoneyRemoveDonePage,
+  PreviewAddAdPage
 } from "../../../pages";
-import PreviewAddAdPage from "../../../pages/PreviewAdPage/PreviewAdPage";
-import AddAdDonePage from "../../../pages/DonePages/AddAdDonePage";
-import MoneyAddDonePage from "../../../pages/DonePages/MoneyAddDonePage";
-import MoneyRemoveDonePage from "../../../pages/DonePages/MoneyRemoveDonePage";
-import { LoadingAnimation } from "../../../shared/ui/LottieAnimations";
+import { LoadingAnimation } from "../../../shared/ui";
 
 enum AppRoutes {
   root = "root",
   ads = "ads",
   chats = "chats",
+  chat = "chat",
   addAd = "addAd",
   profile = "profile",
   profileSettings = "profileSettings",
@@ -35,6 +37,7 @@ export const RoutePaths: Record<AppRoutes, string> = {
   [AppRoutes.root]: "/",
   [AppRoutes.ads]: "/ads",
   [AppRoutes.chats]: "/chats",
+  [AppRoutes.chat]: "/chats/:id",
   [AppRoutes.addAd]: "/add-ad",
   [AppRoutes.profile]: "/profile",
   [AppRoutes.profileSettings]: "/profile/settings",
@@ -59,6 +62,10 @@ const routeConfig: Record<AppRoutes, RouteProps> = {
   [AppRoutes.chats]: {
     path: RoutePaths.chats,
     element: <ChatsPage />,
+  },
+  [AppRoutes.chat]: {
+    path: RoutePaths.chat,
+    element: <ChatPage />,
   },
   [AppRoutes.addAd]: {
     path: RoutePaths.addAd,

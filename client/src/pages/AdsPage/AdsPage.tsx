@@ -2,12 +2,13 @@ import { useEffect, useState } from "react"
 import arrows from "../../shared/assets/svg/filter_arrow.svg"
 import { Ad, RadioGroup } from "../../shared/ui"
 import "./AdsPage.css"
-import { useDispatch, useSelector } from "react-redux"
-import { StateSchema } from "../../app/providers/store"
+import { useDispatch } from "react-redux"
 import { filtersActions } from "../../entities/Filters"
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { AdOut, AdStatus, Categories, OrdersService } from "../../shared/api"
 import { LoadingAnimation } from "../../shared/ui/LottieAnimations"
+import { useAppSelector } from "../../app/providers/store"
+import { selectAuthorization } from "../../entities/User"
 
 type FilterProps = {
     name: string,
@@ -28,8 +29,8 @@ function Filter({name, chosen}: FilterProps) {
 }
 
 function FiltersContent() {
-    const activeName = useSelector(
-        (state: StateSchema) => state.filters.activeFilter
+    const activeName = useAppSelector(
+        state => state.filters.activeFilter
     )
     
     switch (activeName) {
@@ -41,11 +42,11 @@ function FiltersContent() {
 }
 
 function ThemeContent() {
-    const theme = useSelector(
-        (state: StateSchema) => state.filters.data.theme
+    const theme = useAppSelector(
+        state => state.filters.data.theme
     )
-    const additional = useSelector(
-        (state: StateSchema) => state.additional
+    const additional = useAppSelector(
+        state => state.additional
     )
     const dispatch = useDispatch()
     
@@ -64,11 +65,11 @@ function ThemeContent() {
 }
 
 function CurrencyTypeContent() {
-    const currencyType = useSelector(
-        (state: StateSchema) => state.filters.data.currencyType
+    const currencyType = useAppSelector(
+        state => state.filters.data.currencyType
     )
-    const additional = useSelector(
-        (state: StateSchema) => state.additional
+    const additional = useAppSelector(
+        state => state.additional
     )
     const dispatch = useDispatch()
     
@@ -86,8 +87,8 @@ function CurrencyTypeContent() {
     )
 }
 function VipContent() {
-    const isVip = useSelector(
-        (state: StateSchema) => state.filters.data.isVip
+    const isVip = useAppSelector(
+        state => state.filters.data.isVip
     )
     const dispatch = useDispatch()
 
@@ -105,8 +106,8 @@ function VipContent() {
     )
 }
 function GuaranteedContent() {
-    const guaranteed = useSelector(
-        (state: StateSchema) => state.filters.data.guaranteed
+    const guaranteed = useAppSelector(
+        state => state.filters.data.guaranteed
     )
     const dispatch = useDispatch()
 
@@ -126,12 +127,14 @@ function GuaranteedContent() {
 
 export default function AdsPage() {    
     const [ads, setAds] = useState<AdOut[]>([])
-    const filtersData = useSelector(
-        (state: StateSchema) => state.filters.data,
+
+    const filtersData = useAppSelector(
+        state => state.filters.data,
     )
-    const activeFilter = useSelector(
-        (state: StateSchema) => state.filters.activeFilter
+    const activeFilter = useAppSelector(
+        state => state.filters.activeFilter
     )
+    const authorization = useAppSelector(selectAuthorization)
 
     const {data, isFetching} = useQuery({
         queryKey: ['getOrders', filtersData.theme],
@@ -145,6 +148,13 @@ export default function AdsPage() {
         
                 return 1
             })
+        }
+    })
+
+    const {mutate} = useMutation({
+        mutationFn: async (ad_uuid: string) => {
+            const response = await OrdersService.createDealApiV1P2POrdersDealsPost(authorization, {ad_uuid})
+            console.log(response);
         }
     })
 
@@ -192,7 +202,7 @@ export default function AdsPage() {
                     <LoadingAnimation />
                 :
                     ads.map(value => (
-                        <Ad key={value.uuid} {...value}/>
+                        <Ad key={value.uuid} onClickBuy={() => mutate(value.uuid)} {...value}/>
                     ))
                 }
             </div>

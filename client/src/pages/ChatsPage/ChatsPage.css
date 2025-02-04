@@ -34,32 +34,35 @@
     background-size: contain;
 }
 
-.chat {
+.chats-chat {
     display: flex;
     column-gap: 10px;
 
     margin: 0px 13px;
 }
 
-.chat-image {
+.chats-chat-image {
     width: 60px;
     height: 60px;
+
+    border-radius: 100px;
 }
 
-.chat-info {
+.chats-chat-info {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     row-gap: 8px;
 }
 
-.chat-info-username {
+.chats-chat-info-username {
     font-size: 17px;
     position: relative;
 
     width: fit-content;
 }
 
-.chat-info-username.something::after {
+.chats-chat-info-username.something::after {
     position: absolute;
     content: "";
 
@@ -75,7 +78,7 @@
     background-size: contain;
 }
 
-.chat-info-username.vip::after {
+.chats-chat-info-username.vip::after {
     position: absolute;
     content: "";
 
@@ -91,7 +94,7 @@
     background-size: contain;
 }
 
-.chat-info-last-message {
+.chats-chat-info-last-message {
     font-size: 13px;
     font-weight: 400;
     font-family: "Roboto";

@@ -7,11 +7,13 @@ import type { AdCreateOut } from '../models/AdCreateOut';
 import type { AdOut } from '../models/AdOut';
 import type { AdOutOne } from '../models/AdOutOne';
 import type { Categories } from '../models/Categories';
+import type { ChatAllOut } from '../models/ChatAllOut';
 import type { ChatMessage } from '../models/ChatMessage';
 import type { ChatMessageCreate } from '../models/ChatMessageCreate';
 import type { ChatOut } from '../models/ChatOut';
 import type { DealCreate } from '../models/DealCreate';
 import type { DealOut } from '../models/DealOut';
+import type { PinChatRequest } from '../models/PinChatRequest';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -227,6 +229,58 @@ export class OrdersService {
             },
             body: requestBody,
             mediaType: 'application/json',
+            errors: {
+                403: `Forbidden`,
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Pin Chat
+     * @param chatUuid
+     * @param authorization
+     * @param requestBody
+     * @returns ChatOut Successful Response
+     * @throws ApiError
+     */
+    public static pinChatApiV1P2POrdersDealsChatUuidChatPinPatch(
+        chatUuid: string,
+        authorization: string,
+        requestBody: PinChatRequest,
+    ): CancelablePromise<ChatOut> {
+        return __request(OpenAPI, {
+            method: 'PATCH',
+            url: '/api/v1/p2p/orders/deals/{chat_uuid}/chat/pin',
+            path: {
+                'chat_uuid': chatUuid,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                403: `Forbidden`,
+                404: `Not Found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Get All Chats
+     * @param authorization
+     * @returns ChatAllOut Successful Response
+     * @throws ApiError
+     */
+    public static getAllChatsApiV1P2POrdersChatsGet(
+        authorization: string,
+    ): CancelablePromise<Array<ChatAllOut>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/p2p/orders/chats',
+            headers: {
+                'Authorization': authorization,
+            },
             errors: {
                 403: `Forbidden`,
                 422: `Validation Error`,

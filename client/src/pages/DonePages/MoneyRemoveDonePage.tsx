@@ -1,11 +1,10 @@
-import { useSelector } from "react-redux";
 import { Button } from "../../shared/ui";
 import DonePage from "./DonePage";
-import { StateSchema } from "../../app/providers/store";
+import { useAppSelector } from "../../app/providers/store";
 
 export default function MoneyRemoveDonePage() {
-    const link = useSelector(
-        (state: StateSchema) => state.moneyChange.receiptLink
+    const link = useAppSelector(
+        state => state.moneyChange.receiptLink
     )
     return <DonePage
         mainMessage="Чек для получения средств отправлен вам!"
