@@ -12,7 +12,7 @@ import type { ChatMessage } from '../models/ChatMessage';
 import type { ChatMessageCreate } from '../models/ChatMessageCreate';
 import type { ChatOut } from '../models/ChatOut';
 import type { DealCreate } from '../models/DealCreate';
-import type { DealOut } from '../models/DealOut';
+import type { DealsOut } from '../models/DealsOut';
 import type { PinChatRequest } from '../models/PinChatRequest';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -87,13 +87,13 @@ export class OrdersService {
      * Create Deal
      * @param authorization
      * @param requestBody
-     * @returns DealOut Successful Response
+     * @returns DealsOut Successful Response
      * @throws ApiError
      */
     public static createDealApiV1P2POrdersDealsPost(
         authorization: string,
         requestBody: DealCreate,
-    ): CancelablePromise<DealOut> {
+    ): CancelablePromise<DealsOut> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/p2p/orders/deals',
@@ -111,12 +111,12 @@ export class OrdersService {
     /**
      * Get User Deals
      * @param authorization
-     * @returns DealOut Successful Response
+     * @returns DealsOut Successful Response
      * @throws ApiError
      */
     public static getUserDealsApiV1P2POrdersDealsGet(
         authorization: string,
-    ): CancelablePromise<Array<DealOut>> {
+    ): CancelablePromise<Array<DealsOut>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/p2p/orders/deals',
@@ -132,13 +132,13 @@ export class OrdersService {
      * Get Deal
      * @param dealUuid
      * @param tgId
-     * @returns DealOut Successful Response
+     * @returns DealsOut Successful Response
      * @throws ApiError
      */
     public static getDealApiV1P2POrdersDealsDealUuidGet(
         dealUuid: string,
         tgId: number,
-    ): CancelablePromise<DealOut> {
+    ): CancelablePromise<DealsOut> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/p2p/orders/deals/{deal_uuid}',
@@ -157,13 +157,13 @@ export class OrdersService {
      * Confirm Deal
      * @param dealUuid
      * @param authorization
-     * @returns DealOut Successful Response
+     * @returns DealsOut Successful Response
      * @throws ApiError
      */
     public static confirmDealApiV1P2POrdersDealsDealUuidConfirmPost(
         dealUuid: string,
         authorization: string,
-    ): CancelablePromise<DealOut> {
+    ): CancelablePromise<DealsOut> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/p2p/orders/deals/{deal_uuid}/confirm',

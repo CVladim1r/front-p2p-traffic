@@ -6,15 +6,27 @@ import { useAppSelector } from "../../app/providers/store"
 import { selectAuthorization } from "../../entities/User"
 import { useState } from "react"
 import { Button, LoadingAnimation, TextField } from "../../shared/ui"
+import classNames from "classnames"
 
 
-function Message({sender_tg_id, text}: ChatMessage) {
+function Message({sender_tg_id, text, timestamp, sender_name}: ChatMessage) {
     const viewer_tg_id = useAppSelector(state => state.user.data?.tg_id)
     
     return (
-        <div className={viewer_tg_id == sender_tg_id ? "chat-message viewer" : "chat-message"}>
-            <p className={viewer_tg_id == sender_tg_id ? "chat-message-text viewer" : "chat-message-text"}>{text}</p>
-            {/* <p className="chat-message-time">{new Date(timestamp).toLocaleTimeString("ru", {timeStyle:"short"})}</p> */}
+        <div className={
+            classNames(
+                "chat-message",
+                {"viewer": viewer_tg_id == sender_tg_id},
+                {"admin": sender_name == "admin"})
+            }
+        >
+            <p className={
+                classNames(
+                    "chat-message-text",
+                    {"viewer": viewer_tg_id == sender_tg_id},
+                    {"admin": sender_name == "admin"})
+            }>{text}</p>
+            <p className="chat-message-time">{new Date(timestamp).toLocaleTimeString("ru", {timeStyle:"short"})}</p>
         </div>
     )
 }
@@ -25,23 +37,23 @@ export default function ChatPage() {
         return <>error</>
     
     const authorization = useAppSelector(selectAuthorization)
-    const userId = useAppSelector(state => state.user.data?.uuid)
 
     const [messages, setMessages] = useState<ChatMessage[]>([])
     const [text, setText] = useState("")
 
-    const {data} = useQuery({
+    const {data} = useQuery({ //TODO - update every second
         queryKey: ["chat"],
         queryFn: async () => {
             const response = await OrdersService.getChatApiV1P2POrdersDealsDealUuidChatGet(deal_id, authorization)
             setMessages(response.messages)
-            return response
-        }
+            return response 
+        },
+        refetchInterval: 1000
     })
 
     const {mutate} = useMutation({
         mutationFn: async () => {
-            const response = await OrdersService.sendChatMessageApiV1P2POrdersDealsDealUuidChatMessagesPost(deal_id, authorization, {text, sender_id: userId ?? "hui"})
+            const response = await OrdersService.sendChatMessageApiV1P2POrdersDealsDealUuidChatMessagesPost(deal_id, authorization, {text})
             setMessages([...messages, response])
             setText("")
         }
@@ -56,7 +68,7 @@ export default function ChatPage() {
                 ) : (
                     <>
                         {/* <div className="chat-top">
-                            <img src={data.} alt="" className="chat-top-avatar" />
+                            <img src={data.} alt="" className="chat-top-avatar" /> //TODO - кнопки открыть спор, подтверждение ордера
                             <p className="chat-top-username">{}</p>
                         </div> */}
                         <div className="chat-messages container">

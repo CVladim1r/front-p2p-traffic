@@ -42,7 +42,7 @@ export default function MoneyChange({type}: MoneyChangeProps) {
     )
     
     const maxMoney = +formatNumberTo3(balance / (1.02), 10)
-    const minMoney = 3
+    const minMoney = 5
     
     const {mutate} = useMutation({
         mutationFn: async () => {
@@ -77,7 +77,7 @@ export default function MoneyChange({type}: MoneyChangeProps) {
                         currencyTypes.map(val => ({value: val, icon: currencyIcons[val]}))
                     }
                     />
-                    <div className={type != "add" && (+money > maxMoney || +money < minMoney) ? "moneychange-block-money error " : "moneychange-block-money"}>
+                    <div className={money != "" && type == "remove" && (+money > maxMoney || +money < minMoney) ? "moneychange-block-money error " : "moneychange-block-money"}>
                         <TextField
                             style={{
                                 width: Math.min(getTextWidth(money ? money : moneyType, "600 40px Inter"), 280)
@@ -101,8 +101,13 @@ export default function MoneyChange({type}: MoneyChangeProps) {
                     </div>
                     
                     <div className="moneychange-comission">
-                        <p>Комиссия:</p>
-                        <p>≈{formatNumberTo3(Number(money) * 0.02)} {moneyType}</p>
+                        {type == "remove" &&
+                        <>
+                            <p>Комиссия:</p>
+                            {/* <p>≈{formatNumberTo3(Number(money) * 0.02)} {moneyType}</p> */}
+                            <p>≈1 TON</p>
+                        </>
+                        }
                     </div>
                 </div>
                 {type == "remove" &&
@@ -124,7 +129,7 @@ export default function MoneyChange({type}: MoneyChangeProps) {
                 
                 <Button
                     type="submit"
-                    disabled={Number.isNaN(Number(money)) || (type == "remove" && +money > maxMoney && +money < minMoney)}
+                    disabled={Number.isNaN(Number(money)) || (type == "remove" && (+money > maxMoney || +money < minMoney))}
                 >
                     Получить чек
                 </Button>

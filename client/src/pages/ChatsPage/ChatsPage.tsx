@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query"
 import { ChatAllOut, OrdersService } from "../../shared/api"
 import { useAppSelector } from "../../app/providers/store"
 import { selectAuthorization } from "../../entities/User"
-import { useState } from "react"
 import { LoadingAnimation } from "../../shared/ui"
 import { RoutePaths } from "../../app/providers/router"
 
@@ -25,30 +24,28 @@ function Chat({deal_uuid, counterpart_isvip, counterpart_photo, counterpart_user
 export default function ChatsPage() {
     const authorization = useAppSelector(selectAuthorization)
     
-    const [chats, setChats] = useState<ChatAllOut[]>([])
-
-    const {isFetching} = useQuery({
+    const {data} = useQuery({
         queryKey: ["chats"],
         queryFn: async () => {
-            setChats(await OrdersService.getAllChatsApiV1P2POrdersChatsGet(authorization))
+            return await OrdersService.getAllChatsApiV1P2POrdersChatsGet(authorization)
         }
     })
     
     return (
         <div className="chats container">
-            {isFetching ? (
+            {!data ? (
                 <LoadingAnimation />
                 ) : 
-                    chats ? (
+                    data ? (
                         <>
-                            {chats.some(val => val.is_pinned) &&
+                            {data.some(val => val.is_pinned) &&
                                 <div className="chats-pinned">
-                                    {chats.filter(value => value.is_pinned).map(value => (
+                                    {data.filter(value => value.is_pinned).map(value => (
                                         <Chat key={value.uuid} {...value} />
                                     ))}
                                 </div>
                             }
-                            {chats.filter(value => !value.is_pinned).map(value => (
+                            {data.filter(value => !value.is_pinned).map(value => (
                                 <Chat key={value.uuid} {...value} />
                             ))}
                         </> 

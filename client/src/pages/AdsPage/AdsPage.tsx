@@ -135,6 +135,7 @@ export default function AdsPage() {
         state => state.filters.activeFilter
     )
     const authorization = useAppSelector(selectAuthorization)
+    const userUuid = useAppSelector(s => s.user.data?.uuid)
 
     const {data, isFetching} = useQuery({
         queryKey: ['getOrders', filtersData.theme],
@@ -202,7 +203,7 @@ export default function AdsPage() {
                     <LoadingAnimation />
                 :
                     ads.map(value => (
-                        <Ad key={value.uuid} onClickBuy={() => mutate(value.uuid)} {...value}/>
+                        <Ad key={value.uuid} onClickBuy={() => mutate(value.uuid)} showButtons={value.user != userUuid} {...value}/>
                     ))
                 }
             </div>

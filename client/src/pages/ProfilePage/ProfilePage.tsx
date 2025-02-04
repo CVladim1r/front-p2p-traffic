@@ -9,12 +9,23 @@ import { Button } from "../../shared/ui"
 import { useState } from "react"
 import { formatNumberTo3 } from "../../shared/lib/lib"
 import { useAppSelector } from "../../app/providers/store"
+import { useAdsgram } from "../../shared/lib/hooks"
 
 export default function ProfilePage() {
   // const [showGacha, setShowGacha] = useState(false)
 
   const userData = useAppSelector(state => state.user.data)
   const [spin, setSpin] = useState(false)
+
+  const showAd = useAdsgram({
+    blockId: "7693", 
+    onError(result) {
+      console.log(`error: ${result.description}`);
+    },
+    onReward() {
+      setSpin(true)
+    },
+  })
 
   return (
     <Profile username={userData?.username ?? "none"}
@@ -74,7 +85,7 @@ export default function ProfilePage() {
          
         <div onClick={() => setSpin(false)} className={spin ? "profile-body-gacha-dark-overlay active" : "profile-body-gacha-dark-overlay"}></div>
         <img src={gacha} alt="" className= {spin ? "profile-body-gacha-image spin" : "profile-body-gacha-image"}/>
-        <Button onClick={() => setSpin(true)} className="profile-body-gacha-button">Крутить</Button>
+        <Button onClick={() => showAd()} className="profile-body-gacha-button">Крутить</Button>
           
       </div>
     </Profile>

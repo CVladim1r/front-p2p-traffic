@@ -14,7 +14,7 @@
     overflow-y: auto;
 }
 .chat-messages > :first-child {
-    margin-top: auto;
+    margin-top: auto !important;
 }
 
 .chat-message {
@@ -25,9 +25,15 @@
 .chat-message.viewer {
     align-items: end;
 }
+.chat-message.admin {
+    align-items: center;
+
+    margin: 10px 0px;
+    padding: 5px 10px;
+}
 
 .chat-message-text {
-    font-size: 16px;
+    font-size: 14px;
     
     padding: 5px 10px;
     max-width: 75%;
@@ -37,6 +43,12 @@
 }
 .chat-message-text.viewer {
     background-color: #2D83EC;
+}
+.chat-message-text.admin {
+    width: 100%;
+    max-width: 100%;
+
+    background-color: #2B2B2B;
 }
 
 .chat-message-time {

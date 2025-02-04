@@ -1,12 +1,12 @@
 import "./InfoPage.css"
-import { user } from "../../telegram"
+import { user } from "../../index"
 import { TextField } from "../../shared/ui"
 import { Link } from "react-router-dom"
 
 export default function InfoPage() {
   return (
     <div className="info container">
-      <img src={user.photo_url} alt="" className="info-avatar" />
+      <img src={user?.photo_url} alt="" className="info-avatar" />
       <div className="info-group">
         <div className="info-row">
           <p className="info-row-key">Канал</p>

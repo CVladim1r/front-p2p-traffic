@@ -4,7 +4,7 @@
 /* eslint-disable */
 import type { DealStatus } from './DealStatus';
 import type { TransactionCurrencyType } from './TransactionCurrencyType';
-export type DealOut = {
+export type DealsOut = {
     uuid: string;
     ad_uuid: string;
     buyer_id: string;

@@ -23,7 +23,7 @@ export type { ChatMessage } from './models/ChatMessage';
 export type { ChatMessageCreate } from './models/ChatMessageCreate';
 export type { ChatOut } from './models/ChatOut';
 export type { DealCreate } from './models/DealCreate';
-export type { DealOut } from './models/DealOut';
+export type { DealsOut } from './models/DealsOut';
 export { DealStatus } from './models/DealStatus';
 export type { HTTPValidationError } from './models/HTTPValidationError';
 export type { InitDataIn } from './models/InitDataIn';
