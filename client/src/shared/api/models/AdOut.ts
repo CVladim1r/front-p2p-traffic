@@ -3,11 +3,12 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { AdStatus } from './AdStatus';
-import type { Categories } from './Categories';
+import type { CategoriesAds } from './CategoriesAds';
 import type { TransactionCurrencyType } from './TransactionCurrencyType';
+import type { TypeUserAcquisition } from './TypeUserAcquisition';
 export type AdOut = {
     uuid: string;
-    category: Categories;
+    category: CategoriesAds;
     title: string;
     description: string;
     price: (number | null);
@@ -19,6 +20,7 @@ export type AdOut = {
     conditions: string;
     is_paid_promotion: boolean;
     status: AdStatus;
+    ad_type: TypeUserAcquisition;
     user: string;
     user_name: string;
     user_photo_url: string;

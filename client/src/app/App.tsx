@@ -6,7 +6,7 @@ import { appActions } from "../entities/App/slice/appSlice";
 import Layout from "./Layout";
 import "./App.css"
 // import { logActions } from "../entities/Log/slice/logSlice";
-import { user } from "../telegram";
+import { user } from "../index";
 import { additionalActions } from "../entities/Additional/slice/additionalSlice";
 import { useAppSelector } from "./providers/store";
 
@@ -17,7 +17,7 @@ function App() {
   const authorization = useAppSelector(selectAuthorization);
 
   const updateUserPhoto = async () => {
-    if (!user.photo_url)
+    if (!user?.photo_url)
       return
 
     try {

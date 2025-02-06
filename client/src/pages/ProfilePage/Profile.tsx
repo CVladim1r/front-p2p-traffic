@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import { user } from "../../telegram"
 import "./Profile.css"
+import { useAppSelector } from "../../app/providers/store";
 
 type ProfileProps = {
   children: ReactNode,
@@ -9,15 +9,17 @@ type ProfileProps = {
 }
 
 export default function Profile({username, children, topChildren}: ProfileProps) {
-    return (
-      <div className="profile container">
-        <div className="profile-top">
-          <img src={user?.photo_url} alt="" className="profile-image"/> {/* change user -> window.Telegram.WebApp.initDataUnsafe.user */}
-          <p className="profile-name">@{username}</p>
+  const photo = useAppSelector(s => s.user.data?.profile_photo)  
+  
+  return (
+    <div className="profile container">
+      <div className="profile-top">
+        <img src={photo ?? ""} alt="" className="profile-image"/>
+        <p className="profile-name">@{username}</p>
 
-          {topChildren}
-        </div>
-        {children}
+        {topChildren}
       </div>
-    )
+      {children}
+    </div>
+  )
   }

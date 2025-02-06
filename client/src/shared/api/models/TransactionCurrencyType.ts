@@ -6,5 +6,5 @@ export enum TransactionCurrencyType {
     TON = 'TON',
     BTC = 'BTC',
     USDT = 'USDT',
-    JET = 'JET',
+    ETH = 'ETH',
 }

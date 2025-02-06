@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { TransactionCurrencyType } from '../models/TransactionCurrencyType';
 import type { UserBalanceOut } from '../models/UserBalanceOut';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -9,12 +10,14 @@ import { request as __request } from '../core/request';
 export class BalanceService {
     /**
      * Create Deposit
+     * @param currency
      * @param amount
      * @param authorization
      * @returns UserBalanceOut Successful Response
      * @throws ApiError
      */
     public static createDepositApiV1P2PBalanceDepositPost(
+        currency: TransactionCurrencyType,
         amount: number,
         authorization: string,
     ): CancelablePromise<UserBalanceOut> {
@@ -25,6 +28,7 @@ export class BalanceService {
                 'Authorization': authorization,
             },
             query: {
+                'currency': currency,
                 'amount': amount,
             },
             errors: {
@@ -36,12 +40,14 @@ export class BalanceService {
     /**
      * Withdraw Funds
      * @param amount
+     * @param currency
      * @param authorization
      * @returns UserBalanceOut Successful Response
      * @throws ApiError
      */
     public static withdrawFundsApiV1P2PBalanceWithdrawPost(
         amount: number,
+        currency: TransactionCurrencyType,
         authorization: string,
     ): CancelablePromise<UserBalanceOut> {
         return __request(OpenAPI, {
@@ -52,6 +58,7 @@ export class BalanceService {
             },
             query: {
                 'amount': amount,
+                'currency': currency,
             },
             errors: {
                 400: `Bad Request`,

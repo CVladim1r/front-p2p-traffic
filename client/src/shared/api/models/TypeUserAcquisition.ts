@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type ChatMessageCreate = {
-    text: string;
-};
-
+export enum TypeUserAcquisition {
+    POST = 'Post',
+    _ = 'Рассылка в боте',
+}

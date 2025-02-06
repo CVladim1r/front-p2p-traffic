@@ -13,9 +13,9 @@ export function Ad({showButtons, onClickBuy, onClickShare, ...data}: AdProps) {
     return (
         <div className="ad">
             <div className={showButtons ?? true ? "ad-top-row" : "ad-top-row no-buttons"}>
-                <div>
+                <div className="ad-top-row-info">
                     <p className="ad-top-row-price">{data.price} {data.currency_type}</p>
-                    <p className="ad-top-row-type">за человека</p>
+                    <p className="ad-top-row-type">за пост</p>
                 </div>
                 
                 { (showButtons ?? true) &&
@@ -37,7 +37,7 @@ export function Ad({showButtons, onClickBuy, onClickShare, ...data}: AdProps) {
                 <div className="ad-content-user">
                     <img src={data.user_photo_url ?? testuser} alt="" className="ad-content-user-img"/> 
                     <p className={data.user_vip ? "ad-content-user-name vip" : "ad-content-user-name"}>{data.user_name}</p>
-                    <p className="ad-content-user-info">сделок: {data.user_deals} • {data.user_rating}</p>
+                    {/* <p className="ad-content-user-info">сделок: {data.user_deals} • {data.user_rating}</p> */}
                 </div>
                 <div className="ad-content-info-elem">
                     <p className="ad-content-info-elem-key">Тематика</p>

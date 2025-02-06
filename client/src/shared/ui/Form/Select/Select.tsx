@@ -37,7 +37,8 @@ export function Select({optionsData, defaultValue, fontSize, backgroundColor="#2
     }, [])
 
     return (
-        <div
+        <button
+            type="button"
             className={isOpen ? "form-select open" : "form-select"}
             style={{
                 width: maxWidth,
@@ -45,6 +46,7 @@ export function Select({optionsData, defaultValue, fontSize, backgroundColor="#2
                 fontSize
             }}
             onClick={() => setIsOpen(!isOpen)}
+            onBlur={() => setIsOpen(false)}
         >
             {optionsData[index].icon != undefined &&
                 <img className="form-select-icon" src={optionsData[index].icon} alt="" />
@@ -80,6 +82,6 @@ export function Select({optionsData, defaultValue, fontSize, backgroundColor="#2
                     }
                 </div>
             }
-        </div>
+        </button>
     )
 }

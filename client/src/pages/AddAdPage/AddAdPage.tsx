@@ -48,7 +48,7 @@ export default function AddAdPage() {
         navigate(RoutePaths.previewAd)
     }
 
-    const isValid = () => source && minimum_traffic && maximum_traffic && price && title && description && minimum_traffic <= maximum_traffic
+    const isValid = () => source && title && description && minimum_traffic > 0 && maximum_traffic > 0 && price > 0 && minimum_traffic <= maximum_traffic
 
     const [guaranteed_traffic, setGuaranteed_traffic] = useState(data?.guaranteed_traffic ?? true)
     const savedSource = useAppSelector(
@@ -98,7 +98,7 @@ export default function AddAdPage() {
                         
                         <div className="add-ad-form-amount">
                             <div className="add-ad-form-amount-container">
-                                <p className="add-ad-form-amount-key">От</p> {/* TODO - negative numbers restrict*/}
+                                <p className="add-ad-form-amount-key">От</p>
                                 <TextField className="add-ad-TextField add-ad-form-amount-TextField" type="number" value={minimum_traffic ? minimum_traffic : ""} onChange={e => setMinimum_traffic(e.target.value ? +e.target.value : 0)} required/>
                             </div>
                             <div className="add-ad-form-amount-container">
@@ -133,7 +133,7 @@ export default function AddAdPage() {
                             </div>
                         </div>
                         <div className="add-ad-form-row-content add-ad-form-row-info">
-                            <p>Стоимость платного размещения ̶3̶0̶$̶  5̶$̶  да </p>
+                            <p>Стоимость платного размещения 5$</p>
                         </div>
                     </div>
 

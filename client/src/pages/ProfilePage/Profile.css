@@ -98,8 +98,11 @@
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
 }
+.profile-body-money-text.null {
+    color: #A1A1AA;
+}
 
-.profile-body-money-text::after {
+/* .profile-body-money-text::after {
     position: absolute;
     content: "";
 
@@ -113,7 +116,7 @@
     background-image: url("/src/shared/assets/svg/profile_arrows_money.svg");
     background-repeat: no-repeat;
     background-size: contain;
-}
+} */
 
 .profile-body-money-add {
     font-size: 16px;
