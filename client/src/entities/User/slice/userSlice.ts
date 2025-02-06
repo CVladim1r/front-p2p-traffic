@@ -6,7 +6,6 @@ import { StateSchema } from "../../../app/providers/store";
 export interface UserSchema {
   isLoggingIn: boolean;
   authorization: string;
-  _initialized: boolean;
   data?: UserMainPageOut;
   wallet?: string;
 }
@@ -14,7 +13,6 @@ export interface UserSchema {
 const initialState: UserSchema = {
   isLoggingIn: true,
   authorization: localStorage.getItem(USER_ACCESS_TOKEN_KEY) ?? "",
-  _initialized: false,
 };
 
 const userSlice = createSlice({
@@ -27,14 +25,11 @@ const userSlice = createSlice({
     setUserIsLogging: (state, action: PayloadAction<boolean>) => {
       state.isLoggingIn = action.payload;
     },
-    initAuthorization: (state) => {
-      const at = localStorage.getItem(USER_ACCESS_TOKEN_KEY);
-      if (at) {
-        state.authorization = at;
-      }
-      state._initialized = true;
-    },
     setAuthorization: (state, action: PayloadAction<string>) => {
+      if (action.payload)
+        localStorage.setItem(USER_ACCESS_TOKEN_KEY, action.payload);
+      else
+        localStorage.removeItem(USER_ACCESS_TOKEN_KEY)
       state.authorization = action.payload;
     },
   },

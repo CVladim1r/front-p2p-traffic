@@ -43,7 +43,7 @@ export default function MoneyChange({type}: MoneyChangeProps) {
         state => state.user.data?.balance ?? {}
     )
     
-    const maxMoney = +formatNumberTo3((balance[moneyType] ?? 0) / 1.02, 10)
+    const maxMoney = +formatNumberTo3((balance[moneyType] ?? 1) - 1, 10)
     const minMoney = 5
     
     const {mutate} = useMutation({

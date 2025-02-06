@@ -16,7 +16,7 @@ type SelectProps = {
 
 // 
 export function Select({optionsData, defaultValue, fontSize, backgroundColor="#2B2B2B", onChange}: SelectProps) {
-    const [index, setIndex] = useState(defaultValue != undefined ? optionsData.findIndex(val => val.value == defaultValue) : 0)
+    const [index, setIndex] = useState(defaultValue != undefined && optionsData.some(val => val.value == defaultValue) ? optionsData.findIndex(val => val.value == defaultValue) : 0)
     const [isOpen, setIsOpen] = useState(false)
     const [maxWidth, setMaxWidth] = useState(0)
     const [hasIcons, setHasIcons] = useState(false)

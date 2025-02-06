@@ -1,0 +1,23 @@
+.no-tg {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 30px;
+
+    height: 100%;
+}
+
+.no-tg-message {
+    text-align: center;
+    font-size: 24px;
+}
+
+.no-tg-link {
+    text-align: center;
+    font-size: 24px;
+
+    padding: 16px 0px;
+
+    background-color: #2D83EC;
+    border-radius: 20px;
+}

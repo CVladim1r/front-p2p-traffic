@@ -34,4 +34,18 @@ export class AdditionalService {
             },
         });
     }
+    /**
+     * Get Categories
+     * @returns string Successful Response
+     * @throws ApiError
+     */
+    public static getCategoriesApiV1P2POtherUserAcquisitionTypeGet(): CancelablePromise<Array<string>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/p2p/other/user_acquisition_type',
+            errors: {
+                400: `Bad Request`,
+            },
+        });
+    }
 }

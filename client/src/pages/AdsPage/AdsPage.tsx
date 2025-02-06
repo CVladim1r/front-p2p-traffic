@@ -5,7 +5,7 @@ import "./AdsPage.css"
 import { useDispatch } from "react-redux"
 import { filtersActions } from "../../entities/Filters"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { AdOut, AdStatus, Categories, OrdersService } from "../../shared/api"
+import { AdOut, AdStatus, CategoriesAds, OrdersService } from "../../shared/api"
 import { LoadingAnimation } from "../../shared/ui/LottieAnimations"
 import { useAppSelector } from "../../app/providers/store"
 import { selectAuthorization } from "../../entities/User"
@@ -140,7 +140,7 @@ export default function AdsPage() {
     const {data, isFetching} = useQuery({
         queryKey: ['getOrders', filtersData.theme],
         queryFn: async () => {           
-            return (await OrdersService.getAdsApiV1P2POrdersAdsGet(filtersData.theme as Categories)).sort((a, b) => {
+            return (await OrdersService.getAdsApiV1P2POrdersAdsGet(filtersData.theme as CategoriesAds)).sort((a, b) => {
                 if (a.is_paid_promotion == b.is_paid_promotion)
                     return 0
         

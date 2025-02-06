@@ -129,31 +129,6 @@ export class OrdersService {
         });
     }
     /**
-     * Get Deal
-     * @param dealUuid
-     * @param tgId
-     * @returns DealsOut Successful Response
-     * @throws ApiError
-     */
-    public static getDealApiV1P2POrdersDealsDealUuidGet(
-        dealUuid: string,
-        tgId: number,
-    ): CancelablePromise<DealsOut> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/p2p/orders/deals/{deal_uuid}',
-            path: {
-                'deal_uuid': dealUuid,
-            },
-            query: {
-                'tg_id': tgId,
-            },
-            errors: {
-                422: `Validation Error`,
-            },
-        });
-    }
-    /**
      * Confirm Deal
      * @param dealUuid
      * @param authorization

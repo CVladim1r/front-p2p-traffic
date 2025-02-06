@@ -11,6 +11,7 @@ export type AdCreate = {
     title: string;
     description: string;
     currency_type: TransactionCurrencyType;
+    user_currency_for_payment: TransactionCurrencyType;
     link_to_channel: string;
     maximum_traffic: number;
     price: number;
