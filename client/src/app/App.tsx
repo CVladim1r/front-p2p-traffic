@@ -49,7 +49,7 @@ function App() {
     }
 
     try {
-      const response = await AdditionalService.getCategoriesApiV1P2POtherUserAcquisitionTypeGet() //TODO после generate api обновить
+      const response = await AdditionalService.getUserAcquisitionTypeApiV1P2POtherUserAcquisitionTypeGet()
       dispatch(additionalActions.setUserAcquisitionType(response))
       console.log("Got user acquisition types");
     } catch (error) {
@@ -58,17 +58,17 @@ function App() {
   }
 
   const authUser = async () => {
-    // if (import.meta.env.DEV && authorization) {
-    //   try {
-    //     const response = await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)
-    //     dispatch(userActions.setUserData(response));
-    //     console.log("old auth + data done")
-    //     return true
-    //   } catch (error) {
-    //       dispatch(appActions.setErrorMessage("Не удалось загрузить данные пользователя"))
-    //       return false
-    //   }
-    // }
+    if (import.meta.env.DEV && authorization) {
+      try {
+        const response = await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)
+        dispatch(userActions.setUserData(response));
+        console.log("old auth + data done")
+        return true
+      } catch (error) {
+          dispatch(appActions.setErrorMessage("Не удалось загрузить данные пользователя"))
+          return false
+      }
+    }
     
     if (!window.Telegram.WebApp.initDataUnsafe.user || !window.Telegram.WebApp.initDataUnsafe.user.username) {
       dispatch(appActions.setNoTgData(true))

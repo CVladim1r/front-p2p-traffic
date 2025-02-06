@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
 import "../Form.css"
 import { getTextWidth } from "../../../lib"
+import classNames from "classnames"
 
 type SelectProps = {
     fontSize?: number,
     backgroundColor?: string,
+    className?: string
     defaultValue?: string,
     optionsData: {
         value: string
@@ -15,7 +17,7 @@ type SelectProps = {
 }
 
 // 
-export function Select({optionsData, defaultValue, fontSize, backgroundColor="#2B2B2B", onChange}: SelectProps) {
+export function Select({optionsData, defaultValue, fontSize, backgroundColor="#2B2B2B", onChange, className}: SelectProps) {
     const [index, setIndex] = useState(defaultValue != undefined && optionsData.some(val => val.value == defaultValue) ? optionsData.findIndex(val => val.value == defaultValue) : 0)
     const [isOpen, setIsOpen] = useState(false)
     const [maxWidth, setMaxWidth] = useState(0)
@@ -39,7 +41,11 @@ export function Select({optionsData, defaultValue, fontSize, backgroundColor="#2
     return (
         <button
             type="button"
-            className={isOpen ? "form-select open" : "form-select"}
+            className={classNames(
+                "form-select",
+                {"open": isOpen},
+                className
+            )}
             style={{
                 width: maxWidth,
                 backgroundColor,

@@ -11,7 +11,9 @@ import type { ChatAllOut } from '../models/ChatAllOut';
 import type { ChatMessage } from '../models/ChatMessage';
 import type { ChatMessageCreate } from '../models/ChatMessageCreate';
 import type { ChatOut } from '../models/ChatOut';
+import type { ChatPinOut } from '../models/ChatPinOut';
 import type { DealCreate } from '../models/DealCreate';
+import type { DealOutCOMPLETE } from '../models/DealOutCOMPLETE';
 import type { DealsOut } from '../models/DealsOut';
 import type { PinChatRequest } from '../models/PinChatRequest';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -132,13 +134,13 @@ export class OrdersService {
      * Confirm Deal
      * @param dealUuid
      * @param authorization
-     * @returns DealsOut Successful Response
+     * @returns DealOutCOMPLETE Successful Response
      * @throws ApiError
      */
     public static confirmDealApiV1P2POrdersDealsDealUuidConfirmPost(
         dealUuid: string,
         authorization: string,
-    ): CancelablePromise<DealsOut> {
+    ): CancelablePromise<DealOutCOMPLETE> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/p2p/orders/deals/{deal_uuid}/confirm',
@@ -215,14 +217,14 @@ export class OrdersService {
      * @param chatUuid
      * @param authorization
      * @param requestBody
-     * @returns ChatOut Successful Response
+     * @returns ChatPinOut Successful Response
      * @throws ApiError
      */
     public static pinChatApiV1P2POrdersDealsChatUuidChatPinPatch(
         chatUuid: string,
         authorization: string,
         requestBody: PinChatRequest,
-    ): CancelablePromise<ChatOut> {
+    ): CancelablePromise<ChatPinOut> {
         return __request(OpenAPI, {
             method: 'PATCH',
             url: '/api/v1/p2p/orders/deals/{chat_uuid}/chat/pin',

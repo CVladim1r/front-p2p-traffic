@@ -75,7 +75,7 @@ export default function MoneyChange({type}: MoneyChangeProps) {
                 className="moneychange-form"
             >
                 <div className="moneychange-block">
-                    <Select fontSize={24} backgroundColor="#3D3D3D" onChange={val => setMoneyType(val)} optionsData={ //TODO Remove Ton when add
+                    <Select fontSize={24} backgroundColor="#3D3D3D" onChange={val => setMoneyType(val)} optionsData={
                         currencyTypes.map(val => ({value: val, icon: currencyIcons[val]}))
                     }
                     />

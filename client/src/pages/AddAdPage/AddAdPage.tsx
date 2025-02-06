@@ -15,6 +15,11 @@ import { formatNumberTo3 } from "../../shared/lib/lib"
 import { Switch } from "../../shared/ui/Form/Switch/Switch"
 import { useAppSelector } from "../../app/providers/store"
 
+const paid_cost: {[key: string]: number} = {
+    "TON": 1.4,
+    "USDT": 5,
+}
+
 export default function AddAdPage() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -22,6 +27,8 @@ export default function AddAdPage() {
     const additional = useAppSelector(
         state => state.additional
     )
+
+    const balance = useAppSelector(s => s.user.data?.balance ?? {})
     
     const data = useAppSelector(
     state => state.addAd.data,
@@ -44,13 +51,13 @@ export default function AddAdPage() {
             title, 
             description,
             conditions,
-            user_currency_for_payment: TransactionCurrencyType.TON,
+            user_currency_for_payment: userPayCurrencyType,
         }))
         
         navigate(RoutePaths.previewAd)
     }
 
-    const isValid = () => source && title && description && minimum_traffic > 0 && maximum_traffic > 0 && price > 0 && minimum_traffic <= maximum_traffic
+    const isValid = () => source && conditions && title && description && price > 0 && minimum_traffic > 0 && (ad_type == TypeUserAcquisition.POST || maximum_traffic > 0 && minimum_traffic <= maximum_traffic) && (!is_paid_promotion || (balance[userPayCurrencyType] ?? 0) >= paid_cost[userPayCurrencyType])
 
     const [guaranteed_traffic, setGuaranteed_traffic] = useState(data?.guaranteed_traffic ?? true)
     const savedSource = useAppSelector(
@@ -58,13 +65,13 @@ export default function AddAdPage() {
     )
     const [source, setSource] = useState(savedSource ?? "")
     const [category, setCategory] = useState(data?.category ?? additional.categories[0] as CategoriesAds)
-    const [ad_type, setAd_type] = useState(data?.ad_type ?? TypeUserAcquisition.POST)
+    const [ad_type, setAd_type] = useState(data?.ad_type ?? additional.userAcquisitionType[0] as TypeUserAcquisition)
     const [minimum_traffic, setMinimum_traffic] = useState(data?.minimum_traffic ?? 0)
     const [maximum_traffic, setMaximum_traffic] = useState(data?.maximum_traffic ?? 0)
     const [price, setPrice] = useState(data?.price ?? 0)
     const [currencyType, setCurrencyType] = useState(data?.currency_type ?? additional.currencyTypes[0] as TransactionCurrencyType)
     const [is_paid_promotion, setIs_paid_promotion] = useState(data?.is_paid_promotion ?? false)
-    // const [userPayCurrencyType, setUserPayCurrencyType] = useState(data?.user_currency_for_payment ?? additional.currencyTypes[0] as TransactionCurrencyType)
+    const [userPayCurrencyType, setUserPayCurrencyType] = useState(data?.user_currency_for_payment ?? additional.currencyTypes[0] as TransactionCurrencyType)
     const [conditions, setConditions] = useState(data?.conditions ?? "")
     const [title, setTitle] = useState(data?.title ?? "")
     const [description, setDescription] = useState(data?.description ?? "")    
@@ -99,10 +106,10 @@ export default function AddAdPage() {
                     </div>
 
                     <div className="add-ad-form-row add-ad-form-row-content">
-                        <p className="add-ad-form-row-key">Тематика</p>
+                        <p className="add-ad-form-row-key">Тип байта</p>
 
                         <Select onChange={val => setAd_type(val as TypeUserAcquisition)} defaultValue={ad_type} optionsData={
-                            (Object.values(TypeUserAcquisition)).map(val => ({value: val}))
+                            additional.userAcquisitionType.map(val => ({value: val}))
                         }/>
                     </div>
                     
@@ -111,13 +118,15 @@ export default function AddAdPage() {
                         
                         <div className="add-ad-form-amount">
                             <div className="add-ad-form-amount-container">
-                                <p className="add-ad-form-amount-key">От</p>
-                                <TextField className="add-ad-TextField add-ad-form-amount-TextField" type="number" value={minimum_traffic ? minimum_traffic : ""} onChange={e => setMinimum_traffic(e.target.value ? +e.target.value : 0)} required/>
+                                {ad_type != TypeUserAcquisition.POST && <p className="add-ad-form-amount-key">От</p> }
+                                <TextField className="add-ad-TextField add-ad-form-amount-TextField" placeholder={ad_type == TypeUserAcquisition.POST ? "Введите число" : ""} type="number" value={minimum_traffic ? minimum_traffic : ""} onChange={e => setMinimum_traffic(e.target.value ? +e.target.value : 0)} required/>
                             </div>
-                            <div className="add-ad-form-amount-container">
-                                <p className="add-ad-form-amount-key">До</p>
-                                <TextField className="add-ad-TextField add-ad-form-amount-TextField" type="number" value={maximum_traffic ? maximum_traffic : ""} onChange={e => setMaximum_traffic(e.target.value ? +e.target.value : 0)} required/>
-                            </div>
+                            {ad_type != TypeUserAcquisition.POST &&
+                                <div className="add-ad-form-amount-container">
+                                    <p className="add-ad-form-amount-key">До</p>
+                                    <TextField className="add-ad-TextField add-ad-form-amount-TextField" type="number" value={maximum_traffic ? maximum_traffic : ""} onChange={e => setMaximum_traffic(e.target.value ? +e.target.value : 0)} required/>
+                                </div>
+                            }
                         </div>
                     </div>
 
@@ -133,7 +142,7 @@ export default function AddAdPage() {
                             </div>
                         </div>
                         <div className="add-ad-form-row-content add-ad-form-row-info">
-                            <p>Цена за человека ≈ {minimum_traffic && maximum_traffic && price ? formatNumberTo3(price * 2 / (maximum_traffic + minimum_traffic)) : "-"} {currencyType}</p>
+                            { ad_type != TypeUserAcquisition.POST && <p>Цена за человека ≈ {minimum_traffic && maximum_traffic && price ? formatNumberTo3(price * 2 / (maximum_traffic + minimum_traffic)) : "-"} {currencyType}</p>}
                         </div>
                     </div>
 
@@ -146,7 +155,10 @@ export default function AddAdPage() {
                             </div>
                         </div>
                         <div className="add-ad-form-row-content add-ad-form-row-info">
-                            <p>Стоимость платного размещения 5$</p>
+                            <p>Стоимость ≈ {is_paid_promotion ? `${paid_cost[userPayCurrencyType]} ${userPayCurrencyType}` : "5 $"}</p>
+                            <Select className={is_paid_promotion ? "add-ad-form-userpay-currency show" : "add-ad-form-userpay-currency"} fontSize={12} onChange={val => setUserPayCurrencyType(val as TransactionCurrencyType)} defaultValue={userPayCurrencyType} optionsData={
+                                additional.currencyTypes.map(val => ({value: val}))
+                            } />
                         </div>
                     </div>
 
