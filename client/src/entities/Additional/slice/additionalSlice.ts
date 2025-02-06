@@ -3,11 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface AdditionalSchema {
   currencyTypes: string[],
   categories: string[],
+  userAcquisitionType: string[],
 }
 
 const initialState: AdditionalSchema = {
   currencyTypes: [],
   categories: [],
+  userAcquisitionType: [],
 };
   
 const additionalSlice = createSlice({
@@ -20,6 +22,9 @@ const additionalSlice = createSlice({
     setCategories: (state, action: PayloadAction<string[]>) => {
       state.categories = action.payload
     },
+    setUserAcquisitionType: (state, action: PayloadAction<string[]>) => {
+      state.userAcquisitionType = action.payload
+    }
   },
 });
   

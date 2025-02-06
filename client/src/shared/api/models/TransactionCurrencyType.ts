@@ -4,7 +4,5 @@
 /* eslint-disable */
 export enum TransactionCurrencyType {
     TON = 'TON',
-    BTC = 'BTC',
     USDT = 'USDT',
-    ETH = 'ETH',
 }

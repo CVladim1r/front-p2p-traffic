@@ -2,16 +2,32 @@ import { NavBar } from "../shared/ui";
 import AppRouter from "./providers/router/Router";
 import { LoadingAnimation } from "../shared/ui/LottieAnimations";
 import { useAppSelector } from "./providers/store";
-// import { loadingAnimation } from "../shared/assets";
-// import Lottie from "react-lottie";
+import { NoTgDataPage } from "../pages";
+import { Suspense } from "react";
 
 export const Layout = () => {
-  const { isLoading, error } = useAppSelector(
+  const { isLoading, errorMessage, noTgData } = useAppSelector(
     state => state.app
   );
 
-  if (error)
-    return <p>error: {error}</p>
+  if (errorMessage)
+    return <p
+        style={{
+          textAlign: "center",
+          fontSize: 24,
+          position: "relative",
+          top: "50%",
+          transform: "translateY(-50%)"
+        }}
+      >
+        {errorMessage}
+      </p>
+  else if (noTgData)
+    return (
+      <Suspense fallback={<LoadingAnimation/>}>
+        <NoTgDataPage />
+      </Suspense>
+    )
   else if (isLoading)
     return <LoadingAnimation />
   else

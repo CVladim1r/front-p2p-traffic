@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux"
 import { addAdActions } from "../../entities/AddAd/slice/addAdSlice"
 import { RoutePaths } from "../../app/providers/router"
 import { FormEvent, useState } from "react"
-import { Categories, TransactionCurrencyType } from "../../shared/api"
+import { CategoriesAds, TransactionCurrencyType, TypeUserAcquisition } from "../../shared/api"
 import { formatNumberTo3 } from "../../shared/lib/lib"
 import { Switch } from "../../shared/ui/Form/Switch/Switch"
 import { useAppSelector } from "../../app/providers/store"
@@ -35,6 +35,7 @@ export default function AddAdPage() {
             guaranteed_traffic,
             link_to_channel: source,
             category,
+            ad_type,
             minimum_traffic,
             maximum_traffic,
             price,
@@ -42,7 +43,8 @@ export default function AddAdPage() {
             is_paid_promotion,
             title, 
             description,
-            conditions: "pizdec", //NOTE - ??
+            conditions,
+            user_currency_for_payment: TransactionCurrencyType.TON,
         }))
         
         navigate(RoutePaths.previewAd)
@@ -55,12 +57,15 @@ export default function AddAdPage() {
         state => state.addAd.savedSource
     )
     const [source, setSource] = useState(savedSource ?? "")
-    const [category, setCategory] = useState(data?.category ?? additional.categories[0] as Categories)
+    const [category, setCategory] = useState(data?.category ?? additional.categories[0] as CategoriesAds)
+    const [ad_type, setAd_type] = useState(data?.ad_type ?? TypeUserAcquisition.POST)
     const [minimum_traffic, setMinimum_traffic] = useState(data?.minimum_traffic ?? 0)
     const [maximum_traffic, setMaximum_traffic] = useState(data?.maximum_traffic ?? 0)
     const [price, setPrice] = useState(data?.price ?? 0)
-    const [is_paid_promotion, setIs_paid_promotion] = useState(data?.is_paid_promotion ?? false)
     const [currencyType, setCurrencyType] = useState(data?.currency_type ?? additional.currencyTypes[0] as TransactionCurrencyType)
+    const [is_paid_promotion, setIs_paid_promotion] = useState(data?.is_paid_promotion ?? false)
+    // const [userPayCurrencyType, setUserPayCurrencyType] = useState(data?.user_currency_for_payment ?? additional.currencyTypes[0] as TransactionCurrencyType)
+    const [conditions, setConditions] = useState(data?.conditions ?? "")
     const [title, setTitle] = useState(data?.title ?? "")
     const [description, setDescription] = useState(data?.description ?? "")    
 
@@ -88,8 +93,16 @@ export default function AddAdPage() {
                     <div className="add-ad-form-row add-ad-form-row-content">
                         <p className="add-ad-form-row-key">Тематика</p>
 
-                        <Select onChange={val => setCategory(val as Categories)} defaultValue={category} optionsData={
+                        <Select onChange={val => setCategory(val as CategoriesAds)} defaultValue={category} optionsData={
                             additional.categories.map(val => ({value: val}))
+                        }/>
+                    </div>
+
+                    <div className="add-ad-form-row add-ad-form-row-content">
+                        <p className="add-ad-form-row-key">Тематика</p>
+
+                        <Select onChange={val => setAd_type(val as TypeUserAcquisition)} defaultValue={ad_type} optionsData={
+                            (Object.values(TypeUserAcquisition)).map(val => ({value: val}))
                         }/>
                     </div>
                     
@@ -135,6 +148,12 @@ export default function AddAdPage() {
                         <div className="add-ad-form-row-content add-ad-form-row-info">
                             <p>Стоимость платного размещения 5$</p>
                         </div>
+                    </div>
+
+                    <div className="add-ad-form-row add-ad-form-row-content">
+                        <p className="add-ad-form-row-key">Условия</p>
+
+                        <TextField type="text" value={conditions} onChange={e => setConditions(e.target.value)} placeholder="Введите условия" required/>
                     </div>
 
                     <div className="add-ad-form-row add-ad-form-row-content">

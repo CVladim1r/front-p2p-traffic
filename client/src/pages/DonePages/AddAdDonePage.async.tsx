@@ -1,3 +1,3 @@
 import { lazy } from "react";
 
-export const AddAdDonePageAsync = lazy(async() => await import("./AddAdDonePage"))
+export const AddAdDonePageAsync = lazy(() => import("./AddAdDonePage"))

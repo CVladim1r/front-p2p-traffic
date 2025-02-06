@@ -2,28 +2,28 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface AppSchema {
     isLoading: boolean;
-    authDone: boolean,
-    error: string;
+    errorMessage: string;
+    noTgData: boolean;
 }
 
 const initialState: AppSchema = {
     isLoading: true,
-    authDone: false,
-    error: "",
+    errorMessage: "",
+    noTgData: false,
   };
   
   const appSlice = createSlice({
     name: "app",
     initialState,
     reducers: {
-      setError: (state, action: PayloadAction<string>) => {
-        state.error = action.payload;
+      setErrorMessage: (state, action: PayloadAction<string>) => {
+        state.errorMessage = action.payload;
       },
       setIsLoading: (state, action: PayloadAction<boolean>) => {
         state.isLoading = action.payload;
       },
-      setAuthDone: (state, action: PayloadAction<boolean>) => {
-        state.authDone = action.payload;
+      setNoTgData: (state, action: PayloadAction<boolean>) => {
+        state.noTgData = action.payload;
       },
     },
   });
