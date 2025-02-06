@@ -5,6 +5,7 @@
 export enum DealStatus {
     PENDING = 'Pending',
     IN_PROGRESS = 'In Progress',
+    CONFIRMED = 'Confirmed',
     COMPLETED = 'Completed',
     FROZEN = 'Frozen',
 }

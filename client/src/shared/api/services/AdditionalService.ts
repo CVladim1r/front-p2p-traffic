@@ -21,14 +21,14 @@ export class AdditionalService {
         });
     }
     /**
-     * Get Categories
+     * Get User Acquisition Type
      * @returns string Successful Response
      * @throws ApiError
      */
-    public static getCategoriesApiV1P2POtherCategoriesGet(): CancelablePromise<Array<string>> {
+    public static getUserAcquisitionTypeApiV1P2POtherUserAcquisitionTypeGet(): CancelablePromise<Array<string>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/v1/p2p/other/categories',
+            url: '/api/v1/p2p/other/user_acquisition_type',
             errors: {
                 400: `Bad Request`,
             },
@@ -39,10 +39,10 @@ export class AdditionalService {
      * @returns string Successful Response
      * @throws ApiError
      */
-    public static getCategoriesApiV1P2POtherUserAcquisitionTypeGet(): CancelablePromise<Array<string>> {
+    public static getCategoriesApiV1P2POtherCategoriesGet(): CancelablePromise<Array<string>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/v1/p2p/other/user_acquisition_type',
+            url: '/api/v1/p2p/other/categories',
             errors: {
                 400: `Bad Request`,
             },

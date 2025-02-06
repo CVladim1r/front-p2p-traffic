@@ -11,5 +11,8 @@ export type ChatAllOut = {
     counterpart_photo: string;
     counterpart_username: string;
     user_role: string;
+    last_message_text?: (string | null);
+    last_message_sender_id?: (string | null);
+    last_message_timestamp?: (string | null);
 };
 

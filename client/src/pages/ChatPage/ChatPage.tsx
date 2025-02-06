@@ -4,7 +4,7 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 import { ChatMessage, OrdersService } from "../../shared/api"
 import { useAppSelector } from "../../app/providers/store"
 import { selectAuthorization } from "../../entities/User"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Button, LoadingAnimation, TextField } from "../../shared/ui"
 import classNames from "classnames"
 
@@ -51,15 +51,31 @@ export default function ChatPage() {
         refetchInterval: 1000
     })
 
-    const {mutate} = useMutation({
+    const {mutate: sendMessage} = useMutation({
         mutationFn: async () => {
             const response = await OrdersService.sendChatMessageApiV1P2POrdersDealsDealUuidChatMessagesPost(deal_id, authorization, {text})
             setMessages([...messages, response])
             setText("")
+            toScroll.current = true
         }
     })
 
-    // const lastMessage = useRef<JSX.Element>(undefined)
+    const {mutate: confirmDeal} = useMutation({
+        mutationFn: async () => {
+            await OrdersService.confirmDealApiV1P2POrdersDealsDealUuidConfirmPost(deal_id, authorization)
+            toScroll.current = true
+        }
+    })
+
+    const containerRef = useRef<HTMLDivElement>(null)
+    const toScroll = useRef(false)
+
+    useEffect(() => {
+        if (toScroll.current) {
+            containerRef.current?.scrollTo(0, containerRef.current.scrollHeight)
+            toScroll.current = false
+        }
+    }, [messages])
 
     return (
         <div className="chat">
@@ -67,17 +83,16 @@ export default function ChatPage() {
                     <LoadingAnimation />
                 ) : (
                     <>
-                        {/* TODO - кнопки открыть спор, подтверждение ордера */}
                         <div className="chat-top">
                             <Button className="chat-top-open">Открыть спор</Button>
-                            <Button className="chat-top-confirm">Подтвердить сделку</Button>
+                            <Button className="chat-top-confirm" onClick={() => confirmDeal()}>Подтвердить сделку</Button>
                         </div>
-                        <div className="chat-messages container">
+                        <div className="chat-messages container" ref={containerRef}>
                             {messages.map(val => <Message key={val.timestamp} {...val} />)}
                         </div>
                         <div className="chat-input container">
                             <TextField className="chat-input-text" placeholder="Введите текст" type="text" value={text} onChange={e => setText(e.target.value)} />
-                            <Button className="chat-input-button" disabled={text == ""} onClick={() => mutate()}/>
+                            <Button className="chat-input-button" disabled={text == ""} onClick={() => sendMessage()}/>
                         </div>
                     </>
                 )
