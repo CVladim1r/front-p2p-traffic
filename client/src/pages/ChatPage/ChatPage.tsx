@@ -41,7 +41,7 @@ export default function ChatPage() {
     const [messages, setMessages] = useState<ChatMessage[]>([])
     const [text, setText] = useState("")
 
-    const {data} = useQuery({ //TODO - update every second
+    const {data} = useQuery({
         queryKey: ["chat"],
         queryFn: async () => {
             const response = await OrdersService.getChatApiV1P2POrdersDealsDealUuidChatGet(deal_id, authorization)
@@ -67,10 +67,11 @@ export default function ChatPage() {
                     <LoadingAnimation />
                 ) : (
                     <>
-                        {/* <div className="chat-top">
-                            <img src={data.} alt="" className="chat-top-avatar" /> //TODO - кнопки открыть спор, подтверждение ордера
-                            <p className="chat-top-username">{}</p>
-                        </div> */}
+                        {/* TODO - кнопки открыть спор, подтверждение ордера */}
+                        <div className="chat-top">
+                            <Button className="chat-top-open">Открыть спор</Button>
+                            <Button className="chat-top-confirm">Подтвердить сделку</Button>
+                        </div>
                         <div className="chat-messages container">
                             {messages.map(val => <Message key={val.timestamp} {...val} />)}
                         </div>

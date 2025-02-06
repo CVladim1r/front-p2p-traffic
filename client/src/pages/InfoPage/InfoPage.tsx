@@ -1,12 +1,14 @@
 import "./InfoPage.css"
-import { user } from "../../index"
 import { TextField } from "../../shared/ui"
 import { Link } from "react-router-dom"
+import { useAppSelector } from "../../app/providers/store"
 
 export default function InfoPage() {
+  const userPhoto = useAppSelector(s => s.user.data?.profile_photo ?? "")
+  
   return (
     <div className="info container">
-      <img src={user?.photo_url} alt="" className="info-avatar" />
+      <img src={userPhoto} alt="" className="info-avatar" />
       <div className="info-group">
         <div className="info-row">
           <p className="info-row-key">Канал</p>

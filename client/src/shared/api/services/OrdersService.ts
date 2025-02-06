@@ -6,7 +6,7 @@ import type { AdCreate } from '../models/AdCreate';
 import type { AdCreateOut } from '../models/AdCreateOut';
 import type { AdOut } from '../models/AdOut';
 import type { AdOutOne } from '../models/AdOutOne';
-import type { Categories } from '../models/Categories';
+import type { CategoriesAds } from '../models/CategoriesAds';
 import type { ChatAllOut } from '../models/ChatAllOut';
 import type { ChatMessage } from '../models/ChatMessage';
 import type { ChatMessageCreate } from '../models/ChatMessageCreate';
@@ -50,7 +50,7 @@ export class OrdersService {
      * @throws ApiError
      */
     public static getAdsApiV1P2POrdersAdsGet(
-        category?: Categories,
+        category?: CategoriesAds,
     ): CancelablePromise<Array<AdOut>> {
         return __request(OpenAPI, {
             method: 'GET',

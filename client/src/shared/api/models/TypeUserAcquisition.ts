@@ -2,9 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export enum TransactionCurrencyType {
-    TON = 'TON',
-    BTC = 'BTC',
-    USDT = 'USDT',
-    ETH = 'ETH',
+export enum TypeUserAcquisition {
+    POST = 'Post',
+    _ = 'Рассылка в боте',
 }

@@ -46,7 +46,7 @@ export default function ProfilePage() {
         </div>
         
         <div className="profile-body-money">
-          <button className="profile-body-money-text">{userData?.balance && userData.balance["TON"] ? formatNumberTo3(userData.balance["TON"]) : "уй"}</button>
+          <button className={userData?.balance && userData.balance["TON"] ? "profile-body-money-text" : "profile-body-money-text null"}>{userData?.balance && userData.balance["TON"] ? formatNumberTo3(userData.balance["TON"]) + " TON" : "Пополнить баланс"}</button>
           <Link
             to={{pathname: RoutePaths.moneyAdd}}
             className="profile-body-money-add"

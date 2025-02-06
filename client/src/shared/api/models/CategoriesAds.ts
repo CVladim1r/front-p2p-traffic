@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export enum Categories {
+export enum CategoriesAds {
     GAMES = 'Games',
     CRYPTOCURRENCY = 'Cryptocurrency',
     EDUCATIONAL = 'Educational',

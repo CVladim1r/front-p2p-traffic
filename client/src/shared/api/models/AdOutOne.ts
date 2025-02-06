@@ -3,11 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { AdStatus } from './AdStatus';
-import type { Categories } from './Categories';
+import type { CategoriesAds } from './CategoriesAds';
 import type { TransactionCurrencyType } from './TransactionCurrencyType';
+import type { TypeUserAcquisition } from './TypeUserAcquisition';
 export type AdOutOne = {
     uuid: string;
-    category: Categories;
+    category: CategoriesAds;
+    ad_type: TypeUserAcquisition;
     title: string;
     description: string;
     price: (number | null);

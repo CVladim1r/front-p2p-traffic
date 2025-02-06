@@ -2,10 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Categories } from './Categories';
+import type { CategoriesAds } from './CategoriesAds';
 import type { TransactionCurrencyType } from './TransactionCurrencyType';
+import type { TypeUserAcquisition } from './TypeUserAcquisition';
 export type AdCreate = {
-    category: Categories;
+    category: CategoriesAds;
+    ad_type: TypeUserAcquisition;
     title: string;
     description: string;
     currency_type: TransactionCurrencyType;
