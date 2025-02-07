@@ -15,10 +15,12 @@ import {
   PreviewAddAdPage
 } from "../../../pages";
 import { LoadingAnimation } from "../../../shared/ui";
+import AdPage from "../../../pages/AdPage/AdPage";
 
 enum AppRoutes {
   root = "root",
   ads = "ads",
+  ad = "ad",
   chats = "chats",
   chat = "chat",
   addAd = "addAd",
@@ -36,6 +38,7 @@ enum AppRoutes {
 export const RoutePaths: Record<AppRoutes, string> = {
   [AppRoutes.root]: "/",
   [AppRoutes.ads]: "/ads",
+  [AppRoutes.ad]: "/ads/:id",
   [AppRoutes.chats]: "/chats",
   [AppRoutes.chat]: "/chats/:id",
   [AppRoutes.addAd]: "/add-ad",
@@ -58,6 +61,10 @@ const routeConfig: Record<AppRoutes, RouteProps> = {
   [AppRoutes.ads]: {
     path: RoutePaths.ads,
     element: <AdsPage />,
+  },
+  [AppRoutes.ad]: {
+    path: RoutePaths.ad,
+    element: <AdPage />,
   },
   [AppRoutes.chats]: {
     path: RoutePaths.chats,

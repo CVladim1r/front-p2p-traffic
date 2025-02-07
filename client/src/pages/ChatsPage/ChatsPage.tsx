@@ -6,21 +6,24 @@ import { useAppSelector } from "../../app/providers/store"
 import { selectAuthorization } from "../../entities/User"
 import { LoadingAnimation } from "../../shared/ui"
 import { RoutePaths } from "../../app/providers/router"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 export default function ChatsPage() {
     const authorization = useAppSelector(selectAuthorization)
     
     const [messages, setMessages] = useState<ChatAllOut[]>([])
 
-    const {isLoading} = useQuery({
+    const {data, isFetching} = useQuery({
         queryKey: ["chats"],
         queryFn: async () => {
-            setMessages(await OrdersService.getAllChatsApiV1P2POrdersChatsGet(authorization))
-            return {}
+            return await OrdersService.getAllChatsApiV1P2POrdersChatsGet(authorization)
         }
     })
-    
+
+    useEffect(() => {
+        if (data)
+            setMessages(data)
+    }, [data])
 
     function Chat({deal_uuid, counterpart_isvip, counterpart_photo, counterpart_username, uuid, is_pinned, last_message_text} : ChatAllOut) {
         const timeStart = useRef<number>(0)
@@ -67,7 +70,7 @@ export default function ChatsPage() {
 
     return (
         <div className="chats container">
-            {isLoading ? (
+            {isFetching ? (
                 <LoadingAnimation />
                 ) : 
                     messages.length != 0 ? (

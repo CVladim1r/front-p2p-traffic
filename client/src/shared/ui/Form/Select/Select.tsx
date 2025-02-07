@@ -7,7 +7,10 @@ type SelectProps = {
     fontSize?: number,
     backgroundColor?: string,
     className?: string
+    classNameContainer?: string
     defaultValue?: string,
+    manualWidth?: boolean,
+    filterChosen?: boolean
     optionsData: {
         value: string
         text?: string
@@ -17,7 +20,7 @@ type SelectProps = {
 }
 
 // 
-export function Select({optionsData, defaultValue, fontSize, backgroundColor="#2B2B2B", onChange, className}: SelectProps) {
+export function Select({optionsData, defaultValue, fontSize, backgroundColor="#2B2B2B", onChange, className, classNameContainer, manualWidth, filterChosen}: SelectProps) {
     const [index, setIndex] = useState(defaultValue != undefined && optionsData.some(val => val.value == defaultValue) ? optionsData.findIndex(val => val.value == defaultValue) : 0)
     const [isOpen, setIsOpen] = useState(false)
     const [maxWidth, setMaxWidth] = useState(0)
@@ -28,15 +31,16 @@ export function Select({optionsData, defaultValue, fontSize, backgroundColor="#2
         (optionsData[ind].icon ? 20 + 6 : 0) + // Icon size + spacing if any
         24 + 6 + 12 // arrow icon + spacing + paddings
 
-    useEffect(() => {
-        setMaxWidth(optionsData.reduce((maxWidth, elem, i) => {
-            if (!hasIcons && elem.icon)
-                setHasIcons(true)
-            
-            const elemWidth = getWidth(i)
-            return elemWidth > maxWidth ? elemWidth : maxWidth
-        }, 0))
-    }, [])
+    if (!manualWidth)
+        useEffect(() => {
+            setMaxWidth(optionsData.reduce((maxWidth, elem, i) => {
+                if (!hasIcons && elem.icon)
+                    setHasIcons(true)
+                
+                const elemWidth = getWidth(i)
+                return elemWidth > maxWidth ? elemWidth : maxWidth
+            }, 0))
+        }, [])
 
     return (
         <button
@@ -47,12 +51,12 @@ export function Select({optionsData, defaultValue, fontSize, backgroundColor="#2
                 className
             )}
             style={{
-                width: maxWidth,
+                width: manualWidth ? undefined : maxWidth,
                 backgroundColor,
                 fontSize
             }}
             onClick={() => setIsOpen(!isOpen)}
-            onBlur={() => setIsOpen(false)}
+            // onBlur={() => setIsOpen(false)}
         >
             {optionsData[index].icon != undefined &&
                 <img className="form-select-icon" src={optionsData[index].icon} alt="" />
@@ -61,9 +65,13 @@ export function Select({optionsData, defaultValue, fontSize, backgroundColor="#2
             <p className="form-select-text">{optionsData[index].text ?? optionsData[index].value}</p> 
 
             {isOpen &&
-                <div className="form-select-options-container"
-                    style={{
-                        width: maxWidth,
+                <div 
+                    className={classNames(
+                        "form-select-options-container",
+                        classNameContainer
+                    )}
+                    style={classNameContainer ? {} : {
+                        width: manualWidth ? undefined : maxWidth,
                         backgroundColor,
                         fontSize,
                         textAlign: hasIcons ? "end" : "start"
@@ -84,7 +92,7 @@ export function Select({optionsData, defaultValue, fontSize, backgroundColor="#2
 
                                 <p className="form-select-option-text">{val.text ?? val.value}</p> 
                             </div>
-                        )
+                        ).filter((val, i) => !filterChosen || i != index ? val : undefined)
                     }
                 </div>
             }

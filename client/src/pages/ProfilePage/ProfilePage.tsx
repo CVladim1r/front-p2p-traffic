@@ -5,7 +5,7 @@ import ratingImg from "../../shared/assets/svg/profile_rating.svg"
 import gacha from "../../shared/assets/svg/gacha_noshadow.svg"
 import Profile from "./Profile"
 import { RoutePaths } from "../../app/providers/router"
-import { Button } from "../../shared/ui"
+import { Button, Select } from "../../shared/ui"
 import { useState } from "react"
 import { formatNumberTo3 } from "../../shared/lib/lib"
 import { useAppSelector } from "../../app/providers/store"
@@ -15,10 +15,13 @@ export default function ProfilePage() {
   // const [showGacha, setShowGacha] = useState(false)
 
   const userData = useAppSelector(state => state.user.data)
+  const additional = useAppSelector(s => s.additional)
+
   const [spin, setSpin] = useState(false)
+  const [currencyType, setCurrencyType] = useState(additional.currencyTypes[0])
 
   const showAd = useAdsgram({
-    blockId: "7693", 
+    blockId: "7832", 
     onError(result) {
       console.log(`error: ${result.description}`);
     },
@@ -46,7 +49,22 @@ export default function ProfilePage() {
         </div>
         
         <div className="profile-body-money">
-          <button className={userData?.balance && userData.balance["TON"] ? "profile-body-money-text" : "profile-body-money-text null"}>{userData?.balance && userData.balance["TON"] ? formatNumberTo3(userData.balance["TON"]) + " TON" : "0"}</button>
+          <Select
+            className={userData?.balance ? "profile-body-money-text" : "profile-body-money-text null"}
+            classNameContainer="profile-body-money-text-container"
+            onChange={val => setCurrencyType(val)}
+            defaultValue={currencyType}
+            manualWidth={true}
+            filterChosen={true}
+            optionsData={
+              additional.currencyTypes.map(val => (
+                {
+                  value: val,
+                  text: (userData?.balance && userData.balance[val] ? formatNumberTo3(userData.balance[val]) : "0.000") + " " + val 
+                }
+              ))
+            }
+          />
           <Link
             to={{pathname: RoutePaths.moneyAdd}}
             className="profile-body-money-add"
@@ -78,7 +96,7 @@ export default function ProfilePage() {
           </div>
           <div className="profile-body-info-elem">
             <img src={ratingImg} alt="" />
-            <p>{userData?.rating ?? "none"}</p>
+            <p>{userData?.rating.toFixed(2) ?? "none"}</p>
           </div>
         </div>
         
