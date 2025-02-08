@@ -21,5 +21,11 @@ export type AdOutOne = {
     conditions: string;
     is_paid_promotion: boolean;
     status: AdStatus;
+    user: string;
+    user_name: string;
+    user_photo_url: string;
+    user_deals: number;
+    user_rating: number;
+    user_vip: boolean;
 };
 

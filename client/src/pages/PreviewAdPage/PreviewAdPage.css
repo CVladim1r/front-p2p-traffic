@@ -21,30 +21,6 @@
     padding-bottom: 24px;
 }
 
-.preview-ad-info {
-    display: flex;
-    flex-direction: column;
-    row-gap: 18px;
-
-    padding: 20px;
-    
-    background-color: #2B2B2B;
-    border-radius: 20px;
-}
-
-.preview-ad-info-elem {
-    font-size: 10px;
-    font-weight: 600;
-
-    display: flex;
-    column-gap: 20px;
-}
-
-.preview-ad-info-key {
-    font-weight: 700;
-    color: #A1A1AA;
-}
-
 .preview-ad-warning {
     display: flex;
     flex-direction: column;

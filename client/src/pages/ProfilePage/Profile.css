@@ -95,14 +95,15 @@
     padding: 13px 0px;
 
     background-color: #2B2B2B;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+    border-radius: 20px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
 }
 .profile-body-money-text.null {
     color: #A1A1AA;
 }
 
-/* .profile-body-money-text::after {
+.profile-body-money-text::after {
     position: absolute;
     content: "";
 
@@ -111,12 +112,26 @@
     width: 12px;
     height: 17px;
 
-    transform: translateY(-50%);
+    transform: translateY(-50%) !important;
 
     background-image: url("/src/shared/assets/svg/profile_arrows_money.svg");
     background-repeat: no-repeat;
     background-size: contain;
-} */
+}
+
+.profile-body-money-text-container {
+    border: none;
+    border-top: solid 4px #1c1c1c;
+    background-color: #2B2B2B;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.profile-body-money-text-container > * + * {
+    border-top: solid 4px #1c1c1c;
+    padding-top: 6px;
+}
 
 .profile-body-money-add {
     font-size: 16px;
@@ -196,6 +211,7 @@
     left: 50%;
 
     transform: translate(-50%, 50%);
+    border-radius: 160px;
 
     transition: all 1s, transform 1s;
 }

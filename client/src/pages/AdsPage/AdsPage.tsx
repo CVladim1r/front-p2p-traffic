@@ -4,11 +4,12 @@ import { Ad, RadioGroup } from "../../shared/ui"
 import "./AdsPage.css"
 import { useDispatch } from "react-redux"
 import { filtersActions } from "../../entities/Filters"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { AdOut, AdStatus, CategoriesAds, OrdersService } from "../../shared/api"
 import { LoadingAnimation } from "../../shared/ui/LottieAnimations"
 import { useAppSelector } from "../../app/providers/store"
-import { selectAuthorization } from "../../entities/User"
+import { useNavigate } from "react-router-dom"
+import { RoutePaths } from "../../app/providers/router"
 
 type FilterProps = {
     name: string,
@@ -100,7 +101,7 @@ function VipContent() {
             buttonsProps={[
                 {label: "Все", value: "undefined"},
                 {label: "Есть", value: "true"},
-                {label: "Нету", value: "false"},
+                {label: "Нет", value: "false"},
             ]}
         />
     )
@@ -128,13 +129,14 @@ function GuaranteedContent() {
 export default function AdsPage() {    
     const [ads, setAds] = useState<AdOut[]>([])
 
+    const navigate = useNavigate()
+
     const filtersData = useAppSelector(
         state => state.filters.data,
     )
     const activeFilter = useAppSelector(
         state => state.filters.activeFilter
     )
-    const authorization = useAppSelector(selectAuthorization)
     const userUuid = useAppSelector(s => s.user.data?.uuid)
 
     const {data, isFetching} = useQuery({
@@ -149,13 +151,6 @@ export default function AdsPage() {
         
                 return 1
             })
-        }
-    })
-
-    const {mutate} = useMutation({
-        mutationFn: async (ad_uuid: string) => {
-            const response = await OrdersService.createDealApiV1P2POrdersDealsPost(authorization, {ad_uuid})
-            console.log(response);
         }
     })
 
@@ -203,7 +198,7 @@ export default function AdsPage() {
                     <LoadingAnimation />
                 :
                     ads.map(value => (
-                        <Ad key={value.uuid} onClickBuy={() => mutate(value.uuid)} showButtons={value.user != userUuid} {...value}/>
+                        <Ad key={value.uuid} onClickBuy={() => navigate({pathname: `${RoutePaths.ads}/${value.uuid}`})} showButtons={import.meta.env.DEV || value.user != userUuid} showUserData={true} {...value}/>
                     ))
                 }
             </div>

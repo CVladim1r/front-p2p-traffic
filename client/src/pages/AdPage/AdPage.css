@@ -1,0 +1,20 @@
+.ad {
+    display: flex;
+    flex-direction: column;
+    
+    padding-top: 45px !important;
+    overflow-y: auto;
+}
+
+.ad-header {
+    font-size: 20px;
+    font-weight: 600;
+
+    padding-bottom: 10px;
+}
+
+.ad-content {
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+}

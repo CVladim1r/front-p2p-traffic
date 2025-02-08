@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { Navigate, useParams } from "react-router-dom"
 import "./ChatPage.css"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { ChatMessage, OrdersService } from "../../shared/api"
@@ -7,6 +7,7 @@ import { selectAuthorization } from "../../entities/User"
 import { useEffect, useRef, useState } from "react"
 import { Button, LoadingAnimation, TextField } from "../../shared/ui"
 import classNames from "classnames"
+import { RoutePaths } from "../../app/providers/router"
 
 
 function Message({sender_tg_id, text, timestamp, sender_name}: ChatMessage) {
@@ -34,22 +35,24 @@ function Message({sender_tg_id, text, timestamp, sender_name}: ChatMessage) {
 export default function ChatPage() {
     const { id: deal_id } = useParams<{id: string}>()
     if (!deal_id)
-        return <>error</>
+        return <Navigate to={{pathname: RoutePaths.chats}} replace />
     
     const authorization = useAppSelector(selectAuthorization)
 
     const [messages, setMessages] = useState<ChatMessage[]>([])
     const [text, setText] = useState("")
 
-    const {data} = useQuery({
+    const {data, isFetching} = useQuery({
         queryKey: ["chat"],
         queryFn: async () => {
-            const response = await OrdersService.getChatApiV1P2POrdersDealsDealUuidChatGet(deal_id, authorization)
-            setMessages(response.messages)
-            return response 
+            return await OrdersService.getChatApiV1P2POrdersDealsDealUuidChatGet(deal_id, authorization)
         },
         refetchInterval: 1000
     })
+    useEffect(() => {
+        if (data)
+            setMessages(data.messages)
+    }, [data])
 
     const {mutate: sendMessage} = useMutation({
         mutationFn: async () => {
@@ -79,7 +82,7 @@ export default function ChatPage() {
 
     return (
         <div className="chat">
-            {!data ? (
+            {isFetching ? (
                     <LoadingAnimation />
                 ) : (
                     <>
