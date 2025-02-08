@@ -42,7 +42,7 @@ export default function ChatPage() {
     const [messages, setMessages] = useState<ChatMessage[]>([])
     const [text, setText] = useState("")
 
-    const {data, isFetching} = useQuery({
+    const {data, isLoading} = useQuery({
         queryKey: ["chat"],
         queryFn: async () => {
             return await OrdersService.getChatApiV1P2POrdersDealsDealUuidChatGet(deal_id, authorization)
@@ -82,7 +82,7 @@ export default function ChatPage() {
 
     return (
         <div className="chat">
-            {isFetching ? (
+            {isLoading ? (
                     <LoadingAnimation />
                 ) : (
                     <>

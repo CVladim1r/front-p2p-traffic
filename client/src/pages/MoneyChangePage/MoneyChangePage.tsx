@@ -85,6 +85,7 @@ export default function MoneyChange({type}: MoneyChangeProps) {
                                 width: Math.min(getTextWidth(money ? money : moneyType, "600 40px Inter"), 280)
                             }}
                             type="text"
+                            inputMode="decimal"
                             placeholder={moneyType}
                             className="moneychange-textfield"
                             onChange={e => {

@@ -37,20 +37,32 @@ export default function ChatsPage() {
                 setMessages(messages.map(val => val.uuid == uuid ? {...val, is_pinned: response.is_pinned} : val))
             }
         })
-    
+
         return (
             <Link to={{pathname: `${RoutePaths.chats}/${deal_uuid}`}} className="chats-chat"
-                onMouseDown={() => {
+                onMouseDown={e => {
+                    e.preventDefault()
                     timeStart.current = Date.now()
                     timeout.current = setTimeout(() => {
                         mutate()
                         timeStart.current = 0
                     }, timeoutTime)
                 }}
-                onMouseUp={() => {
-                    if (timeStart.current && Date.now() - timeStart.current > timeoutTime)
+                onTouchStart={e => {
+                    e.preventDefault() //FIXME - on mobile dont work and opens menu to open/copy/etc link
+                    timeStart.current = Date.now()
+                    timeout.current = setTimeout(() => {
                         mutate()
+                        timeStart.current = 0
+                    }, timeoutTime)
+                }}
+                onMouseLeave={() => {
                     clearTimeout(timeout.current)
+                    timeStart.current = 0
+                }}
+                onTouchMove={() => {
+                    clearTimeout(timeout.current)
+                    timeStart.current = 0
                 }}
                 onClick={e => {
                     if (timeStart.current && Date.now() - timeStart.current > timeoutTime)
