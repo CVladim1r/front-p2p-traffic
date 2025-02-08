@@ -38,6 +38,11 @@ export default function ChatsPage() {
             }
         })
 
+        function stopPin() {
+            clearTimeout(timeout.current)
+            timeStart.current = 0
+        }
+
         return (
             <Link to={{pathname: `${RoutePaths.chats}/${deal_uuid}`}} className="chats-chat"
                 onMouseDown={e => {
@@ -56,17 +61,16 @@ export default function ChatsPage() {
                         timeStart.current = 0
                     }, timeoutTime)
                 }}
-                onMouseLeave={() => {
-                    clearTimeout(timeout.current)
-                    timeStart.current = 0
-                }}
-                onTouchMove={() => {
-                    clearTimeout(timeout.current)
-                    timeStart.current = 0
-                }}
+
+                onMouseLeave={stopPin}
+                onTouchMove={stopPin}
+                
+                onTouchEnd={stopPin} //for mobile
                 onClick={e => {
                     if (timeStart.current && Date.now() - timeStart.current > timeoutTime)
                         e.preventDefault()
+                    else 
+                        stopPin() //for pc
                 }}
             >
                 <img src={counterpart_photo} alt="" className="chats-chat-image"/>

@@ -181,7 +181,7 @@ export default function AdsPage() {
                 <div className="filters-list">
                     <Filter name="Тематика" chosen={filtersData.theme}/>
                     <Filter name="Оплата" chosen={filtersData.currencyType} />
-                    <Filter name="VIP" chosen={filtersData.isVip == undefined ? undefined : filtersData.isVip ? "Есть" : "Нету"}/>
+                    <Filter name="VIP" chosen={filtersData.isVip == undefined ? undefined : filtersData.isVip ? "Есть" : "Нет"}/>
                     <Filter name="Аудитория" chosen={filtersData.guaranteed == undefined ? undefined : filtersData.guaranteed ? "Гарантирована" : "Не гарантирована"}/>
                 </div>
                 {activeFilter &&
