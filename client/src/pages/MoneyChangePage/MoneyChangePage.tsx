@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Select, TextField } from "../../shared/ui";
 import "./MoneyChangePage.css"
 import { useDispatch } from "react-redux";
@@ -46,7 +46,7 @@ export default function MoneyChange({type}: MoneyChangeProps) {
     const maxMoney = +formatNumberTo3((balance[moneyType] ?? 1) - 1, 10)
     const minMoney = 5
     
-    const {mutate} = useMutation({
+    const {mutate, error, reset} = useMutation({
         mutationFn: async () => {
             if (type == "add") {
                 const response = await BalanceService.createDepositApiV1P2PBalanceDepositPost(moneyType as TransactionCurrencyType, +money, authorization)
@@ -59,6 +59,11 @@ export default function MoneyChange({type}: MoneyChangeProps) {
         }
     })
 
+    useEffect(() => {
+        if (error)
+            alert("Произошла ошибка, попробуйте позже")
+    }, [error])
+
     const [redirect, setRedirect] = useState(false)
 
     if (redirect)
@@ -70,6 +75,7 @@ export default function MoneyChange({type}: MoneyChangeProps) {
             <form
                 onSubmit={e => {
                     e.preventDefault()
+                    reset()
                     mutate()
                 }}
                 className="moneychange-form"
