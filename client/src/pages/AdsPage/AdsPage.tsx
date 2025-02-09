@@ -197,9 +197,12 @@ export default function AdsPage() {
                 { isFetching ?
                     <LoadingAnimation />
                 :
-                    ads.map(value => (
-                        <Ad key={value.uuid} onClickBuy={() => navigate({pathname: `${RoutePaths.ads}/${value.uuid}`})} showButtons={import.meta.env.DEV || value.user != userUuid} showUserData={true} {...value}/>
-                    ))
+                    ads.length ?
+                        ads.map(value => (
+                            <Ad key={value.uuid} onClickBuy={() => navigate({pathname: `${RoutePaths.ads}/${value.uuid}`})} showButtons={import.meta.env.DEV || value.user != userUuid} showUserData={true} {...value}/>
+                        ))
+                    :
+                        <p className="ads-message-lonely">Пока отсутствуют активные сделки по данным критериям</p>
                 }
             </div>
         </>

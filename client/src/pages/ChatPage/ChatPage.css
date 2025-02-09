@@ -65,6 +65,7 @@
     
     padding: 5px 10px;
     max-width: 75%;
+    overflow-wrap: break-word;
 
     background-color: #2B2B2B;
     border-radius: 8px;
