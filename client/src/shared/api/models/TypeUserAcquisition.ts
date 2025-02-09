@@ -3,6 +3,5 @@
 /* tslint:disable */
 /* eslint-disable */
 export enum TypeUserAcquisition {
-    POST = 'Post',
-    _ = 'Рассылка в боте',
+    _ = 'Пост',
 }

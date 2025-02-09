@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { AdditionalService, ApiError, AuthService, UsersService } from "../shared/api";
+import { AdditionalService, ApiError, AuthService, UserMainPageOut, UsersService } from "../shared/api";
 import { selectAuthorization, userActions } from "../entities/User";
 import { appActions } from "../entities/App/slice/appSlice";
 import Layout from "./Layout";
@@ -14,6 +14,8 @@ import { useAppSelector } from "./providers/store";
 function App() {
   const dispatch = useDispatch();
 
+  const userDataRef = useRef<UserMainPageOut>(undefined)
+
   const authorization = useAppSelector(selectAuthorization);
 
   const updateUserPhoto = async () => {
@@ -25,6 +27,8 @@ function App() {
         authorization,
         { photo_url: user.photo_url }
       )
+      if (userDataRef.current)
+        dispatch(userActions.setUserData(userDataRef.current))
       console.log("user photo updated");
     } catch (error) {
       console.error("Update user photo failed:", error);
@@ -62,6 +66,7 @@ function App() {
       try {
         const response = await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)
         dispatch(userActions.setUserData(response));
+        userDataRef.current = response
         console.log("old auth + data done")
         return true
       } catch (error) {
@@ -79,6 +84,7 @@ function App() {
       try {
         const response = await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)
         dispatch(userActions.setUserData(response));
+        userDataRef.current = response
         console.log("old auth + data done")
         return true
       } catch (error) {
@@ -119,6 +125,7 @@ function App() {
       try {
         const response = await UsersService.getUserMainDataApiV1P2PUserMainDataGet(token)
         dispatch(userActions.setUserData(response));
+        userDataRef.current = response
         console.log("data done");
       } catch (error) {
         console.error("Main data retrieving failed:", error);

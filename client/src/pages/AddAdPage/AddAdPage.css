@@ -144,3 +144,7 @@
     opacity: 1;
     visibility: visible;
 }
+
+.add-ad-textarea {
+    resize: vertical;
+}
