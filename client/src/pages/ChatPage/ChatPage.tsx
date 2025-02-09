@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react"
 import { Button, LoadingAnimation, TextField } from "../../shared/ui"
 import classNames from "classnames"
 import { RoutePaths } from "../../app/providers/router"
+import sendSvg from "../../shared/assets/svg/ad_send.svg"
 
 
 function Message({sender_tg_id, text, timestamp, sender_name}: ChatMessage) {
@@ -94,8 +95,18 @@ export default function ChatPage() {
                             {messages.map(val => <Message key={val.timestamp} {...val} />)}
                         </div>
                         <div className="chat-input container">
-                            <TextField className="chat-input-text" placeholder="Введите текст" type="text" value={text} onChange={e => setText(e.target.value)} />
-                            <Button className="chat-input-button" disabled={text == ""} onClick={() => sendMessage()}/>
+                            <TextField className="chat-input-text" placeholder="Введите текст" type="text" value={text}
+                                onChange={e => setText(e.target.value)}
+                                onKeyDown={e => {
+                                    console.log(e);
+                                    
+                                    if (e.key == "Enter")
+                                        sendMessage()
+                                }}
+                            />
+                            <Button className="chat-input-button" disabled={text == ""} onClick={() => sendMessage()}>
+                                <img className="chat-input-button-icon" src={sendSvg} alt="" />
+                            </Button>
                         </div>
                     </>
                 )
