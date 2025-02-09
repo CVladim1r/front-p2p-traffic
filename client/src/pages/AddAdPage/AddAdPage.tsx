@@ -57,7 +57,10 @@ export default function AddAdPage() {
         navigate(RoutePaths.previewAd)
     }
 
-    const isValid = () => source && conditions && title && description && price > 0 && minimum_traffic > 0 && (ad_type != TypeUserAcquisition.MOTIVE || maximum_traffic > 0 && minimum_traffic <= maximum_traffic) && (!is_paid_promotion || (balance[userPayCurrencyType] ?? 0) >= paid_cost[userPayCurrencyType])
+    const isValid = () => source && conditions && title && description && price > 0 && minimum_traffic > 0 &&
+        (ad_type == TypeUserAcquisition.MOTIVE || guaranteed_traffic > 0) &&
+        (ad_type != TypeUserAcquisition.MOTIVE || maximum_traffic > 0 && minimum_traffic <= maximum_traffic) &&
+        (!is_paid_promotion || (balance[userPayCurrencyType] ?? 0) >= paid_cost[userPayCurrencyType])
 
     const [guaranteed_traffic, setGuaranteed_traffic] = useState(data?.guaranteed_traffic ?? 0)
     const savedSource = useAppSelector(
