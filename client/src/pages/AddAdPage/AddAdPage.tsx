@@ -39,7 +39,7 @@ export default function AddAdPage() {
         e.preventDefault()
 
         dispatch(addAdActions.setData({
-            guaranteed_traffic,
+            guaranteed_traffic: ad_type == TypeUserAcquisition.MOTIVE ? 0 : guaranteed_traffic,
             link_to_channel: source,
             category,
             ad_type,
@@ -57,9 +57,9 @@ export default function AddAdPage() {
         navigate(RoutePaths.previewAd)
     }
 
-    const isValid = () => source && conditions && title && description && price > 0 && minimum_traffic > 0 && (ad_type == TypeUserAcquisition._ || maximum_traffic > 0 && minimum_traffic <= maximum_traffic) && (!is_paid_promotion || (balance[userPayCurrencyType] ?? 0) >= paid_cost[userPayCurrencyType])
+    const isValid = () => source && conditions && title && description && price > 0 && minimum_traffic > 0 && (ad_type != TypeUserAcquisition.MOTIVE || maximum_traffic > 0 && minimum_traffic <= maximum_traffic) && (!is_paid_promotion || (balance[userPayCurrencyType] ?? 0) >= paid_cost[userPayCurrencyType])
 
-    const [guaranteed_traffic, setGuaranteed_traffic] = useState(data?.guaranteed_traffic ?? true)
+    const [guaranteed_traffic, setGuaranteed_traffic] = useState(data?.guaranteed_traffic ?? 0)
     const savedSource = useAppSelector(
         state => state.addAd.savedSource
     )
@@ -81,12 +81,6 @@ export default function AddAdPage() {
             <p className="add-ad-header">Создайте объявление</p>
             <form onSubmit={formSubmit} className="add-ad-form">
                 <div className="add-ad-form-content">
-
-                    <div className="add-ad-form-row add-ad-form-row-content">
-                        <p className="add-ad-form-row-key">Аудитория гарантирована</p>
-
-                        <Switch onChange={e => setGuaranteed_traffic(e.target.checked)} checked={guaranteed_traffic} />
-                    </div>
                     
                     <div className="add-ad-form-row add-ad-form-row-content">
                         <p className="add-ad-form-row-key">Источник</p>
@@ -118,10 +112,10 @@ export default function AddAdPage() {
                         
                         <div className="add-ad-form-amount">
                             <div className="add-ad-form-amount-container">
-                                {ad_type != TypeUserAcquisition._ && <p className="add-ad-form-amount-key">От</p> }
-                                <TextField className="add-ad-TextField add-ad-form-amount-TextField" placeholder={ad_type == TypeUserAcquisition._ ? "Введите число" : ""} type="number" value={minimum_traffic ? minimum_traffic : ""} onChange={e => setMinimum_traffic(e.target.value ? +e.target.value : 0)} required/>
+                                {ad_type == TypeUserAcquisition.MOTIVE && <p className="add-ad-form-amount-key">От</p> }
+                                <TextField className="add-ad-TextField add-ad-form-amount-TextField" placeholder={ad_type != TypeUserAcquisition.MOTIVE ? "Введите число" : ""} type="number" value={minimum_traffic ? minimum_traffic : ""} onChange={e => setMinimum_traffic(e.target.value ? +e.target.value : 0)} required/>
                             </div>
-                            {ad_type != TypeUserAcquisition._ &&
+                            {ad_type == TypeUserAcquisition.MOTIVE &&
                                 <div className="add-ad-form-amount-container">
                                     <p className="add-ad-form-amount-key">До</p>
                                     <TextField className="add-ad-TextField add-ad-form-amount-TextField" type="number" value={maximum_traffic ? maximum_traffic : ""} onChange={e => setMaximum_traffic(e.target.value ? +e.target.value : 0)} required/>
@@ -129,6 +123,14 @@ export default function AddAdPage() {
                             }
                         </div>
                     </div>
+                    
+                    {ad_type != TypeUserAcquisition.MOTIVE &&
+                        <div className="add-ad-form-row add-ad-form-row-content">
+                            <p className="add-ad-form-row-key">Гарантированно зайдет</p>
+
+                            <TextField className="add-ad-TextField" placeholder="Введите число" type="number" value={guaranteed_traffic ? guaranteed_traffic : ""} onChange={e => setGuaranteed_traffic(e.target.value ? +e.target.value : 0)} required />
+                        </div>
+                    }
 
                     <div className="add-ad-form-row">
                         <div className="add-ad-form-row-content">
@@ -142,7 +144,7 @@ export default function AddAdPage() {
                             </div>
                         </div>
                         <div className="add-ad-form-row-content add-ad-form-row-info">
-                            { ad_type != TypeUserAcquisition._ && <p>Цена за человека ≈ {minimum_traffic && maximum_traffic && price ? formatNumberTo3(price * 2 / (maximum_traffic + minimum_traffic)) : "-"} {currencyType}</p>}
+                            { ad_type == TypeUserAcquisition.MOTIVE && <p>Цена за человека ≈ {minimum_traffic && maximum_traffic && price ? formatNumberTo3(price * 2 / (maximum_traffic + minimum_traffic)) : "0"} {currencyType}</p>}
                         </div>
                     </div>
 

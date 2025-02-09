@@ -54,6 +54,7 @@
     flex-direction: column;
     justify-content: center;
     row-gap: 8px;
+    overflow-x: auto;
 }
 
 .chats-chat-info-username {
@@ -100,6 +101,7 @@
     font-weight: 400;
     font-family: "Roboto";
     overflow: hidden;
+    text-overflow: ellipsis;
 
     color: #A1A1AA;
 }

@@ -5,6 +5,7 @@
 import type { Body_update_user_photo_api_v1_p2p_user_update_user_photo_post } from '../models/Body_update_user_photo_api_v1_p2p_user_update_user_photo_post';
 import type { StartUserIn } from '../models/StartUserIn';
 import type { StartUserOut } from '../models/StartUserOut';
+import type { TransactionCurrencyType } from '../models/TransactionCurrencyType';
 import type { UserData } from '../models/UserData';
 import type { UserMainPageOut } from '../models/UserMainPageOut';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -99,6 +100,33 @@ export class UsersService {
             mediaType: 'application/json',
             errors: {
                 400: `Bad Request`,
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Update User Vip
+     * @param authorization
+     * @param currentlyType
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static updateUserVipApiV1P2PUserUpdateUserVipPost(
+        authorization: string,
+        currentlyType?: TransactionCurrencyType,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/p2p/user/update_user_vip',
+            headers: {
+                'Authorization': authorization,
+            },
+            query: {
+                'currently_type': currentlyType,
+            },
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
                 422: `Validation Error`,
             },
         });

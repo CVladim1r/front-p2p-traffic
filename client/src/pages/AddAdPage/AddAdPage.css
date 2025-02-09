@@ -147,4 +147,5 @@
 
 .add-ad-textarea {
     resize: vertical;
+    min-height: 60px;
 }

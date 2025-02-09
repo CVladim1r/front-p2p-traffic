@@ -154,8 +154,6 @@ function App() {
     enabled: !isLoading
   })
   useEffect(() => {
-    console.log("test");
-    
     if (data)
       dispatch(userActions.setUserData(data))
   }, [data])

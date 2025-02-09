@@ -13,7 +13,7 @@ export type AdOutOne = {
     title: string;
     description: string;
     price: (number | null);
-    guaranteed_traffic: boolean;
+    guaranteed_traffic: number;
     minimum_traffic: (number | null);
     maximum_traffic: (number | null);
     currency_type: (TransactionCurrencyType | null);

@@ -15,7 +15,7 @@ export type AdCreate = {
     link_to_channel: string;
     maximum_traffic: number;
     price: number;
-    guaranteed_traffic: boolean;
+    guaranteed_traffic: number;
     minimum_traffic: number;
     conditions: string;
     is_paid_promotion: boolean;
