@@ -134,7 +134,7 @@
     font-weight: 600;
     color: #A1A1AA;
     
-    width: 50px;
+    width: 65px;
 }
 
 .adMain-content-info-elem-value {
@@ -170,4 +170,6 @@
 .adFull-info-key {
     font-weight: 700;
     color: #A1A1AA;
+
+    width: 65px;
 }
