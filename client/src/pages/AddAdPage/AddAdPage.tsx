@@ -144,7 +144,7 @@ export default function AddAdPage() {
                             </div>
                         </div>
                         <div className="add-ad-form-row-content add-ad-form-row-info">
-                            { ad_type != TypeUserAcquisition.MOTIVE && <p>Цена за человека ≈ {minimum_traffic && maximum_traffic && price ? formatNumberTo3(price * 2 / (maximum_traffic + minimum_traffic)) : "0"} {currencyType}</p>}
+                            { ad_type == TypeUserAcquisition.MOTIVE && <p>Цена за человека ≈ {minimum_traffic && maximum_traffic && price ? formatNumberTo3(price * 2 / (maximum_traffic + minimum_traffic)) : "0"} {currencyType}</p>}
                         </div>
                     </div>
 
