@@ -9,6 +9,7 @@ import "./App.css"
 import { user } from "../index";
 import { additionalActions } from "../entities/Additional/slice/additionalSlice";
 import { useAppSelector } from "./providers/store";
+import { useQuery } from "@tanstack/react-query";
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
   const userDataRef = useRef<UserMainPageOut>(undefined)
 
   const authorization = useAppSelector(selectAuthorization);
+  const isLoading = useAppSelector(s => s.app.isLoading)
 
   const updateUserPhoto = async () => {
     if (!user?.photo_url)
@@ -141,6 +143,22 @@ function App() {
 
     return true
   }
+
+  const {data} = useQuery({
+    queryKey: ["userMainData"],
+    queryFn: async () => {
+      return UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)
+    },
+
+    refetchInterval: 10000,
+    enabled: !isLoading
+  })
+  useEffect(() => {
+    console.log("test");
+    
+    if (data)
+      dispatch(userActions.setUserData(data))
+  }, [data])
 
   const initApp = async () => {
     if (!await authUser())
