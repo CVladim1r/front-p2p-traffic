@@ -2,6 +2,9 @@
     border-radius: 20px;
     background-color: #2B2B2B;
 }
+.adMain.paid {
+    border: solid 1px #2D83EC;
+}
 
 .adMain-top-row {
     display: flex;

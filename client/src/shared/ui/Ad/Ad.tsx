@@ -15,7 +15,7 @@ export type AdProps = Omit<AdOut, "uuid" | "user" | "status"> & {
 export function Ad({showButtons, showUserData, showInfo, onClickBuy, onClickShare, ...data}: AdProps) {
     function AdMain() {
         return (
-            <div className="adMain">
+            <div className={data.is_paid_promotion ? "adMain paid" : "adMain"}>
                 <div className={showButtons ?? true ? "adMain-top-row" : "adMain-top-row no-buttons"}>
                     <div className="adMain-top-row-info">
                         <p className="adMain-top-row-price">{data.price} {data.currency_type}</p>
