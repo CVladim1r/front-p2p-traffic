@@ -56,7 +56,7 @@ export function Ad({showButtons, showUserData, showInfo, onClickBuy, onClickShar
                     </div>
                     <div className="adMain-content-info-elem">
                         <p className="adMain-content-info-elem-key">Аудитория</p>
-                        <p className="adMain-content-info-elem-value">{data.guaranteed_traffic ? "Гарантирован" : "Не гарантирован"} (минимум {data.minimum_traffic}) </p>
+                        <p className="adMain-content-info-elem-value">{data.guaranteed_traffic ? "Гарантирована" : "Не гарантирована"} (минимум {data.minimum_traffic}) </p>
                     </div>
                     <div className="adMain-content-info-elem">
                         <p className="adMain-content-info-elem-key">Оплата</p>

@@ -3,6 +3,7 @@ import dealsImg from "../../shared/assets/svg/profile_deals.svg"
 import profitImg from "../../shared/assets/svg/profile_profit.svg"
 import ratingImg from "../../shared/assets/svg/profile_rating.svg"
 import gacha from "../../shared/assets/svg/gacha_noshadow.svg"
+import closeImg from "../../shared/assets/svg/close.svg"
 import Profile from "./Profile"
 import { RoutePaths } from "../../app/providers/router"
 import { Button, Select } from "../../shared/ui"
@@ -10,6 +11,9 @@ import { useState } from "react"
 import { formatNumberTo3 } from "../../shared/lib/lib"
 import { useAppSelector } from "../../app/providers/store"
 import { useAdsgram } from "../../shared/lib/hooks"
+import { useMutation } from "@tanstack/react-query"
+import { TransactionCurrencyType, UsersService } from "../../shared/api"
+import { selectAuthorization } from "../../entities/User"
 
 export default function ProfilePage() {
   // const [showGacha, setShowGacha] = useState(false)
@@ -18,6 +22,7 @@ export default function ProfilePage() {
   const additional = useAppSelector(s => s.additional)
 
   const [spin, setSpin] = useState(false)
+  const [showModal, setShowModal] = useState(false)
   const [currencyType, setCurrencyType] = useState(additional.currencyTypes[0])
 
   const showAd = useAdsgram({
@@ -29,6 +34,69 @@ export default function ProfilePage() {
       setSpin(true)
     },
   })
+
+
+  function VipDialog() {
+    const additional = useAppSelector(s => s.additional)
+    const authorization = useAppSelector(selectAuthorization)
+
+    const [currencySelect, setCurrencySelect] = useState(false)
+    const [currency, setCurrency] = useState(additional.currencyTypes[0])
+
+    const {mutate} = useMutation({
+      mutationFn: async () => {
+        await UsersService.updateUserVipApiV1P2PUserUpdateUserVipPost(authorization, currency as TransactionCurrencyType)
+        setShowModal(false)
+      }
+    })
+
+    return (
+      <>
+        <div onClick={() => setShowModal(false)} className={showModal ? "profile-vipDialog-overlay active" : "profile-vipDialog-overlay"}></div>
+
+        <div className={showModal ? "vipDialog active" : "vipDialog"}>
+          <div className="vipDialog-main">
+            <Button className="vipDialog-close" onClick={() => setShowModal(false)}>
+              <img src={closeImg} alt="" className="vipDialog-close-icon" />
+            </Button>
+
+            <div className="vipDialog-top">
+              <p className="vipDialog-top-header">VIP статус:</p>
+              <p className="vipDialog-top-status">{userData?.is_vip ? "Активно" : "Не активно"}</p>
+            </div>
+
+            <div className="vipDialog-body">
+              {currencySelect ?
+                <div className="vipDialog-body-row">
+                  <p className="vipDialog-body-header">Выберите валюту для оплаты: </p>
+                  <Select className="vipDialog-body-currency" onChange={val => setCurrency(val)} defaultValue={currency} optionsData={
+                    additional.currencyTypes.map(val => ({value: val}))
+                  } />
+                </div>
+                :
+                  <>
+                    <p className="vipDialog-body-header">Для vip-продавцов становятся доступны:</p>
+                    <ol className="vipDialog-body-list">
+                      <li>Мгновенный вывод средств.</li>
+                      <li>Сниженные комиссии.</li>
+                      <li>Специальная отметка профиля.</li>
+                      <li>Приоритетные объявления.</li>
+                    </ol>
+                  </>
+              }
+            </div>
+
+          </div>
+          
+          {currencySelect ?
+            <Button className="vipDialog-button" onClick={() => mutate()}>Оплатить</Button>
+          :
+            <Button className="vipDialog-button" disabled={userData?.is_vip} onClick={() => setCurrencySelect(true)}>Оформить</Button>
+          }
+        </div>
+      </>
+    )
+  }
 
   return (
     <Profile username={userData?.username ?? "none"}
@@ -43,10 +111,10 @@ export default function ProfilePage() {
     >
       
       <div className="profile-body">
-        <div className="profile-body-vip">
+        <Button className="profile-body-vip" onClick={() => setShowModal(true)}>
           <p className="profile-body-vip-text">VIP - статус</p>
           <p className="profile-body-vip-status">{userData?.is_vip ? "Активно" : "Не активно"}</p>
-        </div>
+        </Button>
         
         <div className="profile-body-money">
           <Select
@@ -105,6 +173,7 @@ export default function ProfilePage() {
         <img src={gacha} alt="" className= {spin ? "profile-body-gacha-image spin" : "profile-body-gacha-image"}/>
         <Button onClick={() => showAd()} className="profile-body-gacha-button">Крутить</Button>
           
+        <VipDialog />
       </div>
     </Profile>
   )

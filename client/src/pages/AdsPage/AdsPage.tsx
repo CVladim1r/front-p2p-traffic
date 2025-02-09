@@ -119,8 +119,8 @@ function GuaranteedContent() {
             defaultValue={guaranteed == undefined ? "undefined" : guaranteed ? "true" : "false"}
             buttonsProps={[
                 {label: "Все", value: "undefined"},
-                {label: "Гарантирован", value: "true"},
-                {label: "Не гарантирован", value: "false"},
+                {label: "Гарантирована", value: "true"},
+                {label: "Не гарантирована", value: "false"},
             ]}
         />
     )
@@ -159,7 +159,7 @@ export default function AdsPage() {
             if (ad.status != AdStatus.ACTIVE) //WAIT
                 return false
             
-            if (filtersData.guaranteed != undefined && filtersData.guaranteed != ad.guaranteed_traffic)
+            if (filtersData.guaranteed != undefined && filtersData.guaranteed != Boolean(ad.guaranteed_traffic))
                 return false
             
             if (filtersData.isVip != undefined && filtersData.isVip != ad.user_vip)

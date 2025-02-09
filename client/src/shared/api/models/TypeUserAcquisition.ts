@@ -3,5 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export enum TypeUserAcquisition {
-    _ = 'Пост',
+    BOT_NEWSLETTER = "Рассылка в боте",
+    POST = "Пост в каналах",
+    MOTIVE = "Мотив",
 }
