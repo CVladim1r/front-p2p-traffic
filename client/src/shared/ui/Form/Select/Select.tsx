@@ -56,7 +56,7 @@ export function Select({optionsData, defaultValue, fontSize, backgroundColor="#2
                 fontSize
             }}
             onClick={() => setIsOpen(!isOpen)}
-            // onBlur={() => setIsOpen(false)}
+            onBlur={() => setIsOpen(false)}
         >
             {optionsData[index].icon != undefined &&
                 <img className="form-select-icon" src={optionsData[index].icon} alt="" />

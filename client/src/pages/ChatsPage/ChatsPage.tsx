@@ -66,11 +66,10 @@ export default function ChatsPage() {
                 onTouchMove={stopPin}
                 
                 onTouchEnd={stopPin} //for mobile
+                onMouseUp={stopPin} //for pc
                 onClick={e => {
                     if (timeStart.current && Date.now() - timeStart.current > timeoutTime)
                         e.preventDefault()
-                    else 
-                        stopPin() //for pc
                 }}
             >
                 <img src={counterpart_photo} alt="" className="chats-chat-image"/>
