@@ -239,6 +239,7 @@ export default function AddAdPage() {
                         contentChildren={
                             <TextField className="add-ad-textarea" type="textarea" rows={3} value={description}  onChange={e => setDescription(e.target.value)} placeholder="Введите описание" required/>
                         }
+                        description="Более подробно о вашем проекте"
                     />
 
                 </div>
