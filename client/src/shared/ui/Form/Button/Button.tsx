@@ -4,7 +4,7 @@ import classNames from "classnames"
 
 type ButtonProps = PropsWithChildren & ButtonHTMLAttributes<HTMLButtonElement>
 
-export function Button({children, className, disabled, ...otherProps}: ButtonProps) {
+export function Button({children, className, disabled, type, ...otherProps}: ButtonProps) {
     return (
         <button
             className={classNames(
@@ -13,6 +13,7 @@ export function Button({children, className, disabled, ...otherProps}: ButtonPro
                 className
             )}
             disabled={disabled}
+            type={type ?? "button"}
             {...otherProps}
         >
             {children}
