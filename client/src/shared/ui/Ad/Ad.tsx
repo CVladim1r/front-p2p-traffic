@@ -43,7 +43,6 @@ export function Ad({showButtons, showUserData, showInfo, onClickBuy, onClickShar
                         <p className={classNames(
                             "adMain-content-user-name",
                             {"vip": data.user_vip},
-                            {"full": showUserData}
                         )}
                         >
                             {data.user_name}

@@ -15,6 +15,7 @@ import { formatNumberTo3 } from "../../shared/lib/lib"
 import { Switch } from "../../shared/ui/Form/Switch/Switch"
 import { useAppSelector } from "../../app/providers/store"
 import infoSvg from "../../shared/assets/svg/info.svg"
+import closeImg from "../../shared/assets/svg/close.svg"
 
 const paid_cost: {[key: string]: number} = {
     "TON": 1.4,
@@ -120,9 +121,36 @@ export default function AddAdPage() {
     const [title, setTitle] = useState(data?.title ?? "")
     const [description, setDescription] = useState(data?.description ?? "")    
 
+    const [showModal, setShowModal] = useState(false)
+
     return (
         <div className="add-ad container">
-            <p className="add-ad-header">Создайте объявление</p>
+            <div className="add-ad-header">
+                <p className="add-ad-header-text">Создайте объявление</p>
+                <Button className="add-ad-header-info-button" onClick={() => setShowModal(true)}>
+                    <img src={infoSvg} alt="" />
+                </Button>
+            </div>
+
+            <div className={showModal ? "modalInfo-dark-background active" : "modalInfo-dark-background"} onClick={() => setShowModal(false)} />
+            <div className={showModal ? "modalInfo active" : "modalInfo"}>
+                <div className="modalInfo-main">
+                    <Button className="modalInfo-close" onClick={() => setShowModal(false)}>
+                        <img src={closeImg} alt="" />
+                    </Button>
+
+                    <ul className="modalInfo-list">
+                        <li className="modalInfo-list-elem">Источник - оставьте ссылку на источник где будет выложена реклама</li>
+                        <li className="modalInfo-list-elem">Тематика - выбери тематику вашего проекта</li>
+                        <li className="modalInfo-list-elem">Сумма - цена рекламы вашем ресурсе</li>
+                        <li className="modalInfo-list-elem">Гарантированно зайдет - минимальная отдача в виде переходов от вашего проекта</li>
+                        <li className="modalInfo-list-elem">Условия - какие продукты вы рекламируете</li>
+                        <li className="modalInfo-list-elem">Название - вкратце о вашем проекте</li>
+                        <li className="modalInfo-list-elem">Описание - более подробно о вашем проекте</li>
+                    </ul>
+                </div>
+            </div>
+
             <form onSubmit={formSubmit} className="add-ad-form">
                 <div className="add-ad-form-content">
 
@@ -134,7 +162,7 @@ export default function AddAdPage() {
                                 <Button type="button" onClick={() => dispatch(addAdActions.setSavedSource(source))} className={source == "" || source == savedSource ? "add-ad-form-source-button hidden" : "add-ad-form-source-button"}>Сохранить</Button>
                             </div>
                         }
-                        description="Оставьте ссылку на источник где будет выложена реклама"
+                        // description="Оставьте ссылку на источник где будет выложена реклама"
                     />
 
                     <FormRow 
@@ -144,7 +172,7 @@ export default function AddAdPage() {
                                 additional.categories.map(val => ({value: val}))
                             }/>
                         }
-                        description="Выбери тематику вашего проекта"
+                        // description="Выбери тематику вашего проекта"
                     />
 
                     <FormRow
@@ -180,7 +208,7 @@ export default function AddAdPage() {
                             contentChildren={
                                 <TextField className="add-ad-TextField" placeholder="Введите число" type="number" value={guaranteed_traffic ? guaranteed_traffic : ""} onChange={e => setGuaranteed_traffic(e.target.value ? +e.target.value : 0)} required />
                             }
-                            description="Минимальная отдача в виде переходов от вашего проекта"
+                            // description="Минимальная отдача в виде переходов от вашего проекта"
                         />
                     }   
 
@@ -200,7 +228,7 @@ export default function AddAdPage() {
                             :
                                 <p>Цена за человека ≈ {minimum_traffic && maximum_traffic && price ? formatNumberTo3(price * 2 / (maximum_traffic + minimum_traffic)) : "0"} {currencyType}</p>
                         }
-                        description="Цена рекламы Вашем ресурсе"
+                        // description="Цена рекламы Вашем ресурсе"
                     />
 
                     <FormRow
@@ -223,7 +251,7 @@ export default function AddAdPage() {
                         contentChildren={
                             <TextField type="text" value={conditions} onChange={e => setConditions(e.target.value)} placeholder="Введите условия" required/>
                         }
-                        description="Какие продукты вы рекламируете"
+                        // description="Какие продукты вы рекламируете"
                     />
 
                     <FormRow
@@ -231,7 +259,7 @@ export default function AddAdPage() {
                         contentChildren={
                             <TextField type="text" value={title} onChange={e => setTitle(e.target.value)} placeholder="Введите название" required/>
                         }
-                        description="Вкратце о вашем проекте"
+                        // description="Вкратце о вашем проекте"
                     />
 
                     <FormRow
@@ -239,7 +267,7 @@ export default function AddAdPage() {
                         contentChildren={
                             <TextField className="add-ad-textarea" type="textarea" rows={3} value={description}  onChange={e => setDescription(e.target.value)} placeholder="Введите описание" required/>
                         }
-                        description="Более подробно о вашем проекте"
+                        // description="Более подробно о вашем проекте"
                     />
 
                 </div>
