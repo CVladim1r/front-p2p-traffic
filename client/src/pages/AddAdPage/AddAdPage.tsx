@@ -135,9 +135,12 @@ export default function AddAdPage() {
             <div className={showModal ? "modalInfo-dark-background active" : "modalInfo-dark-background"} onClick={() => setShowModal(false)} />
             <div className={showModal ? "modalInfo active" : "modalInfo"}>
                 <div className="modalInfo-main">
-                    <Button className="modalInfo-close" onClick={() => setShowModal(false)}>
-                        <img src={closeImg} alt="" />
-                    </Button>
+                    <div className="modalInfo-top">
+                        <p className="modalInfo-top-text">Информация</p>
+                        <Button className="modalInfo-close" onClick={() => setShowModal(false)}>
+                            <img src={closeImg} alt="" />
+                        </Button>
+                    </div>
 
                     <ul className="modalInfo-list">
                         <li className="modalInfo-list-elem">Источник - оставьте ссылку на источник где будет выложена реклама</li>

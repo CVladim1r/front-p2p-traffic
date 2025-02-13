@@ -193,10 +193,7 @@ function App() {
   const initStarted = useRef(false)
   useEffect(() => { // *Runs twice on dev on start with <StrictMode>
     if (!initStarted.current) {
-      if (
-        // import.meta.env.DEV ||
-        !isMobile()
-      ) {
+      if (!isMobile()) {
         dispatch(appActions.setErrorMessage("Данное приложение предназначено для работы на мобильных устройствах."))
         return
       }
