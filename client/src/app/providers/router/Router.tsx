@@ -14,7 +14,7 @@ import {
   MoneyRemoveDonePage,
   PreviewAddAdPage
 } from "../../../pages";
-import { LoadingAnimation } from "../../../shared/ui";
+import { LoadingAnimation, NavBar } from "../../../shared/ui";
 import AdPage from "../../../pages/AdPage/AdPage";
 import NoTgDataPage from "../../../pages/NoTgDataPage/NoTgDataPage";
 
@@ -60,7 +60,11 @@ export const RoutePaths: Record<AppRoutes, string> = {
   [AppRoutes.notFound]: "/*",
 };
 
-const routeConfig: Record<AppRoutes, RouteProps> = {
+type MyRouteProps = RouteProps & {
+  noNavBar?: boolean
+}
+
+const routeConfig: Record<AppRoutes, MyRouteProps> = {
   [AppRoutes.root]: {
     path: RoutePaths.root,
     element: <Navigate to={RoutePaths.profile} replace={true} />,
@@ -123,24 +127,36 @@ const routeConfig: Record<AppRoutes, RouteProps> = {
   },
   [AppRoutes.noTgData]: {
     path: RoutePaths.noTgData,
-    element: <NoTgDataPage />
+    element: <NoTgDataPage />,
+    noNavBar: true,
   },
   [AppRoutes.notFound]: {
     path: RoutePaths.notFound,
-    element: <p>test</p> //FIXME - 404 page
+    element: <p>test</p>, //FIXME - 404 page
+    noNavBar: true,
   },
 };
 
 function AppRouter() {
-  const renderRoutes = useCallback((route: RouteProps) => {
+  const renderRoutes = useCallback((route: MyRouteProps) => {
     return (
       <Route
         key={route.path}
         path={route.path}
-        element={
-          <Suspense fallback={<LoadingAnimation />}>
-            {route.element}
-          </Suspense>
+        element={route.noNavBar ?
+            <Suspense fallback={<LoadingAnimation />}>
+              {route.element}
+            </Suspense>
+          :
+          <>
+            <div className="body">
+              <Suspense fallback={<LoadingAnimation />}>
+                {route.element}
+              </Suspense>
+            </div>
+
+            <NavBar />
+          </>
         }
       />
     );
