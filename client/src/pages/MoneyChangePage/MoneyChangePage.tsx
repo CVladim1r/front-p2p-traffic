@@ -58,7 +58,6 @@ export default function MoneyChange({type}: MoneyChangeProps) {
             setRedirect(true)
         }
     })
-
     useEffect(() => {
         if (error)
             alert("Произошла ошибка, попробуйте позже")

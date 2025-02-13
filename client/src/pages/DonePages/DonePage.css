@@ -31,3 +31,16 @@
     font-size: 14px;
     color: #A1A1AA;
 }
+
+.done-button {
+    font-size: 20px;
+    font-weight: 600;
+
+    display: flex;
+    justify-content: center;
+
+    padding: 16px 0px;
+
+    background-color: #2D83EC;
+    border-radius: 20px;
+}
