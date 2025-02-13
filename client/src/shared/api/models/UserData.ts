@@ -4,7 +4,7 @@
 /* eslint-disable */
 export type UserData = {
     tg_id: number;
-    username: (string | null);
+    username?: (string | null);
     deals: number;
     rating: number;
     total_sales: number;

@@ -81,7 +81,7 @@ export default function AddAdPage() {
         e.preventDefault()
 
         dispatch(addAdActions.setData({
-            guaranteed_traffic: ad_type == TypeUserAcquisition.MOTIVE ? 0 : guaranteed_traffic,
+            guaranteed_traffic: ad_type == TypeUserAcquisition.МОТИВ ? 0 : guaranteed_traffic,
             link_to_channel: source,
             category,
             ad_type,
@@ -100,8 +100,8 @@ export default function AddAdPage() {
     }
 
     const isValid = () => source && conditions && title && description && price > 0 && minimum_traffic > 0 &&
-        (ad_type == TypeUserAcquisition.MOTIVE || guaranteed_traffic > 0) &&
-        (ad_type != TypeUserAcquisition.MOTIVE || maximum_traffic > 0 && minimum_traffic <= maximum_traffic) &&
+        (ad_type == TypeUserAcquisition.МОТИВ || guaranteed_traffic > 0) &&
+        (ad_type != TypeUserAcquisition.МОТИВ || maximum_traffic > 0 && minimum_traffic <= maximum_traffic) &&
         (!is_paid_promotion || (balance[userPayCurrencyType] ?? 0) >= paid_cost[userPayCurrencyType])
 
     const [guaranteed_traffic, setGuaranteed_traffic] = useState(data?.guaranteed_traffic ?? 0)
@@ -189,10 +189,10 @@ export default function AddAdPage() {
                         contentChildren={
                             <div className="add-ad-form-amount">
                                 <div className="add-ad-form-amount-container">
-                                    {ad_type == TypeUserAcquisition.MOTIVE && <p className="add-ad-form-amount-key">От</p> }
-                                    <TextField className="add-ad-TextField add-ad-form-amount-TextField" placeholder={ad_type != TypeUserAcquisition.MOTIVE ? "Введите число" : ""} type="number" value={minimum_traffic ? minimum_traffic : ""} onChange={e => setMinimum_traffic(e.target.value ? +e.target.value : 0)} required/>
+                                    {ad_type == TypeUserAcquisition.МОТИВ && <p className="add-ad-form-amount-key">От</p> }
+                                    <TextField className="add-ad-TextField add-ad-form-amount-TextField" placeholder={ad_type != TypeUserAcquisition.МОТИВ ? "Введите число" : ""} type="number" value={minimum_traffic ? minimum_traffic : ""} onChange={e => setMinimum_traffic(e.target.value ? +e.target.value : 0)} required/>
                                 </div>
-                                {ad_type == TypeUserAcquisition.MOTIVE &&
+                                {ad_type == TypeUserAcquisition.МОТИВ &&
                                     <div className="add-ad-form-amount-container">
                                         <p className="add-ad-form-amount-key">До</p>
                                         <TextField className="add-ad-TextField add-ad-form-amount-TextField" type="number" value={maximum_traffic ? maximum_traffic : ""} onChange={e => setMaximum_traffic(e.target.value ? +e.target.value : 0)} required/>
@@ -202,7 +202,7 @@ export default function AddAdPage() {
                         }
                    />
 
-                    {ad_type != TypeUserAcquisition.MOTIVE &&
+                    {ad_type != TypeUserAcquisition.МОТИВ &&
                         <FormRow
                             name="Гарантированно зайдет"
                             contentChildren={
@@ -223,7 +223,7 @@ export default function AddAdPage() {
                             </div>
                         }
                         infoChildren={
-                            ad_type != TypeUserAcquisition.MOTIVE ?
+                            ad_type != TypeUserAcquisition.МОТИВ ?
                                 undefined
                             :
                                 <p>Цена за человека ≈ {minimum_traffic && maximum_traffic && price ? formatNumberTo3(price * 2 / (maximum_traffic + minimum_traffic)) : "0"} {currencyType}</p>

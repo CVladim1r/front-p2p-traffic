@@ -4,7 +4,6 @@
 /* eslint-disable */
 export type StartUserIn = {
     tg_id: number;
-    username: string;
-    is_premium: boolean;
+    username?: (string | null);
 };
 

@@ -5,20 +5,22 @@ import { selectAuthorization, userActions } from "../entities/User";
 import { appActions } from "../entities/App/slice/appSlice";
 import Layout from "./Layout";
 import "./App.css"
-// import { logActions } from "../entities/Log/slice/logSlice";
 import { user } from "../index";
 import { additionalActions } from "../entities/Additional/slice/additionalSlice";
 import { useAppSelector } from "./providers/store";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { RoutePaths } from "./providers/router";
 
 
 function App() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const userDataRef = useRef<UserMainPageOut>(undefined)
 
-  const authorization = useAppSelector(selectAuthorization);
-  const isLoading = useAppSelector(s => s.app.isLoading)
+  const authorizationRef = useRef(useAppSelector(selectAuthorization))
+  const authSuccess = useAppSelector(s => s.app.authSuccess)
 
   const updateUserPhoto = async () => {
     if (!user?.photo_url)
@@ -26,7 +28,7 @@ function App() {
 
     try {
       await UsersService.updateUserPhotoApiV1P2PUserUpdateUserPhotoPost(
-        authorization,
+        authorizationRef.current,
         { photo_url: user.photo_url }
       )
       if (userDataRef.current)
@@ -63,41 +65,74 @@ function App() {
     }
   }
 
+  const getMainData = async (authorization: string, setError=false, throwError=false) => {
+    try {
+      const response = await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)
+      dispatch(userActions.setUserData(response));
+      userDataRef.current = response
+      return true
+    } catch (error) {
+      console.error("Main data retrieving failed:", error)
+      if (throwError)
+        throw error
+      if (setError)
+        dispatch(appActions.setErrorMessage("Не удалось загрузить данные пользователя"))
+      return false
+    }
+  }
+
+  const getMainDataOrCreateUser = async (authorization: string, setError=false) => {
+    if (await getMainData(authorization))
+      return true
+
+    if (!user)
+      throw new Error("no tg data")
+
+    try {
+      await UsersService.createUserApiV1P2PUserCreateUserPost(authorization, {tg_id: user.id, username: user.username})
+      return await getMainData(authorization, setError)
+    } catch (error) {
+      console.error("Creating user failed:", error)
+      if (setError)
+        dispatch(appActions.setErrorMessage("Не удалось создать пользователя"))
+      return false
+    }
+  }
+
   const authUser = async () => {
-    if (import.meta.env.DEV && authorization) {
+    console.log("start auth");
+    
+    if (import.meta.env.DEV && authorizationRef.current) {
       try {
-        const response = await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)
-        dispatch(userActions.setUserData(response));
-        userDataRef.current = response
+        await getMainData(authorizationRef.current, false, true)
         console.log("old auth + data done")
         return true
       } catch (error) {
+        if ((error as ApiError).status !== 422) { // if auth invalid => remove and create new by going further
           dispatch(appActions.setErrorMessage("Не удалось загрузить данные пользователя"))
           return false
+        }
+        authorizationRef.current = ""
       }
     }
     
     if (!window.Telegram.WebApp.initDataUnsafe.user || !window.Telegram.WebApp.initDataUnsafe.user.username) {
-      dispatch(appActions.setNoTgData(true))
+      navigate({pathname: RoutePaths.noTgData})
       return false
     }
 
-    if (authorization) {
+    if (authorizationRef.current) {
       try {
-        const response = await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)
-        dispatch(userActions.setUserData(response));
-        userDataRef.current = response
+        await getMainData(authorizationRef.current, false, true)
         console.log("old auth + data done")
         return true
       } catch (error) {
-        if ((error as ApiError).status === 422) { // if auth invalid => remove and create new by going further
-          dispatch(userActions.setAuthorization(""));
-        }
-        else {
+        if ((error as ApiError).status !== 422) { // if auth invalid => remove and create new by going further
           console.error("Main data retrieving failed:", error);
           dispatch(appActions.setErrorMessage("Не удалось загрузить данные пользователя"))
           return false
         }
+        authorizationRef.current = ""
       }
     }
     
@@ -110,7 +145,6 @@ function App() {
           user: {
             first_name: window.Telegram.WebApp.initDataUnsafe.user.first_name,
             id: window.Telegram.WebApp.initDataUnsafe.user.id,
-            is_premium: window.Telegram.WebApp.initDataUnsafe.user.is_premium ?? false,
             username: window.Telegram.WebApp.initDataUnsafe.user.username,
           },
         },
@@ -121,20 +155,12 @@ function App() {
         auth_type: "telegram",
       });
       
-      const token = `Bearer ${response.access_token}`;
-      dispatch(userActions.setAuthorization(token));
+      authorizationRef.current = `Bearer ${response.access_token}`;
       console.log("new auth done")
-      try {
-        const response = await UsersService.getUserMainDataApiV1P2PUserMainDataGet(token)
-        dispatch(userActions.setUserData(response));
-        userDataRef.current = response
-        console.log("data done");
-      } catch (error) {
-        console.error("Main data retrieving failed:", error);
-        dispatch(appActions.setErrorMessage("Не удалось загрузить данные пользователя"))
+      if (!await getMainDataOrCreateUser(authorizationRef.current, true))
         return false
-      }
 
+      console.log("get data done");
     } catch (error) { 
       console.error("Authentication failed:", error);
       dispatch(appActions.setErrorMessage("Не удалось аутентифицироваться"))
@@ -147,11 +173,12 @@ function App() {
   const {data} = useQuery({
     queryKey: ["userMainData"],
     queryFn: async () => {
-      return UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)
+      return UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorizationRef.current)
     },
 
     refetchInterval: 10000,
-    enabled: !isLoading
+    
+    enabled: authSuccess
   })
   useEffect(() => {
     if (data)
@@ -159,10 +186,12 @@ function App() {
   }, [data])
 
   const initApp = async () => {
-    if (!await authUser())
-      return
-    await updateUserPhoto()
-    await loadAdditionalData()
+    if (await authUser()) {
+      await updateUserPhoto()
+      await loadAdditionalData()
+      dispatch(userActions.setAuthorization(authorizationRef.current))
+      dispatch(appActions.setAuthSuccess(true))
+    }
     dispatch(appActions.setIsLoading(false));
   };
 
@@ -171,7 +200,6 @@ function App() {
   useEffect(() => { // *Runs twice on dev on start with <StrictMode>
     if (!initStarted.current) {
       initStarted.current = true
-      console.log("start auth");
       initApp();
     }
   }, [])
