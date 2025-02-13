@@ -11,6 +11,7 @@ import { useAppSelector } from "./providers/store";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { RoutePaths } from "./providers/router";
+import { isMobile } from "../shared/lib/lib";
 
 
 function App() {
@@ -192,6 +193,14 @@ function App() {
   const initStarted = useRef(false)
   useEffect(() => { // *Runs twice on dev on start with <StrictMode>
     if (!initStarted.current) {
+      if (
+        // import.meta.env.DEV ||
+        !isMobile()
+      ) {
+        dispatch(appActions.setErrorMessage("Данное приложение предназначено для работы на мобильных устройствах."))
+        return
+      }
+
       initStarted.current = true
       initApp();
     }

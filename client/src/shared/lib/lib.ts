@@ -35,3 +35,7 @@ export function formatNumberTo3(x: number, length?: number) {
       return length ? x.toFixed(3).substring(0, length) : x.toFixed(3)
   return length ? x.toPrecision(3).substring(0, length) : x.toPrecision(3)
 }
+
+export function isMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+}

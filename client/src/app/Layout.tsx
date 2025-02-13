@@ -13,6 +13,7 @@ export const Layout = () => {
     return <p
         style={{
           textAlign: "center",
+          padding: "0px 30px",
           fontSize: 24,
           position: "relative",
           top: "50%",
