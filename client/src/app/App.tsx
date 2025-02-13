@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { AdditionalService, ApiError, AuthService, UserMainPageOut, UsersService } from "../shared/api";
+import { AdditionalService, AuthService, UserMainPageOut, UsersService } from "../shared/api";
 import { selectAuthorization, userActions } from "../entities/User";
 import { appActions } from "../entities/App/slice/appSlice";
 import Layout from "./Layout";
@@ -107,11 +107,8 @@ function App() {
         await getMainData(authorizationRef.current, false, true)
         console.log("old auth + data done")
         return true
-      } catch (error) {
-        if ((error as ApiError).status !== 422) { // if auth invalid => remove and create new by going further
-          dispatch(appActions.setErrorMessage("Не удалось загрузить данные пользователя"))
-          return false
-        }
+      } catch {
+        dispatch(userActions.setAuthorization(""))
         authorizationRef.current = ""
       }
     }
@@ -126,12 +123,8 @@ function App() {
         await getMainData(authorizationRef.current, false, true)
         console.log("old auth + data done")
         return true
-      } catch (error) {
-        if ((error as ApiError).status !== 422) { // if auth invalid => remove and create new by going further
-          console.error("Main data retrieving failed:", error);
-          dispatch(appActions.setErrorMessage("Не удалось загрузить данные пользователя"))
-          return false
-        }
+      } catch {
+        dispatch(userActions.setAuthorization(""))
         authorizationRef.current = ""
       }
     }
