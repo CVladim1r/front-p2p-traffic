@@ -143,16 +143,19 @@ function AppRouter() {
       <Route
         key={route.path}
         path={route.path}
-        element={
+        element={route.noNavBar ?
+            <Suspense fallback={<LoadingAnimation />}>
+              {route.element}
+            </Suspense>
+          :
           <>
             <div className="body">
               <Suspense fallback={<LoadingAnimation />}>
                 {route.element}
               </Suspense>
             </div>
-            {!route.noNavBar &&
-              <NavBar />
-            }
+
+            <NavBar />
           </>
         }
       />
