@@ -26,12 +26,17 @@ export default function ProfilePage() {
   const [currencyType, setCurrencyType] = useState(additional.currencyTypes[0])
 
   const showAd = useAdsgram({
-    blockId: "8165", 
+    blockId: "8165",
+    debug: true,
     onError(result) {
       console.log(`error: ${result.description}`);
     },
-    onReward() {
+    onReward: async () => {
+      const slep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+      await slep(1000) // loading
       setSpin(true)
+
+      
     },
   })
 
@@ -56,14 +61,15 @@ export default function ProfilePage() {
 
         <div className={showModal ? "vipDialog active" : "vipDialog"}>
           <div className="vipDialog-main">
-            <Button className="vipDialog-close" onClick={() => setShowModal(false)}>
-              <img src={closeImg} alt="" className="vipDialog-close-icon" />
-            </Button>
 
             <div className="vipDialog-top">
               <p className="vipDialog-top-header">VIP статус:</p>
-              <p className="vipDialog-top-status">{userData?.is_vip ? "Активно" : "Не активно"}</p>
+              <Button className="vipDialog-close" onClick={() => setShowModal(false)}>
+                <img src={closeImg} alt="" className="vipDialog-close-icon" />
+              </Button>
             </div>
+            
+            <p className="vipDialog-status">{userData?.is_vip ? "Активно" : "Не активно"}</p>
 
             <div className="vipDialog-body">
               {currencySelect ?

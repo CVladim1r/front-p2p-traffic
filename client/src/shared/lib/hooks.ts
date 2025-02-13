@@ -8,15 +8,16 @@ import { AdController, ShowPromiseResult } from '../../types/adsgram';
 
 export interface useAdsgramParams {
   blockId: string;
+  debug?: boolean
   onReward?: () => void;
   onError?: (result: ShowPromiseResult) => void;
 }
 
-export function useAdsgram({ blockId, onReward, onError }: useAdsgramParams): () => Promise<void> {
+export function useAdsgram({ blockId, debug, onReward, onError }: useAdsgramParams): () => Promise<void> {
   const AdControllerRef = useRef<AdController | undefined>(undefined);
 
   useEffect(() => {
-    AdControllerRef.current = window.Adsgram?.init({ blockId, debug: true, debugBannerType: 'FullscreenMedia' });
+    AdControllerRef.current = window.Adsgram?.init({ blockId, debug: debug ?? true, debugBannerType: 'FullscreenMedia' });
   }, [blockId]);
 
   return useCallback(async () => {
@@ -30,6 +31,8 @@ export function useAdsgram({ blockId, onReward, onError }: useAdsgramParams): ()
         .catch((result: ShowPromiseResult) => {
           // user get error during playing ad
           onError?.(result);
+          if (import.meta.env.DEV)
+            onReward?.()
         });
     } else {
       onError?.({
