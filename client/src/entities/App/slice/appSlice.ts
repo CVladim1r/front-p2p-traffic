@@ -1,8 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+export enum ErrorTypes {
+  noTgData,
+  notFound
+}
+
 export interface AppSchema {
     isLoading: boolean;
     errorMessage: string;
+    error?: ErrorTypes
     authSuccess: boolean;
 }
 
@@ -24,6 +30,9 @@ const initialState: AppSchema = {
       },
       setAuthSuccess: (state, action: PayloadAction<boolean>) => {
         state.authSuccess = action.payload;
+      },
+      setError: (state, action: PayloadAction<ErrorTypes | undefined>) => {
+        state.error = action.payload;
       },
     },
   });

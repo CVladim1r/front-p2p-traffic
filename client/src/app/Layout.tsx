@@ -1,10 +1,11 @@
-import { NavBar } from "../shared/ui";
-import AppRouter from "./providers/router/Router";
+import AppRouter, { RoutePaths } from "./providers/router/Router";
 import { LoadingAnimation } from "../shared/ui/LottieAnimations";
 import { useAppSelector } from "./providers/store";
+import { Navigate, useLocation } from "react-router-dom";
 
 export const Layout = () => {
-  const { isLoading, errorMessage } = useAppSelector(
+  const location = useLocation()
+  const { isLoading, errorMessage, authSuccess } = useAppSelector(
     state => state.app
   );
 
@@ -20,22 +21,14 @@ export const Layout = () => {
       >
         {errorMessage}
       </p>
-  // else if (noTgData)
-  //   return (
-  //     <Suspense fallback={<LoadingAnimation/>}>
-  //       <NoTgDataPage />
-  //     </Suspense>
-  //   )
   else if (isLoading)
     return <LoadingAnimation />
+  else if (!authSuccess && location.pathname != RoutePaths.noTgData)
+    <Navigate to={{pathname: RoutePaths.noTgData}} />
   else
     return (
       <main>
-        <div className="body">
-          <AppRouter />
-        </div>
-
-        <NavBar />
+        <AppRouter />
       </main>
     )  
 };
