@@ -102,6 +102,7 @@
     font-family: "Roboto";
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
     
     color: #A1A1AA;
 }

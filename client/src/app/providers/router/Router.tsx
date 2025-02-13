@@ -16,6 +16,7 @@ import {
 } from "../../../pages";
 import { LoadingAnimation } from "../../../shared/ui";
 import AdPage from "../../../pages/AdPage/AdPage";
+import NoTgDataPage from "../../../pages/NoTgDataPage/NoTgDataPage";
 
 enum AppRoutes {
   root = "root",
@@ -33,6 +34,9 @@ enum AppRoutes {
   addAdDone = "addAdDone",
   moneyAddDone = "moneyAddDone",
   moneyRemoveDone = "moneyRemoveDone",
+
+  noTgData = "noTgData",
+  notFound = "notFound",
 }
 
 export const RoutePaths: Record<AppRoutes, string> = {
@@ -51,6 +55,9 @@ export const RoutePaths: Record<AppRoutes, string> = {
   [AppRoutes.addAdDone]: "/add-ad/done",
   [AppRoutes.moneyAddDone]: "/profile/add/done",
   [AppRoutes.moneyRemoveDone]: "/profile/remove/done",
+
+  [AppRoutes.noTgData]: "/noTgData",
+  [AppRoutes.notFound]: "/*",
 };
 
 const routeConfig: Record<AppRoutes, RouteProps> = {
@@ -113,6 +120,14 @@ const routeConfig: Record<AppRoutes, RouteProps> = {
   [AppRoutes.moneyRemoveDone]: {
     path: RoutePaths.moneyRemoveDone,
     element: <MoneyRemoveDonePage />
+  },
+  [AppRoutes.noTgData]: {
+    path: RoutePaths.noTgData,
+    element: <NoTgDataPage />
+  },
+  [AppRoutes.notFound]: {
+    path: RoutePaths.notFound,
+    element: <p>test</p> //FIXME - 404 page
   },
 };
 

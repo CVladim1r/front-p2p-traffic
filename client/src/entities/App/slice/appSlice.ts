@@ -3,13 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface AppSchema {
     isLoading: boolean;
     errorMessage: string;
-    noTgData: boolean;
+    authSuccess: boolean;
 }
 
 const initialState: AppSchema = {
     isLoading: true,
     errorMessage: "",
-    noTgData: false,
+    authSuccess: false,
   };
   
   const appSlice = createSlice({
@@ -22,8 +22,8 @@ const initialState: AppSchema = {
       setIsLoading: (state, action: PayloadAction<boolean>) => {
         state.isLoading = action.payload;
       },
-      setNoTgData: (state, action: PayloadAction<boolean>) => {
-        state.noTgData = action.payload;
+      setAuthSuccess: (state, action: PayloadAction<boolean>) => {
+        state.authSuccess = action.payload;
       },
     },
   });

@@ -5,8 +5,7 @@
 export type StartUserOut = {
     uuid: string;
     tg_id: number;
-    username: string;
-    is_premium?: (boolean | null);
+    username?: (string | null);
     created_at: string;
 };
 

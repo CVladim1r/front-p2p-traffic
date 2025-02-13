@@ -5,7 +5,7 @@
 export type UserMainPageOut = {
     uuid: string;
     tg_id: number;
-    username: (string | null);
+    username?: (string | null);
     roulette_last_spin: (string | null);
     deals: number;
     rating: number;
