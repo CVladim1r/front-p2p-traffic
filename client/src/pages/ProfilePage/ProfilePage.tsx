@@ -26,7 +26,7 @@ export default function ProfilePage() {
   const [currencyType, setCurrencyType] = useState(additional.currencyTypes[0])
 
   const showAd = useAdsgram({
-    blockId: "7832", 
+    blockId: "8165", 
     onError(result) {
       console.log(`error: ${result.description}`);
     },
