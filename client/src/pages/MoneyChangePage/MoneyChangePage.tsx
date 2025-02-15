@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { Button, Select, TextField } from "../../shared/ui";
+import { BackButton, Button, Select, TextField } from "../../shared/ui";
 import "./MoneyChangePage.css"
 import { useDispatch } from "react-redux";
 import { getTextWidth } from "../../shared/lib";
 import { useMutation } from "@tanstack/react-query";
 import { BalanceService, TransactionCurrencyType } from "../../shared/api";
 import { moneyChangeActions } from "../../entities/MoneyChange";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { RoutePaths } from "../../app/providers/router";
 import TON from "../../shared/assets/svg/TON.svg"
 import USDT from "../../shared/assets/svg/USDT.svg"
@@ -30,6 +30,7 @@ const currencyIcons: {[key: string]: string} = {
 
 export default function MoneyChange({type}: MoneyChangeProps) {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     
     const currencyTypes = useAppSelector(
         state => state.additional.currencyTypes
@@ -70,6 +71,8 @@ export default function MoneyChange({type}: MoneyChangeProps) {
 
     return (
         <div className="moneychange container">
+            <BackButton onClick={() => navigate({pathname: RoutePaths.profile})} />
+
             <p className="moneychange-header">{type == "add" ? "Пополнение" : "Снятие"} Средств</p>
             <form
                 onSubmit={e => {

@@ -1,4 +1,5 @@
 export { Ad, type AdProps } from "./Ad/Ad"
+export { BackButton } from "./BackButton/BackButton"
 export { NavBar } from "./NavBar/NavBar";
 export {
     DoneAnimation,
