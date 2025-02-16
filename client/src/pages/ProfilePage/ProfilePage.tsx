@@ -33,7 +33,7 @@ export default function ProfilePage() {
   const [currencyType, setCurrencyType] = useState(additional.currencyTypes[0])
 
   const gachaRef = useRef<HTMLImageElement>(null)
-  const newAnimationRef = useRef("")
+  const newAnimationDataRef = useRef<{animation: string, duration: number}>({animation: "", duration: 0})
   const spinEndRef = useRef(true)
 
   const showAd = useAdsgram({
@@ -48,28 +48,37 @@ export default function ProfilePage() {
 
       setSpin(true)
       const response = await AdsgramService.spinRouletteApiV1P2PAdsgramSpinRouletteGet(user.id)
-      // const response = {
-      //   prize_type: ""
-      // }
+      
       console.log(response);
 
       const slep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
       await slep(4000) // loading
 
-      // response.prize_type = "5%_discount"
-
       switch (response.prize_type) {
         case "10%_discount":
-          newAnimationRef.current = "spin_end_10 4s cubic-bezier(0, 0.55, 0.45, 1) forwards"
+          newAnimationDataRef.current = {
+            animation: "spin_end_10 3.2s cubic-bezier(0.33, 1, 0.68, 1) forwards",
+            duration: 3200
+          }
+
           break;
         case "5%_discount":
-          newAnimationRef.current = "spin_end_5 4s cubic-bezier(0, 0.55, 0.45, 1) forwards"
+          newAnimationDataRef.current = {
+            animation: "spin_end_5 1.5s cubic-bezier(0.33, 1, 0.68, 1) forwards",
+            duration: 1500
+          }
           break;
         case "3%_deposit":
-          newAnimationRef.current = "spin_end_3 4s cubic-bezier(0, 0.55, 0.45, 1) forwards"
+          newAnimationDataRef.current = {
+            animation: "spin_end_3 2s cubic-bezier(0.33, 1, 0.68, 1) forwards",
+            duration: 3000
+          }  
           break;
         case "lower_commission_7%":
-          newAnimationRef.current = "spin_end_7 4s cubic-bezier(0, 0.55, 0.45, 1) forwards"
+          newAnimationDataRef.current = {
+            animation: "spin_end_7 4s cubic-bezier(0.33, 1, 0.68, 1) forwards",
+            duration: 4000
+          }    
           break;
       
         default:
@@ -83,6 +92,7 @@ export default function ProfilePage() {
     if (!spinEndRef.current)
       return
     setSpin(false)
+    newAnimationDataRef.current.animation = ""
     if (gachaRef.current)
       gachaRef.current.style.animation = ""
   }
@@ -240,11 +250,11 @@ export default function ProfilePage() {
         />
         <img
           onAnimationIteration={() => {
-            if (!newAnimationRef.current || !gachaRef.current)
+            if (!newAnimationDataRef.current.animation || !gachaRef.current)
               return
 
-            gachaRef.current.style.animation = newAnimationRef.current
-            setTimeout(() => spinEndRef.current = true, 4000)
+            gachaRef.current.style.animation = newAnimationDataRef.current.animation
+            setTimeout(() => spinEndRef.current = true, newAnimationDataRef.current.duration)
           }}
           onClick={spin ? stopSpin : undefined}
           ref={gachaRef}
@@ -257,7 +267,7 @@ export default function ProfilePage() {
             spinEndRef.current = false
             showAd()
           }}
-          disabled={userData?.roulette_last_spin ? Date.now() - new Date(userData.roulette_last_spin).getTime() <= spinTimeout : false }
+          // disabled={userData?.roulette_last_spin ? Date.now() - new Date(userData.roulette_last_spin).getTime() <= spinTimeout : false }
           className="profile-body-gacha-button"
         >
           {spinTime ? numberToTime(spinTime) : "Крутить"}

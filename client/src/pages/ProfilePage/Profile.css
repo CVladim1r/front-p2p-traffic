@@ -229,37 +229,21 @@
     }
 }
 @keyframes spin_end_10 {
-    /* 50% {
-        transform: translate(-50%, 50%) rotate(360deg);
-    } */
-
     100% {
         transform: translate(-50%, 50%) rotate(360deg);
     }
 }
 @keyframes spin_end_7 {
-    /* 50% {
-        transform: translate(-50%, 50%) rotate(360deg);
-    } */
-    
     100% {
-        transform: translate(-50%, 50%) rotate(90deg);
+        transform: translate(-50%, 50%) rotate(450deg);
     }
 }
 @keyframes spin_end_5 {
-    /* 50% {
-        transform: translate(-50%, 50%) rotate(360deg);
-    } */
-   
     100% {
         transform: translate(-50%, 50%) rotate(180deg);
     }
 }
 @keyframes spin_end_3 {
-    /* 50% {
-        transform: translate(-50%, 50%) rotate(360deg);
-    } */
-
     100% {
         transform: translate(-50%, 50%) rotate(270deg);
     }
