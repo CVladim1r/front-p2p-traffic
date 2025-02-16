@@ -2,6 +2,7 @@ import { Link } from "react-router-dom"
 import dealsImg from "../../shared/assets/svg/profile_deals.svg"
 import profitImg from "../../shared/assets/svg/profile_profit.svg"
 import ratingImg from "../../shared/assets/svg/profile_rating.svg"
+import settingsLogo from "../../shared/assets/svg/settings.svg"
 import gacha from "../../shared/assets/svg/gacha_noshadow.svg"
 import closeImg from "../../shared/assets/svg/close.svg"
 import Profile from "./Profile"
@@ -106,14 +107,11 @@ export default function ProfilePage() {
 
   return (
     <Profile username={userData?.username ?? "none"}
-    // topChildren={
-    //   <>
-    //     {/* <Link to={{pathname: RoutePaths.profileSettings}} className="profile-top-settings">
-    //       <img src={settingsLogo} alt=""/>
-    //     </Link>
-
-    //     <button onClick={() => setShowGacha(!showGacha)} className="profile-top-gacha">Колесо</button> */}
-    //   </>}
+      topChildren={
+        <Link to={{pathname: RoutePaths.profileSettings}} className="profile-top-settings">
+          <img src={settingsLogo} alt=""/>
+        </Link>
+      }
     >
       
       <div className="profile-body">

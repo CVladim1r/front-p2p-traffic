@@ -267,6 +267,9 @@
     
     display: flex;
     flex-direction: column;
+    row-gap: 15px;
+    
+    padding: 10px 15px;
 
     background-color: #2B2B2B;
     border-radius: 14px;
@@ -275,11 +278,6 @@
 .profile-settings-row {
     display: flex;
     justify-content: space-between;
-
-    padding: 10px 15px;
-}
-.profile-settings-row + .profile-settings-row {
-    padding-top: 0px;
 }
 
 .profile-settings-key.non-active {
