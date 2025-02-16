@@ -3,7 +3,7 @@ import dealsImg from "../../shared/assets/svg/profile_deals.svg"
 import profitImg from "../../shared/assets/svg/profile_profit.svg"
 import ratingImg from "../../shared/assets/svg/profile_rating.svg"
 import settingsLogo from "../../shared/assets/svg/settings.svg"
-import gacha from "../../shared/assets/svg/gacha_noshadow.svg"
+import gacha from "../../shared/assets/svg/gacha_new.svg"
 import closeImg from "../../shared/assets/svg/close.svg"
 import Profile from "./Profile"
 import { RoutePaths } from "../../app/providers/router"
@@ -32,6 +32,10 @@ export default function ProfilePage() {
   const [showModal, setShowModal] = useState(false)
   const [currencyType, setCurrencyType] = useState(additional.currencyTypes[0])
 
+  const gachaRef = useRef<HTMLImageElement>(null)
+  const newAnimationRef = useRef("")
+  const spinEndRef = useRef(true)
+
   const showAd = useAdsgram({
     blockId: "8165",
     debug: false,
@@ -44,11 +48,44 @@ export default function ProfilePage() {
 
       setSpin(true)
       const response = await AdsgramService.spinRouletteApiV1P2PAdsgramSpinRouletteGet(user.id)
+      // const response = {
+      //   prize_type: ""
+      // }
       console.log(response);
+
+      const slep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+      await slep(4000) // loading
+
+      // response.prize_type = "5%_discount"
+
+      switch (response.prize_type) {
+        case "10%_discount":
+          newAnimationRef.current = "spin_end_10 4s cubic-bezier(0, 0.55, 0.45, 1) forwards"
+          break;
+        case "5%_discount":
+          newAnimationRef.current = "spin_end_5 4s cubic-bezier(0, 0.55, 0.45, 1) forwards"
+          break;
+        case "3%_deposit":
+          newAnimationRef.current = "spin_end_3 4s cubic-bezier(0, 0.55, 0.45, 1) forwards"
+          break;
+        case "lower_commission_7%":
+          newAnimationRef.current = "spin_end_7 4s cubic-bezier(0, 0.55, 0.45, 1) forwards"
+          break;
       
+        default:
+          break;
+      }
       dispatch(userActions.setUserData(await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)))
     },
   })
+
+  const stopSpin = () => {
+    if (!spinEndRef.current)
+      return
+    setSpin(false)
+    if (gachaRef.current)
+      gachaRef.current.style.animation = ""
+  }
 
   const [spinTime, setSpinTime] = useState(userData?.roulette_last_spin ? Math.floor((new Date(userData.roulette_last_spin ?? 0).getTime() + spinTimeout - Date.now()) / 1000) : 0)
 
@@ -197,10 +234,35 @@ export default function ProfilePage() {
         </div>
         
          
-        <div onClick={() => setSpin(false)} className={spin ? "profile-body-gacha-dark-overlay active" : "profile-body-gacha-dark-overlay"}></div>
-        <img src={gacha} alt="" className= {spin ? "profile-body-gacha-image spin" : "profile-body-gacha-image"}/>
-        <Button onClick={() => showAd()} disabled={userData?.roulette_last_spin ? Date.now() - new Date(userData.roulette_last_spin).getTime() <= spinTimeout : false } className="profile-body-gacha-button">{spinTime ? numberToTime(spinTime) : "Крутить"}</Button>
-          
+        <div
+          onClick={stopSpin}
+          className={spin ? "profile-body-gacha-dark-overlay active" : "profile-body-gacha-dark-overlay"}
+        />
+        <img
+          onAnimationIteration={() => {
+            if (!newAnimationRef.current || !gachaRef.current)
+              return
+
+            gachaRef.current.style.animation = newAnimationRef.current
+            setTimeout(() => spinEndRef.current = true, 4000)
+          }}
+          onClick={spin ? stopSpin : undefined}
+          ref={gachaRef}
+          src={gacha}
+          alt=""
+          className={spin ? "profile-body-gacha-image spin" : "profile-body-gacha-image"}
+        />
+        <Button
+          onClick={() => {
+            spinEndRef.current = false
+            showAd()
+          }}
+          disabled={userData?.roulette_last_spin ? Date.now() - new Date(userData.roulette_last_spin).getTime() <= spinTimeout : false }
+          className="profile-body-gacha-button"
+        >
+          {spinTime ? numberToTime(spinTime) : "Крутить"}
+        </Button>
+        
         <VipDialog />
       </div>
     </Profile>
