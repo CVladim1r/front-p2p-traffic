@@ -182,7 +182,7 @@ export default function ProfilePage() {
          
         <div onClick={() => setSpin(false)} className={spin ? "profile-body-gacha-dark-overlay active" : "profile-body-gacha-dark-overlay"}></div>
         <img src={gacha} alt="" className= {spin ? "profile-body-gacha-image spin" : "profile-body-gacha-image"}/>
-        <Button onClick={() => showAd()} disabled={userData?.roulette_last_spin ? Date.now() - new Date(userData.roulette_last_spin).getDate() <= 86400 : false } className="profile-body-gacha-button">Крутить</Button>
+        <Button onClick={() => showAd()} disabled={userData?.roulette_last_spin ? Date.now() - new Date(userData.roulette_last_spin).getTime() <= 86400 : false } className="profile-body-gacha-button">Крутить</Button>
           
         <VipDialog />
       </div>
