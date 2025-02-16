@@ -13,12 +13,16 @@ import { formatNumberTo3 } from "../../shared/lib/lib"
 import { useAppSelector } from "../../app/providers/store"
 import { useAdsgram } from "../../shared/lib/hooks"
 import { useMutation } from "@tanstack/react-query"
-import { TransactionCurrencyType, UsersService } from "../../shared/api"
-import { selectAuthorization } from "../../entities/User"
+import { AdsgramService, TransactionCurrencyType, UsersService } from "../../shared/api"
+import { selectAuthorization, userActions } from "../../entities/User"
+import { user } from "../.."
+import { useDispatch } from "react-redux"
 
 export default function ProfilePage() {
   // const [showGacha, setShowGacha] = useState(false)
+  const dispatch = useDispatch()
 
+  const authorization = useAppSelector(selectAuthorization)
   const userData = useAppSelector(state => state.user.data)
   const additional = useAppSelector(s => s.additional)
 
@@ -33,11 +37,14 @@ export default function ProfilePage() {
       console.log(`error: ${result.description}`);
     },
     onReward: async () => {
-      const slep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-      await slep(1000) // loading
-      setSpin(true)
+      if (!user)
+        throw new Error("no user data")
 
+      setSpin(true)
+      const response = await AdsgramService.spinRouletteApiV1P2PAdsgramSpinRouletteGet(user.id)
+      console.log(response);
       
+      dispatch(userActions.setUserData(await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)))
     },
   })
 
@@ -175,7 +182,7 @@ export default function ProfilePage() {
          
         <div onClick={() => setSpin(false)} className={spin ? "profile-body-gacha-dark-overlay active" : "profile-body-gacha-dark-overlay"}></div>
         <img src={gacha} alt="" className= {spin ? "profile-body-gacha-image spin" : "profile-body-gacha-image"}/>
-        <Button onClick={() => showAd()} className="profile-body-gacha-button">Крутить</Button>
+        <Button onClick={() => showAd()} disabled={userData?.roulette_last_spin ? Date.now() - new Date(userData.roulette_last_spin).getDate() <= 86400 : false } className="profile-body-gacha-button">Крутить</Button>
           
         <VipDialog />
       </div>

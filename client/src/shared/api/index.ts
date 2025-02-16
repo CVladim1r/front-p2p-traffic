@@ -31,6 +31,7 @@ export type { HTTPValidationError } from './models/HTTPValidationError';
 export type { InitDataIn } from './models/InitDataIn';
 export type { InitTonIn } from './models/InitTonIn';
 export type { PinChatRequest } from './models/PinChatRequest';
+export type { PrizeOut } from './models/PrizeOut';
 export type { StartUserIn } from './models/StartUserIn';
 export type { StartUserOut } from './models/StartUserOut';
 export { TransactionCurrencyType } from './models/TransactionCurrencyType';
@@ -41,6 +42,7 @@ export type { UserMainPageOut } from './models/UserMainPageOut';
 export type { ValidationError } from './models/ValidationError';
 
 export { AdditionalService } from './services/AdditionalService';
+export { AdsgramService } from './services/AdsgramService';
 export { AuthService } from './services/AuthService';
 export { BalanceService } from './services/BalanceService';
 export { DefaultService } from './services/DefaultService';

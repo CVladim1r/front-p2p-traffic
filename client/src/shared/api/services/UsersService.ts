@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Body_update_user_photo_api_v1_p2p_user_update_user_photo_post } from '../models/Body_update_user_photo_api_v1_p2p_user_update_user_photo_post';
+import type { PrizeOut } from '../models/PrizeOut';
 import type { StartUserIn } from '../models/StartUserIn';
 import type { StartUserOut } from '../models/StartUserOut';
 import type { TransactionCurrencyType } from '../models/TransactionCurrencyType';
@@ -33,6 +34,7 @@ export class UsersService {
             mediaType: 'application/json',
             errors: {
                 400: `Bad Request`,
+                404: `Not Found`,
                 422: `Validation Error`,
             },
         });
@@ -54,6 +56,7 @@ export class UsersService {
             },
             errors: {
                 400: `Bad Request`,
+                404: `Not Found`,
                 422: `Validation Error`,
             },
         });
@@ -75,6 +78,7 @@ export class UsersService {
             },
             errors: {
                 400: `Bad Request`,
+                404: `Not Found`,
                 422: `Validation Error`,
             },
         });
@@ -100,6 +104,7 @@ export class UsersService {
             mediaType: 'application/json',
             errors: {
                 400: `Bad Request`,
+                404: `Not Found`,
                 422: `Validation Error`,
             },
         });
@@ -123,6 +128,28 @@ export class UsersService {
             },
             query: {
                 'currently_type': currentlyType,
+            },
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Get Active Prize
+     * @param authorization
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static getActivePrizeApiV1P2PUserActivePrizeGet(
+        authorization: string,
+    ): CancelablePromise<(PrizeOut | null)> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/p2p/user/active_prize',
+            headers: {
+                'Authorization': authorization,
             },
             errors: {
                 400: `Bad Request`,
