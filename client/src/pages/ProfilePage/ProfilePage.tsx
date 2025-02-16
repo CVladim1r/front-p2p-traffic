@@ -8,8 +8,8 @@ import closeImg from "../../shared/assets/svg/close.svg"
 import Profile from "./Profile"
 import { RoutePaths } from "../../app/providers/router"
 import { Button, Select } from "../../shared/ui"
-import { useState } from "react"
-import { formatNumberTo3 } from "../../shared/lib/lib"
+import { useEffect, useRef, useState } from "react"
+import { formatNumberTo3, numberToTime } from "../../shared/lib/lib"
 import { useAppSelector } from "../../app/providers/store"
 import { useAdsgram } from "../../shared/lib/hooks"
 import { useMutation } from "@tanstack/react-query"
@@ -21,6 +21,8 @@ import { useDispatch } from "react-redux"
 export default function ProfilePage() {
   // const [showGacha, setShowGacha] = useState(false)
   const dispatch = useDispatch()
+
+  const spinTimeout = 24 * 60 * 60 * 1000
 
   const authorization = useAppSelector(selectAuthorization)
   const userData = useAppSelector(state => state.user.data)
@@ -48,6 +50,21 @@ export default function ProfilePage() {
     },
   })
 
+  const [spinTime, setSpinTime] = useState(userData?.roulette_last_spin ? Math.floor((new Date(userData.roulette_last_spin ?? 0).getTime() + spinTimeout - Date.now()) / 1000) : 0)
+
+  const updateTimeRef = useRef<NodeJS.Timeout>(undefined)
+  useEffect(() => {
+    if (userData?.roulette_last_spin) {
+      if (!updateTimeRef.current)
+        updateTimeRef.current = setInterval(() => {
+          setSpinTime(Math.floor((new Date(userData.roulette_last_spin ?? 0).getTime() + spinTimeout - Date.now()) / 1000))
+        }, 100)
+    } else if (updateTimeRef.current) {
+      clearInterval(updateTimeRef.current)
+      updateTimeRef.current = undefined
+      setSpinTime(0)
+    }
+  }, [userData?.roulette_last_spin])
 
   function VipDialog() {
     const additional = useAppSelector(s => s.additional)
@@ -182,7 +199,7 @@ export default function ProfilePage() {
          
         <div onClick={() => setSpin(false)} className={spin ? "profile-body-gacha-dark-overlay active" : "profile-body-gacha-dark-overlay"}></div>
         <img src={gacha} alt="" className= {spin ? "profile-body-gacha-image spin" : "profile-body-gacha-image"}/>
-        <Button onClick={() => showAd()} disabled={userData?.roulette_last_spin ? Date.now() - new Date(userData.roulette_last_spin).getTime() <= 8640000 : false } className="profile-body-gacha-button">Крутить</Button>
+        <Button onClick={() => showAd()} disabled={userData?.roulette_last_spin ? Date.now() - new Date(userData.roulette_last_spin).getTime() <= spinTimeout : false } className="profile-body-gacha-button">{spinTime ? numberToTime(spinTime) : "Крутить"}</Button>
           
         <VipDialog />
       </div>
