@@ -48,16 +48,15 @@ export default function ProfilePage() {
 
       setSpin(true)
       const response = await AdsgramService.spinRouletteApiV1P2PAdsgramSpinRouletteGet(user.id)
-      
       console.log(response);
 
       const slep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-      await slep(4000) // loading
+      await slep(2500) // loading
 
       switch (response.prize_type) {
         case "10%_discount":
           newAnimationDataRef.current = {
-            animation: "spin_end_10 3.2s cubic-bezier(0.33, 1, 0.68, 1) forwards",
+            animation: "spin_end_10 3s cubic-bezier(0.33, 1, 0.68, 1) forwards",
             duration: 3200
           }
 
@@ -70,14 +69,14 @@ export default function ProfilePage() {
           break;
         case "3%_deposit":
           newAnimationDataRef.current = {
-            animation: "spin_end_3 2s cubic-bezier(0.33, 1, 0.68, 1) forwards",
-            duration: 3000
+            animation: "spin_end_3 2.3s cubic-bezier(0.33, 1, 0.68, 1) forwards",
+            duration: 230
           }  
           break;
         case "lower_commission_7%":
           newAnimationDataRef.current = {
-            animation: "spin_end_7 4s cubic-bezier(0.33, 1, 0.68, 1) forwards",
-            duration: 4000
+            animation: "spin_end_7 3.8s cubic-bezier(0.33, 1, 0.68, 1) forwards",
+            duration: 3800
           }    
           break;
       
@@ -267,7 +266,7 @@ export default function ProfilePage() {
             spinEndRef.current = false
             showAd()
           }}
-          // disabled={userData?.roulette_last_spin ? Date.now() - new Date(userData.roulette_last_spin).getTime() <= spinTimeout : false }
+          disabled={userData?.roulette_last_spin ? Date.now() - new Date(userData.roulette_last_spin).getTime() <= spinTimeout : false }
           className="profile-body-gacha-button"
         >
           {spinTime ? numberToTime(spinTime) : "Крутить"}
