@@ -267,6 +267,9 @@
     
     display: flex;
     flex-direction: column;
+    row-gap: 15px;
+    
+    padding: 10px 15px;
 
     background-color: #2B2B2B;
     border-radius: 14px;
@@ -275,11 +278,6 @@
 .profile-settings-row {
     display: flex;
     justify-content: space-between;
-
-    padding: 10px 15px;
-}
-.profile-settings-row + .profile-settings-row {
-    padding-top: 0px;
 }
 
 .profile-settings-key.non-active {
@@ -393,9 +391,9 @@
 .vipDialog-main {
     display: flex;
     flex-direction: column;
-    row-gap: 12px;
+    row-gap: 10px;
 
-    padding: 20px;
+    padding: 5px 20px 20px 20px;
 
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
@@ -403,11 +401,21 @@
     background-color: #2B2B2B;
 }
 
+.vipDialog-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.vipDialog-top-header {
+    font-size: 16px;
+    font-weight: 300;
+}
+
 .vipDialog-close {
     display: flex;
     align-self: flex-end;
 
-    margin-top: -15px;
     margin-right: -15px;
 
     height: fit-content;
@@ -417,21 +425,13 @@
     background-color: transparent;
 }
 
-.vipDialog-top {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.vipDialog-top-header {
-    font-size: 16px;
-    font-weight: 300;
-}
-
-.vipDialog-top-status {
+.vipDialog-status {
     font-size: 32px;
     font-weight: 700;
     font-family: "Roboto";
+
+    align-self: center;
+    margin-bottom: 10px;
 
     background-color: transparent;
 

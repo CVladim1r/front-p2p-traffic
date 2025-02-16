@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
-import { Ad, Button } from "../../shared/ui";
-import { Navigate } from "react-router-dom";
+import { Ad, BackButton, Button } from "../../shared/ui";
+import { Navigate, useNavigate } from "react-router-dom";
 import { RoutePaths } from "../../app/providers/router";
 import { addAdActions } from "../../entities/AddAd/slice/addAdSlice";
 import "./PreviewAdPage.css"
@@ -12,6 +12,7 @@ import { useAppSelector } from "../../app/providers/store";
 
 export default function PreviewAddAdPage() {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const {mutate, isSuccess, isPending} = useMutation({
         mutationFn: async () => {
             const slep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
@@ -50,6 +51,8 @@ export default function PreviewAddAdPage() {
 
     return (
         <div className="preview-ad container">
+            <BackButton onClick={() => navigate({pathname: RoutePaths.addAd})} />
+
             <p className="preview-ad-header">Подтверждение создания</p>
             <div className="preview-ad-groups">
                 <Ad {...data} showInfo={true} user_deals={userData.deals} user_name={userData.username ?? "Anonym"} user_photo_url={userData.profile_photo ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTSDZkJpfJZuBUtCO2O5POp69VoIKklbXpFg&s"} user_rating={userData.rating} user_vip={userData.is_vip} showButtons={false}/>

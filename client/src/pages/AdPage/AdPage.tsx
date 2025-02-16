@@ -1,4 +1,4 @@
-import { Ad, Button, LoadingAnimation } from "../../shared/ui";
+import { Ad, BackButton, Button, LoadingAnimation } from "../../shared/ui";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { OrdersService } from "../../shared/api";
@@ -36,6 +36,8 @@ export default function AdPage() {
 
     return (
         <div className="ad container">
+            <BackButton onClick={() => navigate({pathname: RoutePaths.ads})} />
+
             <p className="ad-header">Подтверждение создания</p>
             <div className="ad-content">
                 <Ad {...data} showInfo={true} showButtons={false}/>

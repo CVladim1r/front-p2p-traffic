@@ -2,6 +2,7 @@ import { Link } from "react-router-dom"
 import dealsImg from "../../shared/assets/svg/profile_deals.svg"
 import profitImg from "../../shared/assets/svg/profile_profit.svg"
 import ratingImg from "../../shared/assets/svg/profile_rating.svg"
+import settingsLogo from "../../shared/assets/svg/settings.svg"
 import gacha from "../../shared/assets/svg/gacha_noshadow.svg"
 import closeImg from "../../shared/assets/svg/close.svg"
 import Profile from "./Profile"
@@ -12,12 +13,16 @@ import { formatNumberTo3 } from "../../shared/lib/lib"
 import { useAppSelector } from "../../app/providers/store"
 import { useAdsgram } from "../../shared/lib/hooks"
 import { useMutation } from "@tanstack/react-query"
-import { TransactionCurrencyType, UsersService } from "../../shared/api"
-import { selectAuthorization } from "../../entities/User"
+import { AdsgramService, TransactionCurrencyType, UsersService } from "../../shared/api"
+import { selectAuthorization, userActions } from "../../entities/User"
+import { user } from "../.."
+import { useDispatch } from "react-redux"
 
 export default function ProfilePage() {
   // const [showGacha, setShowGacha] = useState(false)
+  const dispatch = useDispatch()
 
+  const authorization = useAppSelector(selectAuthorization)
   const userData = useAppSelector(state => state.user.data)
   const additional = useAppSelector(s => s.additional)
 
@@ -26,12 +31,20 @@ export default function ProfilePage() {
   const [currencyType, setCurrencyType] = useState(additional.currencyTypes[0])
 
   const showAd = useAdsgram({
-    blockId: "8165", 
+    blockId: "8165",
+    debug: false,
     onError(result) {
       console.log(`error: ${result.description}`);
     },
-    onReward() {
+    onReward: async () => {
+      if (!user)
+        throw new Error("no user data")
+
       setSpin(true)
+      const response = await AdsgramService.spinRouletteApiV1P2PAdsgramSpinRouletteGet(user.id)
+      console.log(response);
+      
+      dispatch(userActions.setUserData(await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)))
     },
   })
 
@@ -56,14 +69,15 @@ export default function ProfilePage() {
 
         <div className={showModal ? "vipDialog active" : "vipDialog"}>
           <div className="vipDialog-main">
-            <Button className="vipDialog-close" onClick={() => setShowModal(false)}>
-              <img src={closeImg} alt="" className="vipDialog-close-icon" />
-            </Button>
 
             <div className="vipDialog-top">
               <p className="vipDialog-top-header">VIP статус:</p>
-              <p className="vipDialog-top-status">{userData?.is_vip ? "Активно" : "Не активно"}</p>
+              <Button className="vipDialog-close" onClick={() => setShowModal(false)}>
+                <img src={closeImg} alt="" className="vipDialog-close-icon" />
+              </Button>
             </div>
+            
+            <p className="vipDialog-status">{userData?.is_vip ? "Активно" : "Не активно"}</p>
 
             <div className="vipDialog-body">
               {currencySelect ?
@@ -100,14 +114,11 @@ export default function ProfilePage() {
 
   return (
     <Profile username={userData?.username ?? "none"}
-    // topChildren={
-    //   <>
-    //     {/* <Link to={{pathname: RoutePaths.profileSettings}} className="profile-top-settings">
-    //       <img src={settingsLogo} alt=""/>
-    //     </Link>
-
-    //     <button onClick={() => setShowGacha(!showGacha)} className="profile-top-gacha">Колесо</button> */}
-    //   </>}
+      topChildren={
+        <Link to={{pathname: RoutePaths.profileSettings}} className="profile-top-settings">
+          <img src={settingsLogo} alt=""/>
+        </Link>
+      }
     >
       
       <div className="profile-body">
@@ -171,7 +182,7 @@ export default function ProfilePage() {
          
         <div onClick={() => setSpin(false)} className={spin ? "profile-body-gacha-dark-overlay active" : "profile-body-gacha-dark-overlay"}></div>
         <img src={gacha} alt="" className= {spin ? "profile-body-gacha-image spin" : "profile-body-gacha-image"}/>
-        <Button onClick={() => showAd()} className="profile-body-gacha-button">Крутить</Button>
+        <Button onClick={() => showAd()} disabled={userData?.roulette_last_spin ? Date.now() - new Date(userData.roulette_last_spin).getDate() <= 86400 : false } className="profile-body-gacha-button">Крутить</Button>
           
         <VipDialog />
       </div>

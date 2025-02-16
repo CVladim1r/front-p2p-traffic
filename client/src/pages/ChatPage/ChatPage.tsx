@@ -1,11 +1,11 @@
-import { Navigate, useParams } from "react-router-dom"
+import { Navigate, useNavigate, useParams } from "react-router-dom"
 import "./ChatPage.css"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { ChatMessage, OrdersService } from "../../shared/api"
 import { useAppSelector } from "../../app/providers/store"
 import { selectAuthorization } from "../../entities/User"
 import { useEffect, useRef, useState } from "react"
-import { Button, LoadingAnimation, TextField } from "../../shared/ui"
+import { BackButton, Button, LoadingAnimation, TextField } from "../../shared/ui"
 import classNames from "classnames"
 import { RoutePaths } from "../../app/providers/router"
 import sendSvg from "../../shared/assets/svg/ad_send.svg"
@@ -34,6 +34,8 @@ function Message({sender_tg_id, text, timestamp, sender_name}: ChatMessage) {
 }
 
 export default function ChatPage() {
+    const navigate = useNavigate()
+
     const { id: deal_id } = useParams<{id: string}>()
     if (!deal_id)
         return <Navigate to={{pathname: RoutePaths.chats}} replace />
@@ -88,6 +90,7 @@ export default function ChatPage() {
                 ) : (
                     <>
                         <div className="chat-top">
+                            <BackButton className="chat-top-back" onClick={() => navigate({pathname: RoutePaths.chats})}/>
                             <Button className="chat-top-open">Открыть спор</Button>
                             <Button className="chat-top-confirm" onClick={() => confirmDeal()}>Подтвердить сделку</Button>
                         </div>
