@@ -32,7 +32,7 @@ export default function ProfilePage() {
 
   const showAd = useAdsgram({
     blockId: "8165",
-    debug: true,
+    debug: false,
     onError(result) {
       console.log(`error: ${result.description}`);
     },
