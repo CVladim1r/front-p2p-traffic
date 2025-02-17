@@ -76,13 +76,13 @@ export default function ProfilePage() {
           break;
         case "3%_deposit":
           newAnimationDataRef.current = {
-            animation: "spin_end_3 2.3s cubic-bezier(0.33, 1, 0.68, 1) forwards",
+            animation: "spin_end_3 3.8s cubic-bezier(0.33, 1, 0.68, 1) forwards",
             duration: 2300
           }  
           break;
         case "lower_commission_20%":
           newAnimationDataRef.current = {
-            animation: "spin_end_20 3.8s cubic-bezier(0.33, 1, 0.68, 1) forwards",
+            animation: "spin_end_20 2.3s cubic-bezier(0.33, 1, 0.68, 1) forwards",
             duration: 3800
           }    
           break;
