@@ -3,13 +3,13 @@ import dealsImg from "../../shared/assets/svg/profile_deals.svg"
 import profitImg from "../../shared/assets/svg/profile_profit.svg"
 import ratingImg from "../../shared/assets/svg/profile_rating.svg"
 import settingsLogo from "../../shared/assets/svg/settings.svg"
-import gacha from "../../shared/assets/svg/gacha_noshadow.svg"
+import gacha from "../../shared/assets/svg/gacha_new.svg"
 import closeImg from "../../shared/assets/svg/close.svg"
 import Profile from "./Profile"
 import { RoutePaths } from "../../app/providers/router"
 import { Button, Select } from "../../shared/ui"
-import { useState } from "react"
-import { formatNumberTo3 } from "../../shared/lib/lib"
+import { useEffect, useRef, useState } from "react"
+import { formatNumberTo3, numberToTime } from "../../shared/lib/lib"
 import { useAppSelector } from "../../app/providers/store"
 import { useAdsgram } from "../../shared/lib/hooks"
 import { useMutation } from "@tanstack/react-query"
@@ -22,6 +22,8 @@ export default function ProfilePage() {
   // const [showGacha, setShowGacha] = useState(false)
   const dispatch = useDispatch()
 
+  const spinTimeout = 24 * 60 * 60 * 1000
+
   const authorization = useAppSelector(selectAuthorization)
   const userData = useAppSelector(state => state.user.data)
   const additional = useAppSelector(s => s.additional)
@@ -29,6 +31,10 @@ export default function ProfilePage() {
   const [spin, setSpin] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const [currencyType, setCurrencyType] = useState(additional.currencyTypes[0])
+
+  const gachaRef = useRef<HTMLImageElement>(null)
+  const newAnimationDataRef = useRef<{animation: string, duration: number}>({animation: "", duration: 0})
+  const spinEndRef = useRef(true)
 
   const showAd = useAdsgram({
     blockId: "8165",
@@ -43,11 +49,68 @@ export default function ProfilePage() {
       setSpin(true)
       const response = await AdsgramService.spinRouletteApiV1P2PAdsgramSpinRouletteGet(user.id)
       console.log(response);
+
+      const slep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+      await slep(2500) // loading
+
+      switch (response.prize_type) {
+        case "10%_discount":
+          newAnimationDataRef.current = {
+            animation: "spin_end_10 3s cubic-bezier(0.33, 1, 0.68, 1) forwards",
+            duration: 3200
+          }
+
+          break;
+        case "5%_discount":
+          newAnimationDataRef.current = {
+            animation: "spin_end_5 1.5s cubic-bezier(0.33, 1, 0.68, 1) forwards",
+            duration: 1500
+          }
+          break;
+        case "3%_deposit":
+          newAnimationDataRef.current = {
+            animation: "spin_end_3 2.3s cubic-bezier(0.33, 1, 0.68, 1) forwards",
+            duration: 230
+          }  
+          break;
+        case "lower_commission_7%":
+          newAnimationDataRef.current = {
+            animation: "spin_end_7 3.8s cubic-bezier(0.33, 1, 0.68, 1) forwards",
+            duration: 3800
+          }    
+          break;
       
+        default:
+          break;
+      }
       dispatch(userActions.setUserData(await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)))
     },
   })
 
+  const stopSpin = () => {
+    if (!spinEndRef.current)
+      return
+    setSpin(false)
+    newAnimationDataRef.current.animation = ""
+    if (gachaRef.current)
+      gachaRef.current.style.animation = ""
+  }
+
+  const [spinTime, setSpinTime] = useState(userData?.roulette_last_spin ? Math.floor((new Date(userData.roulette_last_spin ?? 0).getTime() + spinTimeout - Date.now()) / 1000) : 0)
+
+  const updateTimeRef = useRef<NodeJS.Timeout>(undefined)
+  useEffect(() => {
+    if (userData?.roulette_last_spin) {
+      if (!updateTimeRef.current)
+        updateTimeRef.current = setInterval(() => {
+          setSpinTime(Math.floor((new Date(userData.roulette_last_spin ?? 0).getTime() + spinTimeout - Date.now()) / 1000))
+        }, 100)
+    } else if (updateTimeRef.current) {
+      clearInterval(updateTimeRef.current)
+      updateTimeRef.current = undefined
+      setSpinTime(0)
+    }
+  }, [userData?.roulette_last_spin])
 
   function VipDialog() {
     const additional = useAppSelector(s => s.additional)
@@ -180,10 +243,35 @@ export default function ProfilePage() {
         </div>
         
          
-        <div onClick={() => setSpin(false)} className={spin ? "profile-body-gacha-dark-overlay active" : "profile-body-gacha-dark-overlay"}></div>
-        <img src={gacha} alt="" className= {spin ? "profile-body-gacha-image spin" : "profile-body-gacha-image"}/>
-        <Button onClick={() => showAd()} disabled={userData?.roulette_last_spin ? Date.now() - new Date(userData.roulette_last_spin).getDate() <= 86400 : false } className="profile-body-gacha-button">Крутить</Button>
-          
+        <div
+          onClick={stopSpin}
+          className={spin ? "profile-body-gacha-dark-overlay active" : "profile-body-gacha-dark-overlay"}
+        />
+        <img
+          onAnimationIteration={() => {
+            if (!newAnimationDataRef.current.animation || !gachaRef.current)
+              return
+
+            gachaRef.current.style.animation = newAnimationDataRef.current.animation
+            setTimeout(() => spinEndRef.current = true, newAnimationDataRef.current.duration)
+          }}
+          onClick={spin ? stopSpin : undefined}
+          ref={gachaRef}
+          src={gacha}
+          alt=""
+          className={spin ? "profile-body-gacha-image spin" : "profile-body-gacha-image"}
+        />
+        <Button
+          onClick={() => {
+            spinEndRef.current = false
+            showAd()
+          }}
+          disabled={userData?.roulette_last_spin ? Date.now() - new Date(userData.roulette_last_spin).getTime() <= spinTimeout : false }
+          className="profile-body-gacha-button"
+        >
+          {spinTime ? numberToTime(spinTime) : "Крутить"}
+        </Button>
+        
         <VipDialog />
       </div>
     </Profile>

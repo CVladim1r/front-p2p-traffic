@@ -39,3 +39,7 @@ export function formatNumberTo3(x: number, length?: number) {
 export function isMobile() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
 }
+
+export function numberToTime(sec: number) {
+  return Math.floor(sec / 3600).toString().padStart(2, "0") + ":" + (Math.floor(sec / 60) % 60).toString().padStart(2, "0") + ":" + (sec % 60).toString().padStart(2, "0")
+}
