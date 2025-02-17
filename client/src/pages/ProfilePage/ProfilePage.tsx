@@ -3,7 +3,9 @@ import dealsImg from "../../shared/assets/svg/profile_deals.svg"
 import profitImg from "../../shared/assets/svg/profile_profit.svg"
 import ratingImg from "../../shared/assets/svg/profile_rating.svg"
 import settingsLogo from "../../shared/assets/svg/settings.svg"
-import gacha from "../../shared/assets/svg/gacha_new.svg"
+import gachaFull from "../../shared/assets/svg/gacha_new.svg"
+import gachaBlank from "../../shared/assets/svg/gacha_new-blank.svg"
+import gachaArrow from "../../shared/assets/svg/arrow_gacha.svg"
 import closeImg from "../../shared/assets/svg/close.svg"
 import Profile from "./Profile"
 import { RoutePaths } from "../../app/providers/router"
@@ -18,6 +20,12 @@ import { selectAuthorization, userActions } from "../../entities/User"
 import { user } from "../.."
 import { useDispatch } from "react-redux"
 
+enum ModalState {
+   notVisible,
+   main,
+   setCurrency
+}
+
 export default function ProfilePage() {
   // const [showGacha, setShowGacha] = useState(false)
   const dispatch = useDispatch()
@@ -29,7 +37,7 @@ export default function ProfilePage() {
   const additional = useAppSelector(s => s.additional)
 
   const [spin, setSpin] = useState(false)
-  const [showModal, setShowModal] = useState(false)
+  const [modalState, setModalState] = useState(ModalState.notVisible)
   const [currencyType, setCurrencyType] = useState(additional.currencyTypes[0])
 
   const gachaRef = useRef<HTMLImageElement>(null)
@@ -45,11 +53,11 @@ export default function ProfilePage() {
     onReward: async () => {
       if (!user)
         throw new Error("no user data")
-
+      
       setSpin(true)
       const response = await AdsgramService.spinRouletteApiV1P2PAdsgramSpinRouletteGet(user.id)
       console.log(response);
-
+      
       const slep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
       await slep(2500) // loading
 
@@ -59,7 +67,6 @@ export default function ProfilePage() {
             animation: "spin_end_10 3s cubic-bezier(0.33, 1, 0.68, 1) forwards",
             duration: 3200
           }
-
           break;
         case "5%_discount":
           newAnimationDataRef.current = {
@@ -70,7 +77,7 @@ export default function ProfilePage() {
         case "3%_deposit":
           newAnimationDataRef.current = {
             animation: "spin_end_3 2.3s cubic-bezier(0.33, 1, 0.68, 1) forwards",
-            duration: 230
+            duration: 2300
           }  
           break;
         case "lower_commission_7%":
@@ -96,19 +103,25 @@ export default function ProfilePage() {
       gachaRef.current.style.animation = ""
   }
 
-  const [spinTime, setSpinTime] = useState(userData?.roulette_last_spin ? Math.floor((new Date(userData.roulette_last_spin ?? 0).getTime() + spinTimeout - Date.now()) / 1000) : 0)
+  function getTime() {
+    return Math.floor((new Date(userData?.roulette_last_spin ?? 0).getTime() + spinTimeout - Date.now()) / 1000)
+  }
+
+  const [spinTime, setSpinTime] = useState(userData?.roulette_last_spin ? getTime() : 0)
 
   const updateTimeRef = useRef<NodeJS.Timeout>(undefined)
   useEffect(() => {
     if (userData?.roulette_last_spin) {
       if (!updateTimeRef.current)
         updateTimeRef.current = setInterval(() => {
-          setSpinTime(Math.floor((new Date(userData.roulette_last_spin ?? 0).getTime() + spinTimeout - Date.now()) / 1000))
+          setSpinTime(getTime())
         }, 100)
-    } else if (updateTimeRef.current) {
+    } else {
+      setSpinTime(0)
+    }
+    return () => {
       clearInterval(updateTimeRef.current)
       updateTimeRef.current = undefined
-      setSpinTime(0)
     }
   }, [userData?.roulette_last_spin])
 
@@ -116,26 +129,25 @@ export default function ProfilePage() {
     const additional = useAppSelector(s => s.additional)
     const authorization = useAppSelector(selectAuthorization)
 
-    const [currencySelect, setCurrencySelect] = useState(false)
     const [currency, setCurrency] = useState(additional.currencyTypes[0])
 
     const {mutate} = useMutation({
       mutationFn: async () => {
         await UsersService.updateUserVipApiV1P2PUserUpdateUserVipPost(authorization, currency as TransactionCurrencyType)
-        setShowModal(false)
+        setModalState(ModalState.notVisible)
       }
     })
 
     return (
       <>
-        <div onClick={() => setShowModal(false)} className={showModal ? "profile-vipDialog-overlay active" : "profile-vipDialog-overlay"}></div>
+        <div onClick={() => setModalState(ModalState.notVisible)} className={modalState ? "profile-vipDialog-overlay active" : "profile-vipDialog-overlay"}></div>
 
-        <div className={showModal ? "vipDialog active" : "vipDialog"}>
+        <div className={modalState ? "vipDialog active" : "vipDialog"}>
           <div className="vipDialog-main">
 
             <div className="vipDialog-top">
               <p className="vipDialog-top-header">VIP статус:</p>
-              <Button className="vipDialog-close" onClick={() => setShowModal(false)}>
+              <Button className="vipDialog-close" onClick={() => setModalState(ModalState.notVisible)}>
                 <img src={closeImg} alt="" className="vipDialog-close-icon" />
               </Button>
             </div>
@@ -143,7 +155,7 @@ export default function ProfilePage() {
             <p className="vipDialog-status">{userData?.is_vip ? "Активно" : "Не активно"}</p>
 
             <div className="vipDialog-body">
-              {currencySelect ?
+              {modalState == ModalState.setCurrency ?
                 <div className="vipDialog-body-row">
                   <p className="vipDialog-body-header">Выберите валюту для оплаты: </p>
                   <Select className="vipDialog-body-currency" onChange={val => setCurrency(val)} defaultValue={currency} optionsData={
@@ -165,10 +177,10 @@ export default function ProfilePage() {
 
           </div>
           
-          {currencySelect ?
+          {modalState == ModalState.setCurrency ?
             <Button className="vipDialog-button" onClick={() => mutate()}>Оплатить</Button>
           :
-            <Button className="vipDialog-button" disabled={userData?.is_vip} onClick={() => setCurrencySelect(true)}>Оформить</Button>
+            <Button className="vipDialog-button" disabled={userData?.is_vip} onClick={() => setModalState(ModalState.setCurrency)}>Оформить</Button>
           }
         </div>
       </>
@@ -185,7 +197,7 @@ export default function ProfilePage() {
     >
       
       <div className="profile-body">
-        <Button className="profile-body-vip" onClick={() => setShowModal(true)}>
+        <Button className="profile-body-vip" onClick={() => setModalState(ModalState.main)}>
           <p className="profile-body-vip-text">VIP - статус</p>
           <p className="profile-body-vip-status">{userData?.is_vip ? "Активно" : "Не активно"}</p>
         </Button>
@@ -247,20 +259,26 @@ export default function ProfilePage() {
           onClick={stopSpin}
           className={spin ? "profile-body-gacha-dark-overlay active" : "profile-body-gacha-dark-overlay"}
         />
-        <img
-          onAnimationIteration={() => {
-            if (!newAnimationDataRef.current.animation || !gachaRef.current)
-              return
+        <div onClick={spin ? stopSpin : undefined} className={spin ? "profile-body-gacha-wrapper spin" : "profile-body-gacha-wrapper"}>
+          <img
+            className="profile-body-gacha-arrow"
+            src={gachaArrow}
+            alt=""
+          />
+          <img
+            onAnimationIteration={() => {
+              if (!newAnimationDataRef.current.animation || !gachaRef.current)
+                return
 
-            gachaRef.current.style.animation = newAnimationDataRef.current.animation
-            setTimeout(() => spinEndRef.current = true, newAnimationDataRef.current.duration)
-          }}
-          onClick={spin ? stopSpin : undefined}
-          ref={gachaRef}
-          src={gacha}
-          alt=""
-          className={spin ? "profile-body-gacha-image spin" : "profile-body-gacha-image"}
-        />
+              gachaRef.current.style.animation = newAnimationDataRef.current.animation
+              setTimeout(() => spinEndRef.current = true, newAnimationDataRef.current.duration)
+            }}
+            ref={gachaRef}
+            src={spin ? gachaFull : gachaBlank}
+            alt=""
+            className={spin ? "profile-body-gacha-image spin" : "profile-body-gacha-image"}
+          />
+        </div>
         <Button
           onClick={() => {
             spinEndRef.current = false
