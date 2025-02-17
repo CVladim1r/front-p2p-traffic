@@ -80,14 +80,18 @@ export default function ProfilePage() {
             duration: 2300
           }  
           break;
-        case "lower_commission_7%":
+        case "lower_commission_20%":
           newAnimationDataRef.current = {
-            animation: "spin_end_7 3.8s cubic-bezier(0.33, 1, 0.68, 1) forwards",
+            animation: "spin_end_20 3.8s cubic-bezier(0.33, 1, 0.68, 1) forwards",
             duration: 3800
           }    
           break;
       
         default:
+          newAnimationDataRef.current = {
+            animation: "spin_end_smth 1.9s cubic-bezier(0.33, 1, 0.68, 1) forwards",
+            duration: 3800
+          }    
           break;
       }
       dispatch(userActions.setUserData(await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)))

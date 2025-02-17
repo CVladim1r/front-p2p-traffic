@@ -247,11 +247,11 @@
 @keyframes spin_end_10 {
     100% {
         transform: rotate(360deg);
-    }
+    }   
 }
-@keyframes spin_end_7 {
+@keyframes spin_end_20 {
     100% {
-        transform: rotate(450deg);
+        transform: rotate(270deg);
     }
 }
 @keyframes spin_end_5 {
@@ -261,7 +261,12 @@
 }
 @keyframes spin_end_3 {
     100% {
-        transform: rotate(270deg);
+        transform: rotate(450deg);
+    }
+}
+@keyframes spin_end_smth {
+    100% {
+        transform: rotate(225deg);
     }
 }
 
