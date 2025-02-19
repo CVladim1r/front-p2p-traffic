@@ -14,6 +14,7 @@ export default function AdPage() {
         return <Navigate to={{pathname: RoutePaths.ads}} />
 
     const authorization = useAppSelector(selectAuthorization)
+    const userBalance = useAppSelector(s => s.user.data?.balance ?? {})
 
     const {data} = useQuery({
         queryKey: ["adData"],
@@ -31,9 +32,13 @@ export default function AdPage() {
         }
     })
 
+    function canBuy() {
+        return data?.price && userBalance[data?.currency_type ?? ""] && userBalance[data?.currency_type ?? ""] > data.price
+    }
+    
     if (!data)
         return <LoadingAnimation />
-
+    
     return (
         <div className="ad container">
             <BackButton onClick={() => navigate({pathname: RoutePaths.ads})} />
@@ -41,7 +46,7 @@ export default function AdPage() {
             <p className="ad-header">Подтверждение создания</p>
             <div className="ad-content">
                 <Ad {...data} showInfo={true} showButtons={false}/>
-                <Button disabled={isPending} onClick={() => mutate()}>Создать сделку</Button>
+                <Button disabled={isPending || !canBuy()} onClick={() => mutate()}>{canBuy() ? "Создать сделку" : "Недостаточно средств"}</Button>
             </div>
         </div>
     )

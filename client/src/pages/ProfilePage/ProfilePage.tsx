@@ -7,7 +7,7 @@ import gachaFull from "../../shared/assets/svg/gacha_new.svg"
 import gachaBlank from "../../shared/assets/svg/gacha_new-blank.svg"
 import gachaArrow from "../../shared/assets/svg/arrow_gacha.svg"
 import closeImg from "../../shared/assets/svg/close.svg"
-import Profile from "./Profile"
+import ProfileTop from "./Profile"
 import { RoutePaths } from "../../app/providers/router"
 import { Button, Select } from "../../shared/ui"
 import { useEffect, useRef, useState } from "react"
@@ -107,18 +107,25 @@ export default function ProfilePage() {
       gachaRef.current.style.animation = ""
   }
 
-  function getTime() {
+  function getRemainingTime() {
     return Math.floor((new Date(userData?.roulette_last_spin ?? 0).getTime() + spinTimeout - Date.now()) / 1000)
   }
 
-  const [spinTime, setSpinTime] = useState(userData?.roulette_last_spin ? getTime() : 0)
+  const [spinTime, setSpinTime] = useState(userData?.roulette_last_spin && getRemainingTime() > 0 ? getRemainingTime() : 0)
 
   const updateTimeRef = useRef<NodeJS.Timeout>(undefined)
   useEffect(() => {
-    if (userData?.roulette_last_spin) {
+    if (userData?.roulette_last_spin && getRemainingTime() > 0) {
       if (!updateTimeRef.current)
         updateTimeRef.current = setInterval(() => {
-          setSpinTime(getTime())
+          const time = getRemainingTime()
+          if (time < 0) {
+            clearInterval(updateTimeRef.current)
+            updateTimeRef.current = undefined
+            setSpinTime(0)
+          }
+          else
+            setSpinTime(getRemainingTime())
         }, 100)
     } else {
       setSpinTime(0)
@@ -192,110 +199,112 @@ export default function ProfilePage() {
   }
 
   return (
-    <Profile username={userData?.username ?? "none"}
-      topChildren={
-        <Link to={{pathname: RoutePaths.profileSettings}} className="profile-top-settings">
-          <img src={settingsLogo} alt=""/>
-        </Link>
-      }
-    >
-      
-      <div className="profile-body">
-        <Button className="profile-body-vip" onClick={() => setModalState(ModalState.main)}>
-          <p className="profile-body-vip-text">VIP - статус</p>
-          <p className="profile-body-vip-status">{userData?.is_vip ? "Активно" : "Не активно"}</p>
-        </Button>
-        
-        <div className="profile-body-money">
-          <Select
-            className={userData?.balance ? "profile-body-money-text" : "profile-body-money-text null"}
-            classNameContainer="profile-body-money-text-container"
-            onChange={val => setCurrencyType(val)}
-            defaultValue={currencyType}
-            manualWidth={true}
-            filterChosen={true}
-            optionsData={
-              additional.currencyTypes.map(val => (
-                {
-                  value: val,
-                  text: (userData?.balance && userData.balance[val] ? formatNumberTo3(userData.balance[val]) : "0.000") + " " + val 
-                }
-              ))
-            }
-          />
-          <Link
-            to={{pathname: RoutePaths.moneyAdd}}
-            className="profile-body-money-add"
-          >
-            Пополнить
-          </Link>
-          <Link
-            to={{pathname: RoutePaths.moneyRemove}}
-            className={
-              // userData?.balance != 0 ?
-              // userData?.balance != -1 ?
-                "profile-body-money-remove active" 
-                // :
-                // "profile-body-money-remove"
-            }
-          >
-            Вывести
-          </Link>
-        </div>
-        
-        <div className="profile-body-info">
-          <div className="profile-body-info-elem">
-            <img src={dealsImg} alt="" />
-            <p>{userData?.deals}</p>
-          </div>
-          <div className="profile-body-info-elem">
-            <img src={profitImg} alt="" />
-            <p>${userData?.total_sales ?? "none"}</p>
-          </div>
-          <div className="profile-body-info-elem">
-            <img src={ratingImg} alt="" />
-            <p>{userData?.rating.toFixed(2) ?? "none"}</p>
-          </div>
-        </div>
-        
-         
-        <div
-          onClick={stopSpin}
-          className={spin ? "profile-body-gacha-dark-overlay active" : "profile-body-gacha-dark-overlay"}
-        />
-        <div onClick={spin ? stopSpin : undefined} className={spin ? "profile-body-gacha-wrapper spin" : "profile-body-gacha-wrapper"}>
-          <img
-            className="profile-body-gacha-arrow"
-            src={gachaArrow}
-            alt=""
-          />
-          <img
-            onAnimationIteration={() => {
-              if (!newAnimationDataRef.current.animation || !gachaRef.current)
-                return
+    <div className="profile container">
 
-              gachaRef.current.style.animation = newAnimationDataRef.current.animation
-              setTimeout(() => spinEndRef.current = true, newAnimationDataRef.current.duration)
-            }}
-            ref={gachaRef}
-            src={spin ? gachaFull : gachaBlank}
-            alt=""
-            className={spin ? "profile-body-gacha-image spin" : "profile-body-gacha-image"}
-          />
-        </div>
-        <Button
-          onClick={() => {
-            spinEndRef.current = false
-            showAd()
-          }}
-          disabled={userData?.roulette_last_spin ? Date.now() - new Date(userData.roulette_last_spin).getTime() <= spinTimeout : false }
-          className="profile-body-gacha-button"
-        >
-          {spinTime ? numberToTime(spinTime) : "Крутить"}
-        </Button>
+      <ProfileTop username={userData?.username ?? "none"}
+        children={
+          <Link to={{pathname: RoutePaths.profileSettings}} className="profile-top-settings">
+            <img src={settingsLogo} alt=""/>
+          </Link>
+        }
+      />
         
-        <VipDialog />
-      </div>
-    </Profile>
+        <div className="profile-body">
+          <Button className="profile-body-vip" onClick={() => setModalState(ModalState.main)}>
+            <p className="profile-body-vip-text">VIP - статус</p>
+            <p className="profile-body-vip-status">{userData?.is_vip ? "Активно" : "Не активно"}</p>
+          </Button>
+          
+          <div className="profile-body-money">
+            <Select
+              className={userData?.balance ? "profile-body-money-text" : "profile-body-money-text null"}
+              classNameContainer="profile-body-money-text-container"
+              onChange={val => setCurrencyType(val)}
+              defaultValue={currencyType}
+              manualWidth={true}
+              filterChosen={true}
+              optionsData={
+                additional.currencyTypes.map(val => (
+                  {
+                    value: val,
+                    text: (userData?.balance && userData.balance[val] ? formatNumberTo3(userData.balance[val]) : "0.000") + " " + val 
+                  }
+                ))
+              }
+            />
+            <Link
+              to={{pathname: RoutePaths.moneyAdd}}
+              className="profile-body-money-add"
+            >
+              Пополнить
+            </Link>
+            <Link
+              to={{pathname: RoutePaths.moneyRemove}}
+              className={
+                // userData?.balance != 0 ?
+                // userData?.balance != -1 ?
+                  "profile-body-money-remove active" 
+                  // :
+                  // "profile-body-money-remove"
+              }
+            >
+              Вывести
+            </Link>
+          </div>
+          
+          <div className="profile-body-info">
+            <div className="profile-body-info-elem">
+              <img src={dealsImg} alt="" />
+              <p>{userData?.deals}</p>
+            </div>
+            <div className="profile-body-info-elem">
+              <img src={profitImg} alt="" />
+              <p>${userData?.total_sales ?? "none"}</p>
+            </div>
+            <div className="profile-body-info-elem">
+              <img src={ratingImg} alt="" />
+              <p>{userData?.rating.toFixed(2) ?? "none"}</p>
+            </div>
+          </div>
+          
+          
+          <div
+            onClick={stopSpin}
+            className={spin ? "profile-body-gacha-dark-overlay active" : "profile-body-gacha-dark-overlay"}
+          />
+          <div onClick={spin ? stopSpin : undefined} className={spin ? "profile-body-gacha-wrapper spin" : "profile-body-gacha-wrapper"}>
+            <img
+              className="profile-body-gacha-arrow"
+              src={gachaArrow}
+              alt=""
+            />
+            <img
+              onAnimationIteration={() => {
+                if (!newAnimationDataRef.current.animation || !gachaRef.current)
+                  return
+
+                gachaRef.current.style.animation = newAnimationDataRef.current.animation
+                setTimeout(() => spinEndRef.current = true, newAnimationDataRef.current.duration)
+              }}
+              ref={gachaRef}
+              src={spin ? gachaFull : gachaBlank}
+              alt=""
+              className={spin ? "profile-body-gacha-image spin" : "profile-body-gacha-image"}
+            />
+          </div>
+          <Button
+            onClick={() => {
+              spinEndRef.current = false
+              showAd()
+            }}
+            disabled={userData?.roulette_last_spin ? Date.now() - new Date(userData.roulette_last_spin).getTime() <= spinTimeout : false }
+            className="profile-body-gacha-button"
+          >
+            {spinTime ? numberToTime(spinTime) : "Крутить"}
+          </Button>
+          
+          <VipDialog />
+        </div>
+    </div>
   )
 }
