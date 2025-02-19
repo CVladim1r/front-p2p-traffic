@@ -138,7 +138,7 @@ export default function MoneyChange({type}: MoneyChangeProps) {
                 
                 <Button
                     type="submit"
-                    disabled={Number.isNaN(Number(money)) || (type == "remove" && (+money > maxMoney || +money < minMoney))}
+                    disabled={Number.isNaN(Number(money)) || +money <= 0 || (type == "remove" && (+money > maxMoney || +money < minMoney))}
                 >
                     Получить чек
                 </Button>
