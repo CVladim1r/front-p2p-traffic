@@ -9,6 +9,11 @@ import { BackButton, Button, LoadingAnimation, TextField } from "../../shared/ui
 import classNames from "classnames"
 import { RoutePaths } from "../../app/providers/router"
 import sendSvg from "../../shared/assets/svg/ad_send.svg"
+import closeImg from "../../shared/assets/svg/close.svg"
+import starInactive from "../../shared/assets/svg/review-star_inactive.svg"
+import starActive from "../../shared/assets/svg/review-star_active.svg"
+import { useDispatch } from "react-redux"
+import { pagesActions } from "../../entities/Pages/slice/pagesSlice"
 
 
 function Message({sender_tg_id, text, timestamp, sender_name}: ChatMessage) {
@@ -19,17 +24,65 @@ function Message({sender_tg_id, text, timestamp, sender_name}: ChatMessage) {
             classNames(
                 "chat-message",
                 {"viewer": viewer_tg_id == sender_tg_id},
-                {"admin": sender_name == "admin"})
+                {"admin": sender_name == "admin"},
+                {"admin": sender_name == "system"},
+            )
             }
         >
             <p className={
                 classNames(
                     "chat-message-text",
                     {"viewer": viewer_tg_id == sender_tg_id},
-                    {"admin": sender_name == "admin"})
+                    {"admin": sender_name == "admin"},
+                    {"admin": sender_name == "system"},
+                )
             }>{text}</p>
             <p className="chat-message-time">{new Date(timestamp).toLocaleTimeString("ru", {timeStyle:"short"})}</p>
         </div>
+    )
+}
+
+function RatingDialog({dealUuid}: {dealUuid: string}) {
+    const [rating, setRating] = useState(1)
+    const [message, setMessage] = useState("")
+
+    const dispatch = useDispatch()
+    const showDialog = useAppSelector(s => s.pages.chat.showDialog)
+    const authorization = useAppSelector(selectAuthorization)
+
+    const {mutate} = useMutation({
+        mutationFn: async () => {
+            await OrdersService.createReviewApiV1P2POrdersDealsDealUuidReviewsPost(dealUuid, authorization, {
+                rating,
+                comment: message ? message : null
+            })
+            dispatch(pagesActions.setChatShowDialog(false))
+        }
+    })
+
+    return (
+        <>
+            <div onClick={() => dispatch(pagesActions.setChatShowDialog(false))} className={showDialog ? "chat-ratingDialog-background active" : "chat-ratingDialog-background"} />
+            
+            <div className={showDialog ? "ratingDialog active" : "ratingDialog"}>
+                <div className="ratingDialog-main">
+                    <div className="ratingDialog-top">
+                        <p className="ratingDialog-top-header">Отправьте отзыв:</p>
+                        <Button className="ratingDialog-close" onClick={() => dispatch(pagesActions.setChatShowDialog(false))}>
+                            <img src={closeImg} alt="" className="ratingDialog-close-icon" />
+                        </Button>
+                    </div>
+
+                    <div className="ratingDialog-stars">
+                        {[...Array(5).keys()].map(val => <img key={val} onClick={() => setRating(val + 1)} src={val + 1 <= rating ? starActive : starInactive} />)}
+                    </div>
+
+                    <TextField className="ratingDialog-text" type="text" value={message} onChange={e => setMessage(e.target.value)} />
+                </div>
+
+                <Button className="ratingDialog-button" onClick={() => mutate()}>Отправить отзыв</Button>
+            </div>
+        </>
     )
 }
 
@@ -45,7 +98,26 @@ export default function ChatPage() {
     const [messages, setMessages] = useState<ChatMessage[]>([])
     const [text, setText] = useState("")
 
-    const {data, isLoading} = useQuery({
+    // const results = useQueries({
+    //     queries: [
+    //         {
+    //             queryKey: ["chat"],
+    //             queryFn: async () => {
+    //                 return await OrdersService.getChatApiV1P2POrdersDealsDealUuidChatGet(deal_id, authorization)
+    //             },
+    //             refetchInterval: 1000
+    //         },
+
+    //         {
+    //             queryKey: ["deal"],
+    //             queryFn: async () => {
+    //                 return await OrdersService.
+    //             }
+    //         }
+    //     ]
+    // })
+
+    const {data: chatData, isLoading} = useQuery({
         queryKey: ["chat"],
         queryFn: async () => {
             return await OrdersService.getChatApiV1P2POrdersDealsDealUuidChatGet(deal_id, authorization)
@@ -53,9 +125,9 @@ export default function ChatPage() {
         refetchInterval: 1000
     })
     useEffect(() => {
-        if (data)
-            setMessages(data.messages)
-    }, [data])
+        if (chatData)
+            setMessages(chatData.messages)
+    }, [chatData])
 
     const {mutate: sendMessage} = useMutation({
         mutationFn: async () => {
@@ -75,13 +147,18 @@ export default function ChatPage() {
 
     const containerRef = useRef<HTMLDivElement>(null)
     const toScroll = useRef(false)
-
     useEffect(() => {
         if (toScroll.current) {
             containerRef.current?.scrollTo(0, containerRef.current.scrollHeight)
             toScroll.current = false
         }
+        if (messages.some(val => val.sender_name == "system"))
+            setDealCompleted(true)
     }, [messages])
+
+
+    const [dealCompleted, setDealCompleted] = useState(false)
+    const dispatch = useDispatch()
 
     return (
         <div className="chat">
@@ -89,13 +166,19 @@ export default function ChatPage() {
                     <LoadingAnimation />
                 ) : (
                     <>
+                        <RatingDialog dealUuid={deal_id} />
+
                         <div className="chat-top">
                             <BackButton className="chat-top-back" onClick={() => navigate({pathname: RoutePaths.chats})}/>
                             <Button className="chat-top-open">Открыть спор</Button>
-                            <Button className="chat-top-confirm" onClick={() => confirmDeal()}>Подтвердить сделку</Button>
+                            {dealCompleted ?
+                                <Button className="chat-top-confirm" onClick={() => dispatch(pagesActions.setChatShowDialog(true))}>Оставить отзыв</Button>
+                            :
+                                <Button className="chat-top-confirm" onClick={() => confirmDeal()}>Подтвердить сделку</Button>
+                            }
                         </div>
                         <div className="chat-messages container" ref={containerRef}>
-                            {messages.map(val => <Message key={val.timestamp} {...val} />)}
+                            { messages.map(val => <Message key={val.timestamp} {...val} />) }
                         </div>
                         <div className="chat-input container">
                             <TextField className="chat-input-text" placeholder="Введите текст" type="text" value={text}

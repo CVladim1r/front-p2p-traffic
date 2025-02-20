@@ -2,12 +2,12 @@ import { useDispatch } from "react-redux";
 import { Ad, BackButton, Button } from "../../shared/ui";
 import { Navigate, useNavigate } from "react-router-dom";
 import { RoutePaths } from "../../app/providers/router";
-import { addAdActions } from "../../entities/AddAd/slice/addAdSlice";
 import "./PreviewAdPage.css"
 import { useMutation } from "@tanstack/react-query";
 import { OrdersService, UsersService } from "../../shared/api";
 import { selectAuthorization, userActions } from "../../entities/User";
 import { useAppSelector } from "../../app/providers/store";
+import { pagesActions } from "../../entities/Pages/slice/pagesSlice";
 
 
 export default function PreviewAddAdPage() {
@@ -27,13 +27,13 @@ export default function PreviewAddAdPage() {
                 return
             }
             dispatch(userActions.setUserData(await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)))
-            dispatch(addAdActions.clearData())
+            dispatch(pagesActions.clearAddAdData())
         }
     })
     
     const authorization = useAppSelector(selectAuthorization)
     const data = useAppSelector(
-        state => state.addAd.data,
+        state => state.pages.addAd.data,
         () => true // prevent re-render
     )
     const userData = useAppSelector(

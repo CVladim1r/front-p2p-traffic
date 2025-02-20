@@ -402,7 +402,7 @@
     background-color: #000;
     opacity: 0;
 
-    transition: opacity 1s;
+    transition: opacity .5s;
 }
 .profile-vipDialog-overlay.active {
     visibility: visible;
@@ -423,7 +423,7 @@
     transform: translate(-50%, -50%);
 
     opacity: 0;
-    transition: opacity 1s;
+    transition: opacity .5s;
 
     display: flex;
     flex-direction: column;
