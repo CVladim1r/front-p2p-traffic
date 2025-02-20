@@ -161,7 +161,6 @@
     left: 50%;
     top: 50%;
     width: 80%;
-    height: 325px;
 
     transform: translate(-50%, -50%);
 
@@ -176,7 +175,7 @@
 .ratingDialog-main {
     display: flex;
     flex-direction: column;
-    row-gap: 10px;
+    row-gap: 20px;
 
     padding: 5px 20px 20px 20px;
 
@@ -213,11 +212,24 @@
 .ratingDialog-stars {
     align-self: center;
     display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+}
+
+.ratingDialog-stars-text {
+    align-self: center;
+    font-weight: 400;
+}
+
+.ratingDialog-stars-list {
+    display: flex;
     column-gap: 4px;
 }
 
 .ratingDialog-text {
     width: 100%;
+    min-height: 44px;
+    resize: vertical;
 }
 
 .ratingDialog-button {

@@ -60,6 +60,17 @@ function RatingDialog({dealUuid}: {dealUuid: string}) {
         }
     })
 
+    function ratingToText(num: number) {
+        switch (num) {
+            case 1: return "Очень плохо"
+            case 2: return "Плохо"
+            case 3: return "Нормально"
+            case 4: return "Очень хорошо"
+            case 5: return "Хорошо"
+            default: return ""
+        }
+    }
+
     return (
         <>
             <div onClick={() => dispatch(pagesActions.setChatShowDialog(false))} className={showDialog ? "chat-ratingDialog-background active" : "chat-ratingDialog-background"} />
@@ -67,20 +78,23 @@ function RatingDialog({dealUuid}: {dealUuid: string}) {
             <div className={showDialog ? "ratingDialog active" : "ratingDialog"}>
                 <div className="ratingDialog-main">
                     <div className="ratingDialog-top">
-                        <p className="ratingDialog-top-header">Отправьте отзыв:</p>
+                        <p className="ratingDialog-top-header">Оставьте отзыв:</p>
                         <Button className="ratingDialog-close" onClick={() => dispatch(pagesActions.setChatShowDialog(false))}>
                             <img src={closeImg} alt="" className="ratingDialog-close-icon" />
                         </Button>
                     </div>
 
                     <div className="ratingDialog-stars">
-                        {[...Array(5).keys()].map(val => <img key={val} onClick={() => setRating(val + 1)} src={val + 1 <= rating ? starActive : starInactive} />)}
+                        <div className="ratingDialog-stars-list">
+                            {[...Array(5).keys()].map(val => <img key={val} onClick={() => setRating(val + 1)} src={val + 1 <= rating ? starActive : starInactive} />)}
+                        </div>
+                        <p className="ratingDialog-stars-text">{ratingToText(rating)}</p>
                     </div>
 
-                    <TextField className="ratingDialog-text" type="text" value={message} onChange={e => setMessage(e.target.value)} />
+                    <TextField className="ratingDialog-text" type="textarea" rows={2} placeholder="Напишите отзыв" value={message} onChange={e => setMessage(e.target.value)} />
                 </div>
 
-                <Button className="ratingDialog-button" onClick={() => mutate()}>Отправить отзыв</Button>
+                <Button className="ratingDialog-button" onClick={() => mutate()}>Отправить</Button>
             </div>
         </>
     )
@@ -184,8 +198,6 @@ export default function ChatPage() {
                             <TextField className="chat-input-text" placeholder="Введите текст" type="text" value={text}
                                 onChange={e => setText(e.target.value)}
                                 onKeyDown={e => {
-                                    console.log(e);
-                                    
                                     if (e.key == "Enter")
                                         sendMessage()
                                 }}
