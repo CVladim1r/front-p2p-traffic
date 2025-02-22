@@ -3,9 +3,9 @@ import { Ad, BackButton, Button } from "../../shared/ui";
 import { Navigate, useNavigate } from "react-router-dom";
 import { RoutePaths } from "../../app/providers/router";
 import "./PreviewAdPage.css"
-import { useMutation } from "@tanstack/react-query";
-import { OrdersService, UsersService } from "../../shared/api";
-import { selectAuthorization, userActions } from "../../entities/User";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { OrdersService } from "../../shared/api";
+import { selectAuthorization } from "../../entities/User";
 import { useAppSelector } from "../../app/providers/store";
 import { pagesActions } from "../../entities/Pages/slice/pagesSlice";
 
@@ -13,6 +13,7 @@ import { pagesActions } from "../../entities/Pages/slice/pagesSlice";
 export default function PreviewAddAdPage() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const queryClient = useQueryClient()
     const {mutate, isSuccess, isPending} = useMutation({
         mutationFn: async () => {
             const slep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
@@ -26,7 +27,7 @@ export default function PreviewAddAdPage() {
                 console.error(e)
                 return
             }
-            dispatch(userActions.setUserData(await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)))
+            queryClient.invalidateQueries({queryKey: ["userMainData"]})
             dispatch(pagesActions.clearAddAdData())
         }
     })

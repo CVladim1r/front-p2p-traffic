@@ -14,7 +14,7 @@ import { useEffect, useRef, useState } from "react"
 import { formatNumberTo3, numberToTime } from "../../shared/lib/lib"
 import { useAppSelector } from "../../app/providers/store"
 import { useAdsgram } from "../../shared/lib/hooks"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { AdsgramService, PrizeType, TransactionCurrencyType, UsersService } from "../../shared/api"
 import { selectAuthorization, userActions } from "../../entities/User"
 import { user } from "../.."
@@ -28,6 +28,7 @@ const paid_cost: {[key: string]: number} = {
 
 function VipDialog() {
   const dispatch = useDispatch()
+  const queryClient = useQueryClient()
   const additional = useAppSelector(s => s.additional)
   const authorization = useAppSelector(selectAuthorization)
   const is_vip = useAppSelector(s => s.user.data?.is_vip)
@@ -38,7 +39,7 @@ function VipDialog() {
   const {mutate} = useMutation({
     mutationFn: async () => {
       await UsersService.updateUserVipApiV1P2PUserUpdateUserVipPost(authorization, currency as TransactionCurrencyType)
-      dispatch(userActions.setUserData(await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)))
+      queryClient.invalidateQueries({queryKey: ["userMainData"]})
       dispatch(pagesActions.setProfileDialogState(ProfileDialogState.notVisible))
     }
   })
@@ -96,12 +97,11 @@ function VipDialog() {
 }
 
 export default function ProfilePage() {
-  // const [showGacha, setShowGacha] = useState(false)
   const dispatch = useDispatch()
+  const queryClient = useQueryClient()
 
   const spinTimeout = 24 * 60 * 60 * 1000
 
-  const authorization = useAppSelector(selectAuthorization)
   const userData = useAppSelector(state => state.user.data)
   const additional = useAppSelector(s => s.additional)
 
@@ -162,7 +162,7 @@ export default function ProfilePage() {
           }    
           break;
       }
-      dispatch(userActions.setUserData(await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)))
+      queryClient.invalidateQueries({queryKey: ["userMainData"]})
     },
   })
 
