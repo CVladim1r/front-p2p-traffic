@@ -24,6 +24,7 @@ export type { ChatMessageCreate } from './models/ChatMessageCreate';
 export type { ChatOut } from './models/ChatOut';
 export type { ChatPinOut } from './models/ChatPinOut';
 export type { DealCreate } from './models/DealCreate';
+export type { DealOut } from './models/DealOut';
 export type { DealOutCOMPLETE } from './models/DealOutCOMPLETE';
 export type { DealsOut } from './models/DealsOut';
 export { DealStatus } from './models/DealStatus';

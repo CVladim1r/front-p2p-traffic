@@ -13,6 +13,7 @@ import type { ChatMessageCreate } from '../models/ChatMessageCreate';
 import type { ChatOut } from '../models/ChatOut';
 import type { ChatPinOut } from '../models/ChatPinOut';
 import type { DealCreate } from '../models/DealCreate';
+import type { DealOut } from '../models/DealOut';
 import type { DealOutCOMPLETE } from '../models/DealOutCOMPLETE';
 import type { DealsOut } from '../models/DealsOut';
 import type { PinChatRequest } from '../models/PinChatRequest';
@@ -126,6 +127,26 @@ export class OrdersService {
             url: '/api/v1/p2p/orders/deals',
             headers: {
                 'Authorization': authorization,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Get Deal
+     * @param dealUuid
+     * @returns DealOut Successful Response
+     * @throws ApiError
+     */
+    public static getDealApiV1P2POrdersDealsDealUuidGet(
+        dealUuid: string,
+    ): CancelablePromise<DealOut> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/p2p/orders/deals/{deal_uuid}',
+            path: {
+                'deal_uuid': dealUuid,
             },
             errors: {
                 422: `Validation Error`,

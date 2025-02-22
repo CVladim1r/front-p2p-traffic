@@ -101,7 +101,7 @@ export default function ProfilePage() {
 
   const gachaRef = useRef<HTMLImageElement>(null)
   const newAnimationDataRef = useRef<{animation: string, duration: number}>({animation: "", duration: 0})
-  const spinEndRef = useRef(true)
+  const [spinEnd, setSpinEnd] = useState(false)
 
   const showAd = useAdsgram({
     blockId: "8165",
@@ -121,28 +121,28 @@ export default function ProfilePage() {
       await slep(2500) // loading
 
       switch (response.prize_type) {
-        case PrizeType._10_DISCOUNT:
+        case PrizeType._3_DISCOUNT:
           newAnimationDataRef.current = {
-            animation: "spin_end_10 3s cubic-bezier(0.33, 1, 0.68, 1) forwards",
+            animation: "spin_end_0 3s cubic-bezier(0.33, 1, 0.68, 1) forwards",
             duration: 3200
           }
           break;
         case PrizeType._5_DISCOUNT:
           newAnimationDataRef.current = {
-            animation: "spin_end_5 1.5s cubic-bezier(0.33, 1, 0.68, 1) forwards",
+            animation: "spin_end_180 1.5s cubic-bezier(0.33, 1, 0.68, 1) forwards",
             duration: 1500
           }
           break;
-        case PrizeType._3_DEPOSIT:
+        case PrizeType._03_DEPOSIT:
           newAnimationDataRef.current = {
-            animation: "spin_end_3 3.8s cubic-bezier(0.33, 1, 0.68, 1) forwards",
-            duration: 3800
+            animation: "spin_end_90 2.3s cubic-bezier(0.33, 1, 0.68, 1) forwards",
+            duration: 2300
           }  
           break;
-        case PrizeType.LOWER_COMMISSION_20_:
+        case PrizeType._7_INCREASED_REFERRAL_BONUS:
           newAnimationDataRef.current = {
-            animation: "spin_end_20 2.3s cubic-bezier(0.33, 1, 0.68, 1) forwards",
-            duration: 2300
+            animation: "spin_end_270 3.8s cubic-bezier(0.33, 1, 0.68, 1) forwards",
+            duration: 3800
           }    
           break;
       
@@ -158,7 +158,7 @@ export default function ProfilePage() {
   })
 
   const stopSpin = () => {
-    if (!spinEndRef.current)
+    if (!spinEnd)
       return
     setSpin(false)
     newAnimationDataRef.current.animation = ""
@@ -265,33 +265,40 @@ export default function ProfilePage() {
           </div>
           
           
-          <div
-            onClick={stopSpin}
-            className={spin ? "profile-body-gacha-dark-overlay active" : "profile-body-gacha-dark-overlay"}
-          />
-          <div onClick={spin ? stopSpin : undefined} className={spin ? "profile-body-gacha-wrapper spin" : "profile-body-gacha-wrapper"}>
-            <img
-              className="profile-body-gacha-arrow"
-              src={gachaArrow}
-              alt=""
-            />
-            <img
-              onAnimationIteration={() => {
-                if (!newAnimationDataRef.current.animation || !gachaRef.current)
-                  return
+          <div className={spin ? "profile-body-gacha-dark-overlay active" : "profile-body-gacha-dark-overlay"} />
+          <div className={spin ? "profile-body-gacha-wrapper spin" : "profile-body-gacha-wrapper"}>
+            <div className="profile-body-gacha-image-container">
+              <img
+                className="profile-body-gacha-arrow"
+                src={gachaArrow}
+                alt=""
+              />
+              <img
+                onAnimationIteration={() => {
+                  if (!newAnimationDataRef.current.animation || !gachaRef.current)
+                    return
 
-                gachaRef.current.style.animation = newAnimationDataRef.current.animation
-                setTimeout(() => spinEndRef.current = true, newAnimationDataRef.current.duration)
-              }}
-              ref={gachaRef}
-              src={spin ? gachaFull : gachaBlank}
-              alt=""
-              className={spin ? "profile-body-gacha-image spin" : "profile-body-gacha-image"}
-            />
+                  gachaRef.current.style.animation = newAnimationDataRef.current.animation
+                  setTimeout(() => setSpinEnd(true), newAnimationDataRef.current.duration)
+                }}
+                ref={gachaRef}
+                src={spin ? gachaFull : gachaBlank}
+                alt=""
+                className={spin ? "profile-body-gacha-image spin" : "profile-body-gacha-image"}
+              />
+            </div>
+            {spin &&
+              <Button
+                onClick={stopSpin}
+                disabled={!spinEnd}
+              >
+                Забрать награду
+              </Button>
+            }
           </div>
           <Button
             onClick={() => {
-              spinEndRef.current = false
+              setSpinEnd(false)
               showAd()
             }}
             disabled={userData?.roulette_last_spin ? Date.now() - new Date(userData.roulette_last_spin).getTime() <= spinTimeout : false }
