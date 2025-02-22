@@ -2,9 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { PrizeType } from './PrizeType';
-export type PrizeOut = {
-    prize_type: PrizeType;
-    expires_at?: (string | null);
+export type ReviewCreate = {
+    rating: number;
+    comment?: (string | null);
 };
 

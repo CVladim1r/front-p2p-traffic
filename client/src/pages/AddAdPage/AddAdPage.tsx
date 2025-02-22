@@ -7,7 +7,6 @@ import {
 from "../../shared/ui"
 import "./AddAdPage.css"
 import { useDispatch } from "react-redux"
-import { addAdActions } from "../../entities/AddAd/slice/addAdSlice"
 import { RoutePaths } from "../../app/providers/router"
 import { FormEvent, ReactNode, useState } from "react"
 import { CategoriesAds, TransactionCurrencyType, TypeUserAcquisition } from "../../shared/api"
@@ -16,6 +15,7 @@ import { Switch } from "../../shared/ui/Form/Switch/Switch"
 import { useAppSelector } from "../../app/providers/store"
 import infoSvg from "../../shared/assets/svg/info.svg"
 import closeImg from "../../shared/assets/svg/close.svg"
+import { pagesActions } from "../../entities/Pages/slice/pagesSlice"
 
 const paid_cost: {[key: string]: number} = {
     "TON": 1.4,
@@ -73,14 +73,14 @@ export default function AddAdPage() {
     const balance = useAppSelector(s => s.user.data?.balance ?? {})
     
     const data = useAppSelector(
-    state => state.addAd.data,
+    state => state.pages.addAd.data,
         () => true
     )
 
     const formSubmit = (e: FormEvent) => {
         e.preventDefault()
 
-        dispatch(addAdActions.setData({
+        dispatch(pagesActions.setAddAdData({
             guaranteed_traffic: ad_type == TypeUserAcquisition.МОТИВ ? 0 : guaranteed_traffic,
             link_to_channel: source,
             category,
@@ -106,7 +106,7 @@ export default function AddAdPage() {
 
     const [guaranteed_traffic, setGuaranteed_traffic] = useState(data?.guaranteed_traffic ?? 0)
     const savedSource = useAppSelector(
-        state => state.addAd.savedSource
+        state => state.pages.addAd.savedSource
     )
     const [source, setSource] = useState(savedSource ?? "")
     const [category, setCategory] = useState(data?.category ?? additional.categories[0] as CategoriesAds)
@@ -162,7 +162,7 @@ export default function AddAdPage() {
                         contentChildren={
                             <div className="add-ad-form-source">
                                 <TextField className="add-ad-TextField" type="text" name="source" placeholder="Введите ссылку" value={source} onChange={e => setSource(e.target.value)} required/>
-                                <Button type="button" onClick={() => dispatch(addAdActions.setSavedSource(source))} className={source == "" || source == savedSource ? "add-ad-form-source-button hidden" : "add-ad-form-source-button"}>Сохранить</Button>
+                                <Button type="button" onClick={() => dispatch(pagesActions.setAddAdSavedSource(source))} className={source == "" || source == savedSource ? "add-ad-form-source-button hidden" : "add-ad-form-source-button"}>Сохранить</Button>
                             </div>
                         }
                         // description="Оставьте ссылку на источник где будет выложена реклама"

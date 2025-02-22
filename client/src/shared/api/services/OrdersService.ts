@@ -13,9 +13,12 @@ import type { ChatMessageCreate } from '../models/ChatMessageCreate';
 import type { ChatOut } from '../models/ChatOut';
 import type { ChatPinOut } from '../models/ChatPinOut';
 import type { DealCreate } from '../models/DealCreate';
+import type { DealOut } from '../models/DealOut';
 import type { DealOutCOMPLETE } from '../models/DealOutCOMPLETE';
 import type { DealsOut } from '../models/DealsOut';
 import type { PinChatRequest } from '../models/PinChatRequest';
+import type { ReviewCreate } from '../models/ReviewCreate';
+import type { ReviewOut } from '../models/ReviewOut';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -124,6 +127,26 @@ export class OrdersService {
             url: '/api/v1/p2p/orders/deals',
             headers: {
                 'Authorization': authorization,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Get Deal
+     * @param dealUuid
+     * @returns DealOut Successful Response
+     * @throws ApiError
+     */
+    public static getDealApiV1P2POrdersDealsDealUuidGet(
+        dealUuid: string,
+    ): CancelablePromise<DealOut> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/p2p/orders/deals/{deal_uuid}',
+            path: {
+                'deal_uuid': dealUuid,
             },
             errors: {
                 422: `Validation Error`,
@@ -260,6 +283,37 @@ export class OrdersService {
             },
             errors: {
                 403: `Forbidden`,
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Create Review
+     * @param dealUuid
+     * @param authorization
+     * @param requestBody
+     * @returns ReviewOut Successful Response
+     * @throws ApiError
+     */
+    public static createReviewApiV1P2POrdersDealsDealUuidReviewsPost(
+        dealUuid: string,
+        authorization: string,
+        requestBody: ReviewCreate,
+    ): CancelablePromise<ReviewOut> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/p2p/orders/deals/{deal_uuid}/reviews',
+            path: {
+                'deal_uuid': dealUuid,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                400: `Bad Request`,
+                404: `Not Found`,
                 422: `Validation Error`,
             },
         });

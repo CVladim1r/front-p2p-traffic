@@ -17,8 +17,8 @@
 
 .profile-top-settings {
     position: absolute;
-    right: 30px;
-    top: 30px;
+    right: 0px;
+    top: 0px;
 }
 
 .profile-top-gacha {
@@ -202,6 +202,9 @@
 }
 
 .profile-body-gacha-wrapper {
+    display: flex;
+    flex-direction: column;
+
     position: fixed;
 
     width: 160px;
@@ -219,6 +222,12 @@
     height: 80%;
     width: 80%;
     bottom: calc(50% + 50px);
+}
+
+.profile-body-gacha-image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
 .profile-body-gacha-arrow {
@@ -244,24 +253,24 @@
         transform: rotate(360deg);
     }
 }
-@keyframes spin_end_10 {
+@keyframes spin_end_0 {
     100% {
         transform: rotate(360deg);
     }   
 }
-@keyframes spin_end_20 {
+@keyframes spin_end_270 {
     100% {
-        transform: rotate(270deg);
+        transform: rotate(450deg);
     }
 }
-@keyframes spin_end_5 {
+@keyframes spin_end_180 {
     100% {
         transform: rotate(180deg);
     }
 }
-@keyframes spin_end_3 {
+@keyframes spin_end_90 {
     100% {
-        transform: rotate(450deg);
+        transform: rotate(270deg);
     }
 }
 @keyframes spin_end_smth {
@@ -291,6 +300,10 @@
     display: flex;
     flex-direction: column;
     row-gap: 26px;
+}
+
+.profile-settings-backButton {
+    top: 30px;
 }
 
 .profile-settings-block {
@@ -398,7 +411,7 @@
     background-color: #000;
     opacity: 0;
 
-    transition: opacity 1s;
+    transition: opacity .5s;
 }
 .profile-vipDialog-overlay.active {
     visibility: visible;
@@ -414,12 +427,11 @@
     left: 50%;
     top: 50%;
     width: 80%;
-    height: 325px;
 
     transform: translate(-50%, -50%);
 
     opacity: 0;
-    transition: opacity 1s;
+    transition: opacity .5s;
 
     display: flex;
     flex-direction: column;

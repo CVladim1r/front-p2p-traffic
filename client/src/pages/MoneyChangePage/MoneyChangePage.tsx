@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { getTextWidth } from "../../shared/lib";
 import { useMutation } from "@tanstack/react-query";
 import { BalanceService, TransactionCurrencyType } from "../../shared/api";
-import { moneyChangeActions } from "../../entities/MoneyChange";
 import { Navigate, useNavigate } from "react-router-dom";
 import { RoutePaths } from "../../app/providers/router";
 import TON from "../../shared/assets/svg/TON.svg"
@@ -15,6 +14,7 @@ import ETH from "../../shared/assets/svg/ETH.svg"
 import { formatNumberTo3 } from "../../shared/lib/lib";
 import { selectAuthorization } from "../../entities/User";
 import { useAppSelector } from "../../app/providers/store";
+import { pagesActions } from "../../entities/Pages/slice/pagesSlice";
 
 type MoneyChangeProps = {
     type: "add" | "remove"
@@ -51,10 +51,10 @@ export default function MoneyChange({type}: MoneyChangeProps) {
         mutationFn: async () => {
             if (type == "add") {
                 const response = await BalanceService.createDepositApiV1P2PBalanceDepositPost(moneyType as TransactionCurrencyType, +money, authorization)
-                dispatch(moneyChangeActions.setReceiptLink(response.balance))
+                dispatch(pagesActions.setMoneyChangeReceiptLink(response.balance))
             } else {
                 const response = await BalanceService.withdrawFundsApiV1P2PBalanceWithdrawPost(+money, moneyType as TransactionCurrencyType, authorization)
-                dispatch(moneyChangeActions.setReceiptLink(response.balance)) 
+                dispatch(pagesActions.setMoneyChangeReceiptLink(response.balance)) 
             }
             setRedirect(true)
         }
@@ -138,7 +138,7 @@ export default function MoneyChange({type}: MoneyChangeProps) {
                 
                 <Button
                     type="submit"
-                    disabled={Number.isNaN(Number(money)) || (type == "remove" && (+money > maxMoney || +money < minMoney))}
+                    disabled={Number.isNaN(Number(money)) || +money <= 0 || (type == "remove" && (+money > maxMoney || +money < minMoney))}
                 >
                     Получить чек
                 </Button>

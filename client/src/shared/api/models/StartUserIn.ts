@@ -5,5 +5,6 @@
 export type StartUserIn = {
     tg_id: number;
     username?: (string | null);
+    referrer_id?: (number | null);
 };
 
