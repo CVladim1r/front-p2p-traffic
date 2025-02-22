@@ -6,7 +6,7 @@ import { useAppSelector } from "../../app/providers/store"
 import { selectAuthorization } from "../../entities/User"
 import { LoadingAnimation } from "../../shared/ui"
 import { RoutePaths } from "../../app/providers/router"
-import { useEffect, useRef, useState } from "react"
+import { useRef } from "react"
 
 function Chat({deal_uuid, counterpart_isvip, counterpart_photo, counterpart_username, uuid, is_pinned, last_message_text} : ChatAllOut) {
     const queryClient = useQueryClient()
