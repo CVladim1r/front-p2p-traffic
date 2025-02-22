@@ -123,6 +123,7 @@
     border: none;
     border-top: solid 4px #1c1c1c;
     background-color: #2B2B2B;
+    border-radius: 20px;
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
     padding-left: 0px;
@@ -502,7 +503,7 @@
 
 .vipDialog-body-header {
     font-family: "Roboto";
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 600;
 }
 
@@ -514,6 +515,11 @@
     font-weight: 300;
 }
 
+.vipDialog-body-cost-container {
+    display: flex;
+    align-items: center;
+}
+
 .vipDialog-button {
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
@@ -523,4 +529,5 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    column-gap: 10px;
 }

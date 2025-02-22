@@ -21,6 +21,11 @@ import { user } from "../.."
 import { useDispatch } from "react-redux"
 import { pagesActions, ProfileDialogState } from "../../entities/Pages/slice/pagesSlice"
 
+const paid_cost: {[key: string]: number} = {
+  "TON": 10,
+  "USDT": 30,
+}
+
 function VipDialog() {
   const dispatch = useDispatch()
   const additional = useAppSelector(s => s.additional)
@@ -33,6 +38,7 @@ function VipDialog() {
   const {mutate} = useMutation({
     mutationFn: async () => {
       await UsersService.updateUserVipApiV1P2PUserUpdateUserVipPost(authorization, currency as TransactionCurrencyType)
+      dispatch(userActions.setUserData(await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)))
       dispatch(pagesActions.setProfileDialogState(ProfileDialogState.notVisible))
     }
   })
@@ -55,12 +61,15 @@ function VipDialog() {
 
           <div className="vipDialog-body">
             {dialogState == ProfileDialogState.setCurrency ?
-              <div className="vipDialog-body-row">
-                <p className="vipDialog-body-header">Выберите валюту для оплаты: </p>
-                <Select className="vipDialog-body-currency" onChange={val => setCurrency(val)} defaultValue={currency} optionsData={
-                  additional.currencyTypes.map(val => ({value: val}))
-                } />
-              </div>
+                <div className="vipDialog-body-row">
+                  <p className="vipDialog-body-header">Выберите валюту для оплаты: </p>
+                  <div className="vipDialog-body-cost-container">
+                    <p className="vipDialog-body-header">{paid_cost[currency]}</p>
+                    <Select className="vipDialog-body-currency" onChange={val => setCurrency(val)} defaultValue={currency} optionsData={
+                      additional.currencyTypes.map(val => ({value: val}))
+                    } />
+                  </div>
+                </div>
               :
                 <>
                   <p className="vipDialog-body-header">Для vip-продавцов становятся доступны:</p>

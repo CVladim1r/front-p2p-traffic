@@ -135,7 +135,7 @@ export default function AdsPage() {
     )
     const userUuid = useAppSelector(s => s.user.data?.uuid)
 
-    const {data, isFetching} = useQuery({
+    const {data, error, isFetching} = useQuery({
         queryKey: ['getOrders', filterData.theme],
         queryFn: async () => {           
             return (await OrdersService.getAdsApiV1P2POrdersAdsGet(filterData.theme as CategoriesAds)).sort((a, b) => {
@@ -151,6 +151,10 @@ export default function AdsPage() {
     })
 
     useEffect(() => {
+        if (error) {
+            setAds([])
+            return
+        }
         setAds((data ?? []).filter(ad => {
             if (ad.status != AdStatus.ACTIVE) //WAIT
                 return false
@@ -167,7 +171,7 @@ export default function AdsPage() {
             return true
         }))
     },
-        [filterData, data]
+        [filterData, data, error]
     )
         
     

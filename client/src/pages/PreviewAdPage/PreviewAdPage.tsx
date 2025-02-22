@@ -55,7 +55,7 @@ export default function PreviewAddAdPage() {
 
             <p className="preview-ad-header">Подтверждение создания</p>
             <div className="preview-ad-groups">
-                <Ad {...data} showInfo={true} user_deals={userData.deals} user_name={userData.username ?? "Anonym"} user_photo_url={userData.profile_photo ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTSDZkJpfJZuBUtCO2O5POp69VoIKklbXpFg&s"} user_rating={userData.rating} user_vip={userData.is_vip} showButtons={false}/>
+                <Ad {...data} price={data.price * 1.1} showInfo={true} user_deals={userData.deals} user_name={userData.username ?? "Anonym"} user_photo_url={userData.profile_photo ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTSDZkJpfJZuBUtCO2O5POp69VoIKklbXpFg&s"} user_rating={userData.rating} user_vip={userData.is_vip} showButtons={false}/>
                 <div className="preview-ad-warning">
                     <p className="preview-ad-warning-header">Создавая сделку вы подтверждаете, что:</p>
                     <ol className="preview-ad-warning-list">

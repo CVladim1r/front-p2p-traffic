@@ -3,6 +3,7 @@ import share from "../../assets/svg/ad_send.svg"
 import testuser from "../../assets/images/testuser1.png"
 import "./Ad.css"
 import classNames from "classnames"
+import { formatNumberTo3 } from "../../lib/lib"
 
 export type AdProps = Omit<AdOut, "uuid" | "user" | "status"> & {
     showButtons?: boolean,
@@ -18,7 +19,7 @@ export function Ad({showButtons, showUserData, showInfo, onClickBuy, onClickShar
             <div className={data.is_paid_promotion ? "adMain paid" : "adMain"}>
                 <div className={showButtons ?? true ? "adMain-top-row" : "adMain-top-row no-buttons"}>
                     <div className="adMain-top-row-info">
-                        <p className="adMain-top-row-price">{data.price} {data.currency_type}</p>
+                        <p className="adMain-top-row-price">{formatNumberTo3(data.price ?? 0)} {data.currency_type}</p>
                         <p className="adMain-top-row-type">за пост</p>
                     </div>
                     
