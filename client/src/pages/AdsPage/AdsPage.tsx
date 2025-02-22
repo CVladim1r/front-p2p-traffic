@@ -9,7 +9,7 @@ import { LoadingAnimation } from "../../shared/ui/LottieAnimations"
 import { useAppSelector } from "../../app/providers/store"
 import { useNavigate } from "react-router-dom"
 import { RoutePaths } from "../../app/providers/router"
-import { pagesActions } from "../../entities/Pages/slice/pagesSlice"
+import { FilterData, pagesActions } from "../../entities/Pages/slice/pagesSlice"
 
 type FilterProps = {
     name: string,
@@ -125,6 +125,36 @@ function GuaranteedContent() {
     )
 }
 
+function sortAds(data: AdOut[]) {
+    return data.sort((a, b) => {
+        if (a.is_paid_promotion == b.is_paid_promotion)
+            return 0
+
+        if (a.is_paid_promotion)
+            return -1
+
+        return 1
+    })
+}
+
+function filterAds(data: AdOut[], filterData: FilterData) {
+    return data.filter(ad => {
+        if (ad.status != AdStatus.ACTIVE) //WAIT
+            return false
+        
+        if (filterData.guaranteed != undefined && filterData.guaranteed != Boolean(ad.guaranteed_traffic))
+            return false
+        
+        if (filterData.isVip != undefined && filterData.isVip != ad.user_vip)
+            return false
+        
+        if (filterData.currencyType != undefined && filterData.currencyType != ad.currency_type)
+            return false
+
+        return true
+    })
+}
+
 export default function AdsPage() {    
     const [ads, setAds] = useState<AdOut[]>([])
 
@@ -135,46 +165,18 @@ export default function AdsPage() {
     )
     const userUuid = useAppSelector(s => s.user.data?.uuid)
 
-    const {data, error, isFetching} = useQuery({
+    const orders = useQuery({
         queryKey: ['getOrders', filterData.theme],
         queryFn: async () => {           
-            return (await OrdersService.getAdsApiV1P2POrdersAdsGet(filterData.theme as CategoriesAds)).sort((a, b) => {
-                if (a.is_paid_promotion == b.is_paid_promotion)
-                    return 0
-        
-                if (a.is_paid_promotion)
-                    return -1
-        
-                return 1
-            })
-        }
+            return await OrdersService.getAdsApiV1P2POrdersAdsGet(filterData.theme as CategoriesAds)
+        },
+        select: sortAds
     })
 
     useEffect(() => {
-        if (error) {
-            setAds([])
-            return
-        }
-        setAds((data ?? []).filter(ad => {
-            if (ad.status != AdStatus.ACTIVE) //WAIT
-                return false
-            
-            if (filterData.guaranteed != undefined && filterData.guaranteed != Boolean(ad.guaranteed_traffic))
-                return false
-            
-            if (filterData.isVip != undefined && filterData.isVip != ad.user_vip)
-                return false
-            
-            if (filterData.currencyType != undefined && filterData.currencyType != ad.currency_type)
-                return false
-    
-            return true
-        }))
-    },
-        [filterData, data, error]
-    )
+        setAds(orders.isSuccess ? filterAds(orders.data, filterData) : [])
+    }, [filterData, orders.data])
         
-    
     return (
         <>
             <div className="filters container">
@@ -194,15 +196,16 @@ export default function AdsPage() {
                 
             </div>
             <div className="ads container">
-                { isFetching ?
+                { orders.isFetching ?
                     <LoadingAnimation />
+                : !orders.isSuccess ?
+                    <p className="ads-message-lonely">Не удалось получить список объявлений</p>
+                : ads.length ?
+                    ads.map(value => (
+                        <Ad key={value.uuid} onClickBuy={() => navigate({pathname: `${RoutePaths.ads}/${value.uuid}`})} showButtons={import.meta.env.DEV || value.user != userUuid} showUserData={true} {...value}/>
+                    ))
                 :
-                    ads.length ?
-                        ads.map(value => (
-                            <Ad key={value.uuid} onClickBuy={() => navigate({pathname: `${RoutePaths.ads}/${value.uuid}`})} showButtons={import.meta.env.DEV || value.user != userUuid} showUserData={true} {...value}/>
-                        ))
-                    :
-                        <p className="ads-message-lonely">Пока отсутствуют активные сделки по данным критериям</p>
+                    <p className="ads-message-lonely">Пока отсутствуют активные сделки по данным критериям</p>
                 }
             </div>
         </>

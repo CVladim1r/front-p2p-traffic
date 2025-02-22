@@ -1,6 +1,11 @@
 import { loadingAnimation } from "../../../assets";
 import LottiePlayer from "../LottiePlayer";
 
-export function LoadingAnimation() {
-    return <LottiePlayer animation={loadingAnimation} height={300} width={300} loop={true} />
+type LoadingAnimationProps = {
+    height?: number,
+    width?: number
+}
+
+export function LoadingAnimation({height, width} : LoadingAnimationProps) {
+    return <LottiePlayer animation={loadingAnimation} height={height ?? 300} width={width ?? 300} loop={true} />
 }

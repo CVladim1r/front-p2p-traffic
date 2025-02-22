@@ -18,7 +18,7 @@ export default function MoneyRemoveDonePage() {
         mainMessage="Чек для получения средств отправлен вам!"
         secondaryMessage="Перейдите в бота и используйте чек"
         button={
-            <a className="done-button" href={link} onClick={() => dispatch(pagesActions.setMoneyChangeReceiptLink(""))}>Перейти в CryptoBot</a> //TODO - перехуярь
+            <a className="done-button" href={link} onClick={() => dispatch(pagesActions.setMoneyChangeReceiptLink(""))}>Перейти в CryptoBot</a>
         }
     />
 }

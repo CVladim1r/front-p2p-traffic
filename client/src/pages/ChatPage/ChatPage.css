@@ -40,7 +40,7 @@
     flex-direction: column;
     row-gap: 8px;
 
-    padding-top: 60px;
+    padding-top: 70px;
     height: 100%;
 
     overflow-y: auto;
@@ -52,11 +52,11 @@
 .chat-message {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: end;
     row-gap: 2px;
 }
-.chat-message.viewer {
-    align-items: end;
+.chat-message.opponent {
+    align-items: start;
 }
 .chat-message.admin {
     align-items: center;
@@ -71,11 +71,11 @@
     max-width: 75%;
     overflow-wrap: break-word;
 
-    background-color: #2B2B2B;
+    background-color: #2D83EC;
     border-radius: 8px;
 }
-.chat-message-text.viewer {
-    background-color: #2D83EC;
+.chat-message-text.opponent {
+    background-color: #2B2B2B;
 }
 .chat-message-text.admin {
     text-align: center;
