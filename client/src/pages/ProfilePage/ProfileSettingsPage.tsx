@@ -70,7 +70,7 @@ export default function ProfileSettings() {
           <div className="profile-settings-block">
             <p className="profile-settings-header">Реферальная система</p>
 
-            <div className="profile-settings-group">
+            <div className="profile-settings-group referral">
               <div className="profile-settings-row">
                 <p className="profile-settings-key">Реферальная ссылка</p>
                 <button className="profile-settings-copy" onClick={() => navigator.clipboard.writeText(`https://t.me/justad_bot?start=ref_${userData?.tg_id}`)}>
