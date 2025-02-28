@@ -164,20 +164,16 @@ function App() {
     return true
   }
 
-  const {data} = useQuery({
+  useQuery({
     queryKey: ["userMainData"],
     queryFn: async () => {
-      return UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorizationRef.current)
+      const response = await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorizationRef.current)
+      dispatch(userActions.setUserData(response))
+      return response
     },
-
     refetchInterval: 10000,
-    
     enabled: authSuccess
   })
-  useEffect(() => {
-    if (data)
-      dispatch(userActions.setUserData(data))
-  }, [data])
 
   const initApp = async () => {
     if (await authUser()) {

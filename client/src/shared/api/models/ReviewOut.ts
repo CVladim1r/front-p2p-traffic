@@ -10,5 +10,7 @@ export type ReviewOut = {
     rating: number;
     comment: (string | null);
     created_at: string;
+    seller_review: boolean;
+    buyer_review: boolean;
 };
 

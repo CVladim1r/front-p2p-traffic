@@ -3,9 +3,9 @@ import { Ad, BackButton, Button } from "../../shared/ui";
 import { Navigate, useNavigate } from "react-router-dom";
 import { RoutePaths } from "../../app/providers/router";
 import "./PreviewAdPage.css"
-import { useMutation } from "@tanstack/react-query";
-import { OrdersService, UsersService } from "../../shared/api";
-import { selectAuthorization, userActions } from "../../entities/User";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { OrdersService } from "../../shared/api";
+import { selectAuthorization } from "../../entities/User";
 import { useAppSelector } from "../../app/providers/store";
 import { pagesActions } from "../../entities/Pages/slice/pagesSlice";
 
@@ -13,6 +13,7 @@ import { pagesActions } from "../../entities/Pages/slice/pagesSlice";
 export default function PreviewAddAdPage() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const queryClient = useQueryClient()
     const {mutate, isSuccess, isPending} = useMutation({
         mutationFn: async () => {
             const slep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
@@ -26,7 +27,7 @@ export default function PreviewAddAdPage() {
                 console.error(e)
                 return
             }
-            dispatch(userActions.setUserData(await UsersService.getUserMainDataApiV1P2PUserMainDataGet(authorization)))
+            queryClient.invalidateQueries({queryKey: ["userMainData"]})
             dispatch(pagesActions.clearAddAdData())
         }
     })
@@ -55,7 +56,7 @@ export default function PreviewAddAdPage() {
 
             <p className="preview-ad-header">Подтверждение создания</p>
             <div className="preview-ad-groups">
-                <Ad {...data} showInfo={true} user_deals={userData.deals} user_name={userData.username ?? "Anonym"} user_photo_url={userData.profile_photo ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTSDZkJpfJZuBUtCO2O5POp69VoIKklbXpFg&s"} user_rating={userData.rating} user_vip={userData.is_vip} showButtons={false}/>
+                <Ad {...data} price={data.price * 1.1} showInfo={true} user_deals={userData.deals} user_name={userData.username ?? "Anonym"} user_photo_url={userData.profile_photo ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTSDZkJpfJZuBUtCO2O5POp69VoIKklbXpFg&s"} user_rating={userData.rating} user_vip={userData.is_vip} showButtons={false}/>
                 <div className="preview-ad-warning">
                     <p className="preview-ad-warning-header">Создавая сделку вы подтверждаете, что:</p>
                     <ol className="preview-ad-warning-list">

@@ -145,7 +145,7 @@ export default function AddAdPage() {
                     <ul className="modalInfo-list">
                         <li className="modalInfo-list-elem">Источник - оставьте ссылку на источник где будет выложена реклама</li>
                         <li className="modalInfo-list-elem">Тематика - выбери тематику вашего проекта</li>
-                        <li className="modalInfo-list-elem">Сумма - цена рекламы вашем ресурсе</li>
+                        <li className="modalInfo-list-elem">Сумма - цена рекламы вашем ресурсе (добавляется комиссия 10% для покупателей)</li>
                         <li className="modalInfo-list-elem">Гарантированно зайдет - минимальная отдача в виде переходов от вашего проекта</li>
                         <li className="modalInfo-list-elem">Условия - какие продукты вы рекламируете</li>
                         <li className="modalInfo-list-elem">Название - вкратце о вашем проекте</li>
@@ -249,20 +249,20 @@ export default function AddAdPage() {
                         }
                     />
 
-                    <FormRow 
-                        name="Условия"
-                        contentChildren={
-                            <TextField type="text" value={conditions} onChange={e => setConditions(e.target.value)} placeholder="Введите условия" required/>
-                        }
-                        // description="Какие продукты вы рекламируете"
-                    />
-
                     <FormRow
                         name="Название"
                         contentChildren={
                             <TextField type="text" value={title} onChange={e => setTitle(e.target.value)} placeholder="Введите название" required/>
                         }
                         // description="Вкратце о вашем проекте"
+                    />
+
+                    <FormRow 
+                        name="Условия"
+                        contentChildren={
+                            <TextField className="add-ad-textarea" type="textarea" rows={3} value={conditions} onChange={e => setConditions(e.target.value)} placeholder="Введите условия" required/>
+                        }
+                        // description="Какие продукты вы рекламируете"
                     />
 
                     <FormRow
