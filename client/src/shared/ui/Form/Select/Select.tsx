@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useMemo, useState } from "react"
 import "../Form.css"
 import { getTextWidth } from "../../../lib"
 import classNames from "classnames"
@@ -19,28 +19,28 @@ type SelectProps = {
     onChange?: (value: string) => void
 }
 
-// 
+
+
 export function Select({optionsData, defaultValue, fontSize, backgroundColor="#2B2B2B", onChange, className, classNameContainer, manualWidth, filterChosen}: SelectProps) {
     const [index, setIndex] = useState(defaultValue != undefined && optionsData.some(val => val.value == defaultValue) ? optionsData.findIndex(val => val.value == defaultValue) : 0)
     const [isOpen, setIsOpen] = useState(false)
-    const [maxWidth, setMaxWidth] = useState(0)
     const [hasIcons, setHasIcons] = useState(false)
-
-    const getWidth = (ind: number) =>
-        getTextWidth(optionsData[ind].text ?? optionsData[ind].value, `600 ${fontSize ?? 13}px Inter`) + // Text size
-        (optionsData[ind].icon ? 20 + 6 : 0) + // Icon size + spacing if any
-        24 + 6 + 12 // arrow icon + spacing + paddings
-
-    if (!manualWidth)
-        useEffect(() => {
-            setMaxWidth(optionsData.reduce((maxWidth, elem, i) => {
-                if (!hasIcons && elem.icon)
-                    setHasIcons(true)
-                
-                const elemWidth = getWidth(i)
-                return elemWidth > maxWidth ? elemWidth : maxWidth
-            }, 0))
-        }, [])
+    const width = useMemo(
+        () => manualWidth ?
+                undefined
+            :
+                optionsData.reduce((maxWidth, elem, i) => {
+                    if (!hasIcons && elem.icon)
+                        setHasIcons(true)
+                    
+                    const elemWidth =
+                        getTextWidth(optionsData[i].text ?? optionsData[i].value, `600 ${fontSize ?? 13}px Inter`) + // Text size
+                        (optionsData[i].icon ? 20 + 6 : 0) + // Icon size + spacing if any
+                        24 + 6 + 12 // arrow icon + spacing + paddings
+                    
+                    return elemWidth > maxWidth ? elemWidth : maxWidth
+                }, 0),
+        [])
 
     return (
         <button
@@ -51,7 +51,7 @@ export function Select({optionsData, defaultValue, fontSize, backgroundColor="#2
                 className
             )}
             style={{
-                width: manualWidth ? undefined : maxWidth,
+                width,
                 backgroundColor,
                 fontSize
             }}
@@ -71,7 +71,7 @@ export function Select({optionsData, defaultValue, fontSize, backgroundColor="#2
                         classNameContainer
                     )}
                     style={classNameContainer ? {} : {
-                        width: manualWidth ? undefined : maxWidth,
+                        width,
                         backgroundColor,
                         fontSize,
                         textAlign: hasIcons ? "end" : "start"

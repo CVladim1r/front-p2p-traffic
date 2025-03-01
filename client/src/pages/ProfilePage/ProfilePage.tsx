@@ -6,7 +6,7 @@ import settingsLogo from "../../shared/assets/svg/settings.svg"
 import gachaFull from "../../shared/assets/svg/gacha_new.svg"
 import gachaBlank from "../../shared/assets/svg/gacha_new-blank.svg"
 import gachaArrow from "../../shared/assets/svg/arrow_gacha.svg"
-import closeImg from "../../shared/assets/svg/close.svg"
+import BonusImg from "../../shared/assets/svg/prizes.svg"
 import ProfileTop from "./Profile"
 import { RoutePaths } from "../../app/providers/router"
 import { Button, Select } from "../../shared/ui"
@@ -18,92 +18,38 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { AdsgramService, PrizeType, TransactionCurrencyType, UsersService } from "../../shared/api"
 import { selectAuthorization } from "../../entities/User"
 import { user } from "../.."
-import { useDispatch } from "react-redux"
-import { pagesActions, ProfileDialogState } from "../../entities/Pages/slice/pagesSlice"
+import { Modal } from "../../shared/ui/Modal/Modal"
 
 const paid_cost: {[key: string]: number} = {
   "TON": 10,
   "USDT": 30,
 }
 
-function VipDialog() {
-  const dispatch = useDispatch()
-  const queryClient = useQueryClient()
-  const additional = useAppSelector(s => s.additional)
-  const authorization = useAppSelector(selectAuthorization)
-  const is_vip = useAppSelector(s => s.user.data?.is_vip)
-  const dialogState = useAppSelector(s => s.pages.profile.dialogState)
-
-  const [currency, setCurrency] = useState(additional.currencyTypes[0])
-
-  const {mutate} = useMutation({
-    mutationFn: async () => {
-      await UsersService.updateUserVipApiV1P2PUserUpdateUserVipPost(authorization, currency as TransactionCurrencyType)
-      queryClient.invalidateQueries({queryKey: ["userMainData"]})
-      dispatch(pagesActions.setProfileDialogState(ProfileDialogState.notVisible))
-    }
-  })
-
-  return (
-    <>
-      <div onClick={() => dispatch(pagesActions.setProfileDialogState(ProfileDialogState.notVisible))} className={dialogState ? "profile-vipDialog-overlay active" : "profile-vipDialog-overlay"}></div>
-
-      <div className={dialogState ? "vipDialog active" : "vipDialog"}>
-        <div className="vipDialog-main">
-
-          <div className="vipDialog-top">
-            <p className="vipDialog-top-header">VIP статус:</p>
-            <Button className="vipDialog-close" onClick={() => dispatch(pagesActions.setProfileDialogState(ProfileDialogState.notVisible))}>
-              <img src={closeImg} alt="" className="vipDialog-close-icon" />
-            </Button>
-          </div>
-          
-          <p className="vipDialog-status">{is_vip ? "Активно" : "Не активно"}</p>
-
-          <div className="vipDialog-body">
-            {dialogState == ProfileDialogState.setCurrency ?
-                <div className="vipDialog-body-row">
-                  <p className="vipDialog-body-header">Выберите валюту для оплаты: </p>
-                  <div className="vipDialog-body-cost-container">
-                    <p className="vipDialog-body-header">{paid_cost[currency]}</p>
-                    <Select className="vipDialog-body-currency" onChange={val => setCurrency(val)} defaultValue={currency} optionsData={
-                      additional.currencyTypes.map(val => ({value: val}))
-                    } />
-                  </div>
-                </div>
-              :
-                <>
-                  <p className="vipDialog-body-header">Для vip-продавцов становятся доступны:</p>
-                  <ol className="vipDialog-body-list">
-                    <li>Мгновенный вывод средств.</li>
-                    <li>Сниженные комиссии.</li>
-                    <li>Специальная отметка профиля.</li>
-                    <li>Приоритетные объявления.</li>
-                  </ol>
-                </>
-            }
-          </div>
-
-        </div>
-        
-        {dialogState == ProfileDialogState.setCurrency ?
-          <Button className="vipDialog-button" onClick={() => mutate()}>Оплатить</Button>
-        :
-          <Button className="vipDialog-button" disabled={is_vip} onClick={() => dispatch(pagesActions.setProfileDialogState(ProfileDialogState.setCurrency))}>Оформить</Button>
-        }
-      </div>
-    </>
-  )
+enum VipModalState {
+  notVisible,
+  main,
+  setCurrency
 }
 
 export default function ProfilePage() {
-  const dispatch = useDispatch()
   const queryClient = useQueryClient()
+
+  const authorization = useAppSelector(selectAuthorization)
 
   const spinTimeout = 24 * 60 * 60 * 1000
 
   const userData = useAppSelector(state => state.user.data)
   const additional = useAppSelector(s => s.additional)
+
+  const [vipModalState, setVipModalState] = useState(VipModalState.notVisible)
+  const [currency, setCurrency] = useState(additional.currencyTypes[0])
+  const {mutate} = useMutation({
+    mutationFn: async () => {
+      await UsersService.updateUserVipApiV1P2PUserUpdateUserVipPost(authorization, currency as TransactionCurrencyType)
+      queryClient.invalidateQueries({queryKey: ["userMainData"]})
+      setVipModalState(VipModalState.notVisible)
+    }
+  })
 
   const [spin, setSpin] = useState(false)
   const [currencyType, setCurrencyType] = useState(additional.currencyTypes[0])
@@ -209,14 +155,20 @@ export default function ProfilePage() {
 
       <ProfileTop username={userData?.username ?? "none"}
         children={
-          <Link to={{pathname: RoutePaths.profileSettings}} className="profile-top-settings">
-            <img src={settingsLogo} alt=""/>
-          </Link>
+          <>
+            <Link to={{pathname: RoutePaths.profileSettings}} className="profile-top-settings">
+              <img src={settingsLogo} alt=""/>
+            </Link>
+
+            <Button useDefaultClassName={false} className="profile-top-bonus">
+              <img src={BonusImg} alt="" />
+            </Button>
+          </>
         }
       />
         
         <div className="profile-body">
-          <Button className="profile-body-vip" onClick={() => dispatch(pagesActions.setProfileDialogState(ProfileDialogState.main))}>
+          <Button className="profile-body-vip" onClick={() => setVipModalState(VipModalState.main)}>
             <p className="profile-body-vip-text">VIP - статус</p>
             <p className="profile-body-vip-status">{userData?.is_vip ? "Активно" : "Не активно"}</p>
           </Button>
@@ -316,7 +268,52 @@ export default function ProfilePage() {
             {spinTime ? numberToTime(spinTime) : "Крутить"}
           </Button>
           
-          <VipDialog />
+          <Modal
+            show={vipModalState != VipModalState.notVisible}
+            hideModal={() => setVipModalState(VipModalState.notVisible)}
+            topText="VIP статус:"
+            bodyChildren={vipModalState == VipModalState.main ?
+              <>
+                <p className="vipModal-status">{userData?.is_vip ? "Активно" : "Не активно"}</p>
+                <p className="vipModal-body-header">Для vip-продавцов становятся доступны:</p>
+                <ol className="vipModal-body-list">
+                  <li>Мгновенный вывод средств.</li>
+                  <li>Сниженные комиссии.</li>
+                  <li>Специальная отметка профиля.</li>
+                  <li>Приоритетные объявления.</li>
+                </ol>
+              </>
+            :
+            <>
+              <p className="vipModal-status">{userData?.is_vip ? "Активно" : "Не активно"}</p>
+              <div className="vipModal-body-row">
+                <p className="vipModal-body-header">Выберите валюту для оплаты: </p>
+                <div className="vipModal-body-cost-container">
+                  <p className="vipModal-body-header">{paid_cost[currency]}</p>
+                  <Select className="vipModal-body-currency" fontSize={16} onChange={val => setCurrency(val)} defaultValue={currency} optionsData={
+                    additional.currencyTypes.map(val => ({value: val}))
+                  } />
+                </div>
+              </div>
+            </>
+          }
+            bottomButton={
+              vipModalState == VipModalState.main ?
+                {
+                  text: "Оформить",
+                  onClick: () => setVipModalState(VipModalState.setCurrency),
+                  disabled: userData?.is_vip
+                }
+              :
+                {
+                  text: "Оплатить",
+                  onClick() {
+                    mutate()
+                  }
+                }
+            }
+          />
+          {/* <VipDialog /> */}
         </div>
     </div>
   )

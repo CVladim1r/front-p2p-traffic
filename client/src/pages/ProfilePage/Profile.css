@@ -16,8 +16,16 @@
 }
 
 .profile-top-settings {
+    display: flex;
     position: absolute;
     right: 0px;
+    top: 0px;
+}
+
+.profile-top-bonus {
+    display: flex;
+    position: absolute;
+    left: 0px;
     top: 0px;
 }
 
@@ -446,89 +454,7 @@
 }
 
 
-.profile-vipDialog-overlay {
-    position: fixed;
-    z-index: 1;
-
-    visibility: hidden;
-
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    height: 100%;
-
-    background-color: #000;
-    opacity: 0;
-
-    transition: opacity .5s;
-}
-.profile-vipDialog-overlay.active {
-    visibility: visible;
-    opacity: .7;
-}
-
-.vipDialog {
-    position: fixed;
-    z-index: 2;
-
-    visibility: hidden;
-
-    left: 50%;
-    top: 50%;
-    width: 80%;
-
-    transform: translate(-50%, -50%);
-
-    opacity: 0;
-    transition: opacity .5s;
-
-    display: flex;
-    flex-direction: column;
-    row-gap: 4px;
-}
-.vipDialog.active {
-    visibility: visible;
-    opacity: 1;
-}
-
-.vipDialog-main {
-    display: flex;
-    flex-direction: column;
-    row-gap: 10px;
-
-    padding: 5px 20px 20px 20px;
-
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-
-    background-color: #2B2B2B;
-}
-
-.vipDialog-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.vipDialog-top-header {
-    font-size: 16px;
-    font-weight: 300;
-}
-
-.vipDialog-close {
-    display: flex;
-    align-self: flex-end;
-
-    margin-right: -15px;
-
-    height: fit-content;
-    width: fit-content;
-    padding: 0px;
-
-    background-color: transparent;
-}
-
-.vipDialog-status {
+.vipModal-status {
     font-size: 32px;
     font-weight: 700;
     font-family: "Roboto";
@@ -543,19 +469,13 @@
     background-clip: text;
 }
 
-.vipDialog-body {
-    display: flex;
-    flex-direction: column;
-    row-gap: 6px;
-}
-
-.vipDialog-body-header {
+.vipModal-body-header {
     font-family: "Roboto";
     font-size: 18px;
     font-weight: 600;
 }
 
-.vipDialog-body-list {
+.vipModal-body-list {
     list-style-position: inside;
 
     font-family: "Roboto";
@@ -563,17 +483,12 @@
     font-weight: 300;
 }
 
-.vipDialog-body-cost-container {
+.vipModal-body-cost-container {
     display: flex;
     align-items: center;
 }
 
-.vipDialog-button {
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-}
-
-.vipDialog-body-row {
+.vipModal-body-row {
     display: flex;
     justify-content: space-between;
     align-items: center;

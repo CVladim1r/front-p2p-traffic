@@ -14,8 +14,8 @@ import { formatNumberTo3 } from "../../shared/lib/lib"
 import { Switch } from "../../shared/ui/Form/Switch/Switch"
 import { useAppSelector } from "../../app/providers/store"
 import infoSvg from "../../shared/assets/svg/info.svg"
-import closeImg from "../../shared/assets/svg/close.svg"
 import { pagesActions } from "../../entities/Pages/slice/pagesSlice"
+import { Modal } from "../../shared/ui/Modal/Modal"
 
 const paid_cost: {[key: string]: number} = {
     "TON": 1.4,
@@ -132,27 +132,22 @@ export default function AddAdPage() {
                 </Button>
             </div>
 
-            <div className={showModal ? "modalInfo-dark-background active" : "modalInfo-dark-background"} onClick={() => setShowModal(false)} />
-            <div className={showModal ? "modalInfo active" : "modalInfo"}>
-                <div className="modalInfo-main">
-                    <div className="modalInfo-top">
-                        <p className="modalInfo-top-text">Информация</p>
-                        <Button className="modalInfo-close" onClick={() => setShowModal(false)}>
-                            <img src={closeImg} alt="" />
-                        </Button>
-                    </div>
-
+            <Modal
+                show={showModal}
+                hideModal={() => setShowModal(false)}
+                topText="Информация:"
+                bodyChildren={
                     <ul className="modalInfo-list">
-                        <li className="modalInfo-list-elem">Источник - оставьте ссылку на источник где будет выложена реклама</li>
-                        <li className="modalInfo-list-elem">Тематика - выбери тематику вашего проекта</li>
-                        <li className="modalInfo-list-elem">Сумма - цена рекламы вашем ресурсе (добавляется комиссия 10% для покупателей)</li>
-                        <li className="modalInfo-list-elem">Гарантированно зайдет - минимальная отдача в виде переходов от вашего проекта</li>
-                        <li className="modalInfo-list-elem">Условия - какие продукты вы рекламируете</li>
-                        <li className="modalInfo-list-elem">Название - вкратце о вашем проекте</li>
-                        <li className="modalInfo-list-elem">Описание - более подробно о вашем проекте</li>
+                        <li>Источник - оставьте ссылку на источник где будет выложена реклама</li>
+                        <li>Тематика - выбери тематику вашего проекта</li>
+                        <li>Сумма - цена рекламы вашем ресурсе (добавляется комиссия 10% для покупателей)</li>
+                        <li>Гарантированно зайдет - минимальная отдача в виде переходов от вашего проекта</li>
+                        <li>Условия - какие продукты вы рекламируете</li>
+                        <li>Название - вкратце о вашем проекте</li>
+                        <li>Описание - более подробно о вашем проекте</li>
                     </ul>
-                </div>
-            </div>
+                }
+            />
 
             <form onSubmit={formSubmit} className="add-ad-form">
                 <div className="add-ad-form-content">

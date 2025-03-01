@@ -23,25 +23,9 @@ export interface MoneyChangeSchema {
     receiptLink?: string
 }
 
-export interface ChatSchema {
-    showDialog: boolean
-}
-
-export enum ProfileDialogState {
-   notVisible,
-   main,
-   setCurrency
-}
-
-export interface ProfileSchema {
-    dialogState: ProfileDialogState
-}
-
 export interface PagesSchema {
     addAd: AddAdSchema
     ads: AdsSchema,
-    chat: ChatSchema,
-    profile: ProfileSchema,
     moneyChange: MoneyChangeSchema,
 }
 const initialState: PagesSchema = {
@@ -51,12 +35,6 @@ const initialState: PagesSchema = {
     ads: {
         activeFilter: "",
         filterData: {}
-    },
-    chat: {
-        showDialog: false
-    },
-    profile: {
-        dialogState: ProfileDialogState.notVisible
     },
     moneyChange: {},
 };
@@ -97,14 +75,6 @@ const pagesSlice = createSlice({
         },
         setAdsTheme: (state, action: PayloadAction<string | undefined>) => {
             state.ads.filterData.theme = action.payload
-        },
-
-        setChatShowDialog: (state, action: PayloadAction<boolean>) => {
-            state.chat.showDialog = action.payload
-        },
-
-        setProfileDialogState: (state, action: PayloadAction<ProfileDialogState>) => {
-            state.profile.dialogState = action.payload
         },
     },
 });

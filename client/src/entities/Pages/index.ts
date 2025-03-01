@@ -1,5 +1,4 @@
 export {
-    ProfileDialogState,
     pagesActions,
     pagesReducer
 } from "./slice/pagesSlice"
@@ -7,9 +6,8 @@ export {
 export type {
     AddAdSchema,
     AdsSchema,
-    ChatSchema,
     FilterData,
     MoneyChangeSchema,
-    PagesSchema, ProfileSchema
+    PagesSchema,
 } from "./slice/pagesSlice";
 

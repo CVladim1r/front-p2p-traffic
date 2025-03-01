@@ -34,7 +34,6 @@ export default function ProfileSettings() {
     }
   })
 
- //TODO - Рефералы (Реферальная система) после уведомления и перед правилами пользования // navigator.clipboard.writeText(copyText.value);
   return (
     <div className="profile container">
       <ProfileTop username={userData?.username ?? "none"}/>
