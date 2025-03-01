@@ -9,12 +9,12 @@ import gachaArrow from "../../shared/assets/svg/arrow_gacha.svg"
 import BonusImg from "../../shared/assets/svg/prizes.svg"
 import ProfileTop from "./Profile"
 import { RoutePaths } from "../../app/providers/router"
-import { Button, Select } from "../../shared/ui"
+import { Button, LoadingAnimation, Select } from "../../shared/ui"
 import { useEffect, useRef, useState } from "react"
 import { formatNumberTo3, numberToTime } from "../../shared/lib/lib"
 import { useAppSelector } from "../../app/providers/store"
 import { useAdsgram } from "../../shared/lib/hooks"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { AdsgramService, PrizeType, TransactionCurrencyType, UsersService } from "../../shared/api"
 import { selectAuthorization } from "../../entities/User"
 import { user } from "../.."
@@ -41,9 +41,17 @@ export default function ProfilePage() {
   const userData = useAppSelector(state => state.user.data)
   const additional = useAppSelector(s => s.additional)
 
+  const [showPrizeModal, setShowPrizeModal] = useState(false)
+  const prize = useQuery({
+    queryKey: ["prize"],
+    queryFn: async () => {
+      return await UsersService.getActivePrizeApiV1P2PUserActivePrizeGet(authorization)
+    }
+  })
+  
   const [vipModalState, setVipModalState] = useState(VipModalState.notVisible)
   const [currency, setCurrency] = useState(additional.currencyTypes[0])
-  const {mutate} = useMutation({
+  const {mutate: buyVip} = useMutation({
     mutationFn: async () => {
       await UsersService.updateUserVipApiV1P2PUserUpdateUserVipPost(authorization, currency as TransactionCurrencyType)
       queryClient.invalidateQueries({queryKey: ["userMainData"]})
@@ -109,6 +117,7 @@ export default function ProfilePage() {
           break;
       }
       queryClient.invalidateQueries({queryKey: ["userMainData"]})
+      queryClient.invalidateQueries({queryKey: ["prize"]})
     },
   })
 
@@ -160,7 +169,7 @@ export default function ProfilePage() {
               <img src={settingsLogo} alt=""/>
             </Link>
 
-            <Button useDefaultClassName={false} className="profile-top-bonus">
+            <Button onClick={() => setShowPrizeModal(true)} useDefaultClassName={false} className="profile-top-bonus">
               <img src={BonusImg} alt="" />
             </Button>
           </>
@@ -269,6 +278,21 @@ export default function ProfilePage() {
           </Button>
           
           <Modal
+            show={showPrizeModal}
+            hideModal={() => setShowPrizeModal(false)}
+            topText="Активный приз:"
+            bodyChildren={
+              prize.isLoading ?
+                <LoadingAnimation />
+              :
+                !prize.isSuccess ?
+                  <p>Не удалось получить данные</p>
+                :
+                  <p>{prize.data ? prize.data.prize_type : "Нет активного приза"}</p>
+            }
+          />
+
+          <Modal
             show={vipModalState != VipModalState.notVisible}
             hideModal={() => setVipModalState(VipModalState.notVisible)}
             topText="VIP статус:"
@@ -308,12 +332,11 @@ export default function ProfilePage() {
                 {
                   text: "Оплатить",
                   onClick() {
-                    mutate()
+                    buyVip()
                   }
                 }
             }
           />
-          {/* <VipDialog /> */}
         </div>
     </div>
   )

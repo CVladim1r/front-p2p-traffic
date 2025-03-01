@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Body_update_user_photo_api_v1_p2p_user_update_user_photo_post } from '../models/Body_update_user_photo_api_v1_p2p_user_update_user_photo_post';
-import type { PrizeOut } from '../models/PrizeOut';
+import type { PrizeOutAddUUID } from '../models/PrizeOutAddUUID';
 import type { StartUserIn } from '../models/StartUserIn';
 import type { StartUserOut } from '../models/StartUserOut';
 import type { TransactionCurrencyType } from '../models/TransactionCurrencyType';
@@ -144,7 +144,7 @@ export class UsersService {
      */
     public static getActivePrizeApiV1P2PUserActivePrizeGet(
         authorization: string,
-    ): CancelablePromise<(PrizeOut | null)> {
+    ): CancelablePromise<(PrizeOutAddUUID | null)> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/p2p/user/active_prize',

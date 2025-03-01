@@ -92,18 +92,23 @@ export class OrdersService {
      * Create Deal
      * @param authorization
      * @param requestBody
+     * @param bonusId UUID бонуса для использования при создании сделки
      * @returns DealsOut Successful Response
      * @throws ApiError
      */
     public static createDealApiV1P2POrdersDealsPost(
         authorization: string,
         requestBody: DealCreate,
+        bonusId?: (string | null),
     ): CancelablePromise<DealsOut> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/p2p/orders/deals',
             headers: {
                 'Authorization': authorization,
+            },
+            query: {
+                'bonus_id': bonusId,
             },
             body: requestBody,
             mediaType: 'application/json',

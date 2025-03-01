@@ -112,8 +112,8 @@ export default function ChatPage() {
     })
 
     const containerRef = useRef<HTMLDivElement>(null)
-    const atBottom = useRef(true)
-    const forceScroll = useRef(false)
+    const atBottom = useRef(false)
+    const forceScroll = useRef(true)
     useEffect(() => {
         if ((atBottom.current || forceScroll.current) && containerRef.current) {
             containerRef.current.scrollTo(0, containerRef.current.scrollHeight)

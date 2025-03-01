@@ -18,25 +18,4 @@ export class DefaultService {
             url: '/webhook/cryptobot',
         });
     }
-    /**
-     * Root Endpoint
-     * Check API health
-     * @param authorization
-     * @returns any Successful Response
-     * @throws ApiError
-     */
-    public static rootGet(
-        authorization: string,
-    ): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/',
-            headers: {
-                'Authorization': authorization,
-            },
-            errors: {
-                422: `Validation Error`,
-            },
-        });
-    }
 }
