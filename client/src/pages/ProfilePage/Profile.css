@@ -494,3 +494,16 @@
     align-items: center;
     column-gap: 10px;
 }
+
+.prizeModal {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+}
+
+.prizeModal-group {
+    font-weight: 400;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2px;
+}

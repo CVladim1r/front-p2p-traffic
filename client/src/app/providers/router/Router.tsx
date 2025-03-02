@@ -2,6 +2,7 @@ import { Suspense, memo, useCallback } from "react";
 import { Route, Routes, type RouteProps, Navigate } from "react-router-dom";
 import {
   AddAdPage,
+  AdPage,
   AdsPage,
   ProfileSettingsPage,
   ProfilePage,
@@ -12,11 +13,10 @@ import {
   AddAdDonePage,
   MoneyAddDonePage,
   MoneyRemoveDonePage,
-  PreviewAddAdPage
+  PreviewAddAdPage,
+  NoTgDataPage
 } from "../../../pages";
 import { LoadingAnimation, NavBar } from "../../../shared/ui";
-import AdPage from "../../../pages/AdPage/AdPage";
-import NoTgDataPage from "../../../pages/NoTgDataPage/NoTgDataPage";
 
 enum AppRoutes {
   root = "root",
@@ -132,7 +132,7 @@ const routeConfig: Record<AppRoutes, MyRouteProps> = {
   },
   [AppRoutes.notFound]: {
     path: RoutePaths.notFound,
-    element: <p>test</p>, //FIXME - 404 page
+    element: <p>test not found</p>, //FIXME - 404 page
     noNavBar: true,
   },
 };

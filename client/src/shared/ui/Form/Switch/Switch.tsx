@@ -7,14 +7,16 @@ type SwitchProps = InputHTMLAttributes<HTMLInputElement> & {
 }
 
 // 
-export function Switch({className, checked, ...otherProps}: SwitchProps) {
+export function Switch({className, checked, disabled, ...otherProps}: SwitchProps) {
     return (
         <input
             className={classNames(
                 "form-switch",
                 {"active": checked},
+                {"disabled": disabled},
                 className
             )}
+            disabled={disabled}
             type="checkbox"
             {...otherProps}
         />

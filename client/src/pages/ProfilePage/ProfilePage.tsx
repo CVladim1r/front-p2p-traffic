@@ -9,13 +9,13 @@ import gachaArrow from "../../shared/assets/svg/arrow_gacha.svg"
 import BonusImg from "../../shared/assets/svg/prizes.svg"
 import ProfileTop from "./Profile"
 import { RoutePaths } from "../../app/providers/router"
-import { Button, LoadingAnimation, Select } from "../../shared/ui"
+import { Button, Select } from "../../shared/ui"
 import { useEffect, useRef, useState } from "react"
 import { formatNumberTo3, numberToTime } from "../../shared/lib/lib"
 import { useAppSelector } from "../../app/providers/store"
 import { useAdsgram } from "../../shared/lib/hooks"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { AdsgramService, PrizeType, TransactionCurrencyType, UsersService } from "../../shared/api"
+import { AdsgramService, PrizeService, PrizeType, TransactionCurrencyType, UsersService } from "../../shared/api"
 import { selectAuthorization } from "../../entities/User"
 import { user } from "../.."
 import { Modal } from "../../shared/ui/Modal/Modal"
@@ -31,6 +31,8 @@ enum VipModalState {
   setCurrency
 }
 
+type PrizeInfo = {[key in PrizeType]?: number}
+
 export default function ProfilePage() {
   const queryClient = useQueryClient()
 
@@ -42,12 +44,23 @@ export default function ProfilePage() {
   const additional = useAppSelector(s => s.additional)
 
   const [showPrizeModal, setShowPrizeModal] = useState(false)
+  const [activePrizes, setActivePrizes] = useState<PrizeInfo>({})
   const prize = useQuery({
     queryKey: ["prize"],
     queryFn: async () => {
-      return await UsersService.getActivePrizeApiV1P2PUserActivePrizeGet(authorization)
-    }
+      return await PrizeService.getActiveBonusesApiV1P2PPrizeActiveBonusesGet(authorization)
+    },
   })
+
+  useEffect(() => {
+    if (prize.data) {
+      const tmp: PrizeInfo = {}
+      prize.data.forEach(val => 
+        tmp[val.prize_type] = (tmp[val.prize_type] ?? 0) + 1
+      )
+      setActivePrizes(tmp)
+    }
+  }, [prize.data])
   
   const [vipModalState, setVipModalState] = useState(VipModalState.notVisible)
   const [currency, setCurrency] = useState(additional.currencyTypes[0])
@@ -280,15 +293,22 @@ export default function ProfilePage() {
           <Modal
             show={showPrizeModal}
             hideModal={() => setShowPrizeModal(false)}
-            topText="Активный приз:"
+            topText="Список призов:"
             bodyChildren={
-              prize.isLoading ?
-                <LoadingAnimation />
-              :
-                !prize.isSuccess ?
-                  <p>Не удалось получить данные</p>
-                :
-                  <p>{prize.data ? prize.data.prize_type : "Нет активного приза"}</p>
+              <div className="prizeModal">
+                <div className="prizeModal-group">
+                  <p className="prizeModal-text">Скидка 3% - единоразовая скидка на покупку</p>
+                  <p className="prizeModal-amount">Доступно: {prize.isFetching || !prize.isSuccess ? "-" : activePrizes[PrizeType._3_DISCOUNT] ?? 0}</p>
+                </div>
+                <div className="prizeModal-group">
+                  <p className="prizeModal-text">Скидка 5% - единоразовая скидка на покупку</p>
+                  <p className="prizeModal-amount">Доступно: {prize.isFetching || !prize.isSuccess ? "-" : activePrizes[PrizeType._5_DISCOUNT] ?? 0}</p>
+                </div>
+                <div className="prizeModal-group">
+                  <p className="prizeModal-text">Повышенный бонус за рефа 7% - бонус за рефералов +7% на трое суток</p>
+                  <p className="prizeModal-amount">{prize.isFetching || !prize.isSuccess ? "" : activePrizes[PrizeType._7_INCREASED_REFERRAL_BONUS] ? "Активно" : "Не активно"}</p>
+                </div>
+              </div>
             }
           />
 

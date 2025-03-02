@@ -18,3 +18,19 @@
     flex-direction: column;
     row-gap: 12px;
 }
+
+.ad-bonus {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ad-bonus-text.disabled {
+    color: #A1A1AA;
+}
+
+.ad-bonus-info {
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+}

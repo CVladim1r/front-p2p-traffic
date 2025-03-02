@@ -165,3 +165,7 @@
 .form-switch.active::after {
     left: calc(100% - 18px);
 }
+
+.form-switch.disabled {
+    background-color: #A1A1AA;
+}
