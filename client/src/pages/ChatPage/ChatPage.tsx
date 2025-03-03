@@ -48,7 +48,8 @@ export default function ChatPage() {
     const navigate = useNavigate()
     const queryClient = useQueryClient()
     const authorization = useAppSelector(selectAuthorization)
-    const tg_id = useAppSelector(state => state.user.data?.tg_id)
+    const userTg_id = useAppSelector(state => state.user.data?.tg_id)
+    const userUuid = useAppSelector(s => s.user.data?.uuid)
 
     
     const {mutate: confirmDeal, isSuccess: confirmDealSuccess} = useMutation({
@@ -58,7 +59,7 @@ export default function ChatPage() {
     })
 
     const chat = useQuery({
-        queryKey: ["chat"],
+        queryKey: ["chat", deal_id],
         queryFn: async () => {
             return await OrdersService.getChatApiV1P2POrdersDealsDealUuidChatGet(deal_id, authorization)
         },
@@ -107,13 +108,13 @@ export default function ChatPage() {
             forceScroll.current = true
         },
         onSettled: async () => {
-            return await queryClient.invalidateQueries({queryKey: ["chat"]})
+            return await queryClient.invalidateQueries({queryKey: ["chat", deal_id]})
         }
     })
 
     const containerRef = useRef<HTMLDivElement>(null)
-    const atBottom = useRef(false)
-    const forceScroll = useRef(true)
+    const atBottom = useRef(true)
+    const forceScroll = useRef(false)
     useEffect(() => {
         if ((atBottom.current || forceScroll.current) && containerRef.current) {
             containerRef.current.scrollTo(0, containerRef.current.scrollHeight)
@@ -132,16 +133,22 @@ export default function ChatPage() {
             <div className="chat-top">
                 <BackButton className="chat-top-back" onClick={() => navigate({pathname: RoutePaths.chats})}/>
                 <Button className="chat-top-open">Открыть спор</Button>
-                {deal.data.status == DealStatus.COMPLETED ?
-                    <Button className="chat-top-confirm" onClick={() => setShowModal(true)}>Оставить отзыв</Button>
-                : //TODO - dealData. if no review
+                {deal.data.status != DealStatus.COMPLETED ?
                     <Button className="chat-top-confirm" onClick={() => confirmDeal()}>Подтвердить сделку</Button>
+                : 
+                    <Button
+                        className="chat-top-confirm"
+                        onClick={() => setShowModal(true)}
+                        disabled={userUuid == deal.data.buyer_id && deal.data.buyer_review || userUuid != deal.data.buyer_id && deal.data.seller_review}
+                    >
+                        Оставить отзыв
+                    </Button>
                 }
             </div>
             <div className="chat-messages container" onScroll={e => atBottom.current = e.currentTarget.scrollHeight - e.currentTarget.scrollTop - e.currentTarget.clientHeight <= 1.0} ref={containerRef}>
                 { chat.data.messages.map(val => <Message key={val.timestamp} {...val} />) }
                 {sendMessagePending &&
-                    <Message sender_name="" sender_tg_id={tg_id ?? 0} sender_uuid="" text={messageOptimistic} timestamp={new Date(Date.now()).toISOString()} />
+                    <Message sender_name="" sender_tg_id={userTg_id ?? 0} sender_uuid="" text={messageOptimistic} timestamp={new Date(Date.now()).toISOString()} />
                 }
             </div>
             <div className="chat-input container">

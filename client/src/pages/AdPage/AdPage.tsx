@@ -24,7 +24,7 @@ export default function AdPage() {
     const userBalance = useAppSelector(s => s.user.data?.balance ?? {})
 
     const adInfo = useQuery({
-        queryKey: ["adData"],
+        queryKey: ["adData", adUuid],
         queryFn: async () => {
             return await OrdersService.getAdApiV1P2POrdersAdsAdUuidGet(adUuid)
         }
