@@ -71,7 +71,7 @@ export default function AdPage() {
     })
 
     function canBuy() {
-        return adInfo.data?.price && userBalance[adInfo.data?.currency_type ?? ""] && userBalance[adInfo.data?.currency_type ?? ""] > adInfo.data.price
+        return adInfo.data?.price && userBalance[adInfo.data?.currency_type ?? ""] && userBalance[adInfo.data?.currency_type ?? ""] >= adInfo.data.price
     }
 
     if (adInfo.isLoading)
